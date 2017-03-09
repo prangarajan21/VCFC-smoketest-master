@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="2" passed="2">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Suite" duration-ms="114465" started-at="2017-03-09T21:48:56Z" finished-at="2017-03-09T21:50:50Z">
+    <groups>
+      <group name="regression">
+        <method signature="IATest.addCollectorTest(java.lang.String)[pri:0, instance:com.pluribus.vcf.test.IATest@396a51ab]" name="addCollectorTest" class="com.pluribus.vcf.test.IATest"/>
+        <method signature="IATest.simpleTrafficTest(java.lang.String, java.lang.String, int, int)[pri:0, instance:com.pluribus.vcf.test.IATest@396a51ab]" name="simpleTrafficTest" class="com.pluribus.vcf.test.IATest"/>
+      </group> <!-- regression -->
+      <group name="smoke">
+        <method signature="IATest.addCollectorTest(java.lang.String)[pri:0, instance:com.pluribus.vcf.test.IATest@396a51ab]" name="addCollectorTest" class="com.pluribus.vcf.test.IATest"/>
+        <method signature="IATest.simpleTrafficTest(java.lang.String, java.lang.String, int, int)[pri:0, instance:com.pluribus.vcf.test.IATest@396a51ab]" name="simpleTrafficTest" class="com.pluribus.vcf.test.IATest"/>
+      </group> <!-- smoke -->
+    </groups>
+    <test name="Test" duration-ms="114465" started-at="2017-03-09T21:48:56Z" finished-at="2017-03-09T21:50:50Z">
+      <class name="com.pluribus.vcf.test.IATest">
+        <test-method status="PASS" signature="cleanLogs(java.lang.String, java.lang.String)[pri:0, instance:com.pluribus.vcf.test.IATest@396a51ab]" name="cleanLogs" is-config="true" duration-ms="8" started-at="2017-03-09T13:48:56Z" finished-at="2017-03-09T13:48:56Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[10.9.10.110]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[0]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- cleanLogs -->
+        <test-method status="PASS" signature="startDriver(java.lang.String, java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:com.pluribus.vcf.test.IATest@396a51ab]" name="startDriver" is-config="true" duration-ms="19064" started-at="2017-03-09T13:48:56Z" finished-at="2017-03-09T13:49:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[10.9.10.110]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[firefox]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[pratikdam1]]>
+              </value>
+            </param>
+            <param index="3">
+              <value>
+                <![CDATA[uZCXEzKXwgzgzMr3G7R6]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- startDriver -->
+        <test-method status="PASS" signature="init(java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:com.pluribus.vcf.test.IATest@396a51ab]" name="init" is-config="true" duration-ms="21" started-at="2017-03-09T13:49:15Z" finished-at="2017-03-09T13:49:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[10.9.8.129]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[10.9.8.97]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[10.9.97.152]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- init -->
+        <test-method status="PASS" signature="addCollectorTest(java.lang.String)[pri:0, instance:com.pluribus.vcf.test.IATest@396a51ab]" name="addCollectorTest" duration-ms="3942" started-at="2017-03-09T13:49:15Z" description="Add collector in IA Page" finished-at="2017-03-09T13:49:19Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[onvl-vcf1]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- addCollectorTest -->
+        <test-method status="PASS" signature="simpleTrafficTest(java.lang.String, java.lang.String, int, int)[pri:0, instance:com.pluribus.vcf.test.IATest@396a51ab]" name="simpleTrafficTest" duration-ms="83631" started-at="2017-03-09T13:49:19Z" description="Send traffic and verify stats" depends-on-methods="com.pluribus.vcf.test.IATest.addCollectorTest" finished-at="2017-03-09T13:50:42Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[4.4.4.97]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[4.4.4.129]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[10]]>
+              </value>
+            </param>
+            <param index="3">
+              <value>
+                <![CDATA[20]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- simpleTrafficTest -->
+        <test-method status="PASS" signature="setupAfterSuite()[pri:0, instance:com.pluribus.vcf.test.IATest@396a51ab]" name="setupAfterSuite" is-config="true" duration-ms="7788" started-at="2017-03-09T13:50:42Z" finished-at="2017-03-09T13:50:50Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setupAfterSuite -->
+      </class> <!-- com.pluribus.vcf.test.IATest -->
+    </test> <!-- Test -->
+  </suite> <!-- Suite -->
+</testng-results>

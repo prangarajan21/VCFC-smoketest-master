@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+  <test name="Test">
+    <parameter name="switchName" value="onvl-vcf1"></parameter>
+    <parameter name="mgmtIp" value="10.9.97.152"></parameter>
+    <parameter name= "cleanBeforeTest" value="0"></parameter>
+    <parameter name= "clientIp" value="10.9.8.129"></parameter>
+    <parameter name= "serverIp" value="10.9.8.97"></parameter>
+    <!-- Traffic parameters - Mandatory -->
+    <parameter name= "trafficSrcIp" value="4.4.4.129"></parameter>
+    <parameter name= "trafficDestIp" value="4.4.4.97"></parameter>
+    <parameter name= "trafficNumSessions" value="10"></parameter>
+    <parameter name= "trafficInterval" value="20"></parameter>
+    <!-- NOTE: Additional optional parameters are: 
+    	<parameter name="dataNodeHost" value="10.9.8.85"></parameter>
+    	<parameter name = "password" value="value_to_be_set_for_vcfc_instance"></parameter>
+    	<parameter name= "bsUserId" value="BS_uid"></parameter>
+    	<parameter name= "bsKey" value="BS_Key"></parameter>
+	//Currently these optional parameters are being set to default values if the user doesn't specify them.
+   END OF NOTE -->
+    <classes>
+      <!--  class name="com.pluribus.vcf.test.InitialSetup"/ -->
+      <class name="com.pluribus.vcf.test.IATest"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->
