@@ -96,11 +96,11 @@ public class IATest extends TestSetup {
 		logger.debug("vcfcAppCount:"+vcfcAppCount);
 
 		if (vcfcConnCount != trafficNumSessions) {
-			logger.error("VCFC connection count test failed");
+			logger.error("vcfcConnCount:"+vcfcConnCount+"expected:"+trafficNumSessions);
 			status = false;
 		} 
 		if (vcfcAppCount != 1) {
-			logger.error("VCFC app count test failed");
+			logger.error("vcfcAppCount:"+vcfcAppCount);
 			status = false;
 		}
 		return status;
