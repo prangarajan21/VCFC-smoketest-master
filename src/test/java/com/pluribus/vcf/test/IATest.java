@@ -62,9 +62,9 @@ public class IATest extends TestSetup {
 		
 		status = verifyVCFCount(trafficNumSessions);
 		if(status == true) {
-			logger.error("VCFC count verification failed");			
-		} else {
 			logger.debug("VCFC count verification passed");
+		} else {
+			logger.error("VCFC count verification failed");			
 		}
 		
 		
@@ -72,28 +72,27 @@ public class IATest extends TestSetup {
 		iaIndex.applySearchFilter("srcIp: "+trafficSrcIp);
 		status = verifyVCFCount(trafficNumSessions);
 		if(status == true) {
-			logger.error("VCFC count verification after applying srcIP filter failed");			
-		} else {
 			logger.debug("VCFC count verification after applying srcIp filter passed");
+		} else {
+			logger.error("VCFC count verification after applying srcIP filter failed");			
 		}
 		
 		//Apply search filter for dstIp
 		iaIndex.applySearchFilter("dstIp: "+trafficDestIp);
 		status = verifyVCFCount(trafficNumSessions);
 		if(status == true) {
-			logger.error("VCFC count verification after applying dstIP filter failed");			
-		} else {
 			logger.debug("VCFC count verification after applying dstIp filter passed");
+		} else {
+			logger.error("VCFC count verification after applying dstIP filter failed");			
 		}
 	}
 	
 	public boolean verifyVCFCount(int trafficNumSessions) {
 		boolean status = true;
-		
 		int vcfcConnCount = iaIndex.getConnectionCount();
-		logger.debug("vcfcConnCount:"+vcfcConnCount);
+		logger.error("vcfcConnCount:"+vcfcConnCount);
 		int vcfcAppCount = iaIndex.getAppCount();
-		logger.debug("vcfcAppCount:"+vcfcAppCount);
+		logger.error("vcfcAppCount:"+vcfcAppCount);
 
 		if (vcfcConnCount != trafficNumSessions) {
 			logger.error("vcfcConnCount:"+vcfcConnCount+"expected:"+trafficNumSessions);

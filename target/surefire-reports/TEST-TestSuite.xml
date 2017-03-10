@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TestSuite" time="87.574" tests="2" errors="0" skipped="0" failures="0">
+<testsuite name="TestSuite" time="186.578" tests="2" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib"/>
@@ -27,7 +27,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="os.name" value="Mac OS X"/>
-    <property name="classworlds.conf" value="/Users/pranga/Documents/workspace/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf2106033467165010571.tmp"/>
+    <property name="classworlds.conf" value="/Users/pranga/Documents/workspace/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf9053161320208607278.tmp"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/Users/pranga/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -64,6 +64,6 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase name="addCollectorTest" classname="com.pluribus.vcf.test.IATest" time="3.944"/>
-  <testcase name="simpleTrafficTest" classname="com.pluribus.vcf.test.IATest" time="83.63"/>
+  <testcase name="addCollectorTest" classname="com.pluribus.vcf.test.IATest" time="3.95"/>
+  <testcase name="simpleTrafficTest" classname="com.pluribus.vcf.test.IATest" time="182.628"/>
 </testsuite>

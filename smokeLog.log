@@ -8,3 +8,15 @@
 2017-03-09 13:50:07 ERROR IATest:99 - VCFC connection count test failed
 2017-03-09 13:50:25 ERROR IATest:99 - VCFC connection count test failed
 2017-03-09 13:50:42 ERROR IATest:99 - VCFC connection count test failed
+2017-03-09 14:17:54 ERROR IATest:65 - VCFC count verification failed
+2017-03-09 14:18:10 ERROR IATest:75 - VCFC count verification after applying srcIP filter failed
+2017-03-09 14:18:35 ERROR IATest:84 - VCFC count verification after applying dstIP filter failed
+2017-03-09 19:50:49 ERROR IATest:93 - vcfcConnCount:10
+2017-03-09 19:51:15 ERROR IATest:95 - vcfcAppCount:1
+2017-03-09 19:51:15 ERROR IATest:65 - VCFC count verification failed
+2017-03-09 19:51:40 ERROR IATest:93 - vcfcConnCount:10
+2017-03-09 19:52:06 ERROR IATest:95 - vcfcAppCount:1
+2017-03-09 19:52:06 ERROR IATest:75 - VCFC count verification after applying srcIP filter failed
+2017-03-09 19:52:31 ERROR IATest:93 - vcfcConnCount:10
+2017-03-09 19:52:54 ERROR IATest:95 - vcfcAppCount:1
+2017-03-09 19:52:54 ERROR IATest:84 - VCFC count verification after applying dstIP filter failed
