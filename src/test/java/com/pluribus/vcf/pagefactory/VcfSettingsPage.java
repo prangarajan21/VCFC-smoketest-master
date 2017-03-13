@@ -123,6 +123,7 @@ public class VcfSettingsPage extends PageInfra{
 	String seedList = "div[name=form]";
 	String licenseList = "ng-transclude";
 	String deleteIcon = "span.icon-img-link.fa fa-trash-o.ng-scope";
+	String msgBox = "span.fa.fa-times-circle";
 	
 	public VcfSettingsPage(WebDriver driver) {
 		super(driver);
@@ -252,11 +253,11 @@ public class VcfSettingsPage extends PageInfra{
 	     for (int i=0; i < rows.size(); i++) {
 		    rows = driver.findElements(By.cssSelector("ng-transclude div.panel.panel-default"));
 	            if (rows.get(i).getText().contains(type.toString())) {
+	            	System.out.println(type.toString());
 	                rows.get(i).findElement(By.cssSelector("button.btn.btn-xs.btn-primary")).click();
 	                break;
 	            }
-		    i++;
-	        }
+	     }
 	}
 	
 	

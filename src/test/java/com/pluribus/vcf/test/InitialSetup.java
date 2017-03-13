@@ -7,6 +7,7 @@ import com.pluribus.vcf.pagefactory.VCFHomePage;
 import com.pluribus.vcf.pagefactory.VcfSettingsPage;
 import static org.testng.Assert.*;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.annotations.AfterTest;
@@ -21,7 +22,6 @@ import org.apache.log4j.Logger;
 
 
 public class InitialSetup extends TestSetup {
-
     private VCFLoginPage login;
     private VCFHomePage home;
     private VcfSettingsPage settings;
@@ -67,6 +67,7 @@ public class InitialSetup extends TestSetup {
     @Test(groups = {"smoke","regression"}, dependsOnMethods = { "addSeedSwitch" }, description = "Authorize seed switches")
     public void authSeedSwitch() throws InterruptedException {
     	settings.authSeedSwitches(switchUserName,switchPassword);
+    	Thread.sleep(1000); //Waiting for success message to go away
     }
 
     @Parameters({"dataNodeHost"}) 
@@ -105,7 +106,8 @@ public class InitialSetup extends TestSetup {
         login.logout();
     }
     
-    public void logout() {
-        login.logout();
+    @Test(groups={"smoke","regression"}, dependsOnMethods = {"addDataNode"}, description = "Logout of VCFC")
+    public void clickOnHome() {
+        login.gotoHome();
     }
 }

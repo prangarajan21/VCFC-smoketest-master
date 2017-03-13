@@ -7,6 +7,8 @@ import com.pluribus.vcf.pagefactory.VCFLoginPage;
 import com.pluribus.vcf.pagefactory.VCFHomePage;
 import com.pluribus.vcf.pagefactory.VCFIaIndexPage;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import org.testng.annotations.Parameters;
 import org.apache.log4j.Logger;
@@ -31,11 +33,16 @@ public class IATest extends TestSetup {
 		cli = new SwitchMethods(mgmtIp);
 	}
 	
-	@Parameters("switchName") 
-	@Test(groups={"smoke","regression"},description="Add collector in IA Page")
-	public void addCollectorTest(String switchName){
-		login.login("admin","test123");
+	@Parameters({"password"}) 
+	@Test(alwaysRun = true)
+	public void logintoIA(@Optional("test123") String password) {
+		login.login("admin", password);
 		home1.gotoIA();
+	}
+	
+	@Parameters({"switchName"}) 
+	@Test(groups={"smoke","regression"},dependsOnMethods={"logintoIA"},description="Add collector in IA Page")
+	public void addCollectorTest(String switchName){
 		iaIndex.addCollector(switchName,user,passwd);
 	}
 	
@@ -67,7 +74,6 @@ public class IATest extends TestSetup {
 			logger.error("VCFC count verification failed");			
 		}
 		
-		
 		//Apply search filter for srcIp
 		iaIndex.applySearchFilter("srcIp: "+trafficSrcIp);
 		status = verifyVCFCount(trafficNumSessions);
@@ -87,6 +93,10 @@ public class IATest extends TestSetup {
 		}
 	}
 	
+	@Test(groups={"smoke","regression"},dependsOnMethods={"simpleTrafficTest"},description="Logout of VCFC")
+	public void logout() {
+		login.logout();
+	}
 	public boolean verifyVCFCount(int trafficNumSessions) {
 		boolean status = true;
 		int vcfcConnCount = iaIndex.getConnectionCount();

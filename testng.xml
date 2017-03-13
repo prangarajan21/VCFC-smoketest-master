@@ -4,7 +4,7 @@
   <test name="Test">
     <parameter name="switchName" value="onvl-vcf1"></parameter>
     <parameter name="mgmtIp" value="10.9.97.152"></parameter>
-    <parameter name= "cleanBeforeTest" value="0"></parameter>
+    <parameter name= "cleanBeforeTest" value="1"></parameter>
     <parameter name= "clientIp" value="10.9.8.129"></parameter>
     <parameter name= "serverIp" value="10.9.8.97"></parameter>
     <!-- Traffic parameters - Mandatory -->
@@ -20,7 +20,7 @@
 	//Currently these optional parameters are being set to default values if the user doesn't specify them.
    END OF NOTE -->
     <classes>
-      <!--  class name="com.pluribus.vcf.test.InitialSetup"/ -->
+      <class name="com.pluribus.vcf.test.InitialSetup"/>
       <class name="com.pluribus.vcf.test.IATest"/>
     </classes>
   </test> <!-- Test -->

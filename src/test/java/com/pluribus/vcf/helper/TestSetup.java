@@ -19,9 +19,10 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Optional;
 import static org.testng.Assert.assertTrue;
@@ -39,7 +40,7 @@ public class TestSetup {
    private ResourceBundle bundle;
    Local bsLocal = new Local();
    @Parameters({"vcfIp","cleanBeforeTest"})
-   @BeforeTest(alwaysRun = true) 
+   @BeforeSuite(alwaysRun = true) 
    public void cleanLogs(String vcfIp,@Optional("1") String cleanBeforeTest) throws IOException,InterruptedException {
 	if(Integer.parseInt(cleanBeforeTest) == 1) {
 		Shell sh1 = new Shell.Verbose(
@@ -71,7 +72,7 @@ public class TestSetup {
 	}
    }
    @Parameters({"vcfIp","browser","bsUserId","bsKey"}) 
-   @BeforeTest(alwaysRun = true)
+   @BeforeClass(alwaysRun = true)
 	public void startDriver(String vcfIp,String browser,@Optional("pratikdam1")String bsUserId, @Optional("uZCXEzKXwgzgzMr3G7R6") String bsKey) throws Exception {
 		HashMap<String,String> bsLocalArgs = new HashMap<String,String>();
 		bsLocalArgs.put("key",bsKey); //BrowserStack Key
@@ -94,7 +95,8 @@ public class TestSetup {
         // Get a handle to the driver. This will throw an exception if a matching driver cannot be located
 	driver.get("https://"+ vcfIp);
     }
-    @AfterTest(alwaysRun = true)
+   
+   @AfterClass(alwaysRun = true)
     public void setupAfterSuite() throws Exception {
         driver.close();
         driver.quit();

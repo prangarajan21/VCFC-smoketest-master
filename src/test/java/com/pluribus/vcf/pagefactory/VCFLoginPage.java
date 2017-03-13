@@ -4,6 +4,7 @@ import com.pluribus.vcf.helper.PageInfra;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -35,18 +36,28 @@ public class VCFLoginPage extends PageInfra{
 	@FindBy(css = "a.fa.fa-sign-out")
 	WebElement vcfLogout;
 
+	@FindBy(how = How.CSS, using = "a.fa.fa-cogs")
+	WebElement vcfSettingsIcon;
+	
+	@FindBy(how = How.CSS, using = "a.fa.fa-home")
+	WebElement vcfHomeIcon;
+	
 	public VCFLoginPage(WebDriver driver){
 		 super(driver);
 	}
 	//Set user name in textbox
 	public void setUserName(String strUserName){
 		setValue(userNameVCF,strUserName);
-		
 	}
-	public void logout() {
-		vcfLogout.click();
+	public void logout(){
+		waitForElementVisibility(vcfLogout,100);
+		if(vcfLogout.isEnabled()) {
+			vcfLogout.click();
+		} 	
 	}
-	
+	public void gotoHome() {
+		vcfHomeIcon.click();
+	}
 	public void waitForLogoutButton() {
 		waitForElementVisibility(vcfLogout,100);
 	}

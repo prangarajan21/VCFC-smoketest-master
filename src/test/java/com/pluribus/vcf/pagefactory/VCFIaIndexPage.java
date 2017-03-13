@@ -156,5 +156,4 @@ public class VCFIaIndexPage extends PageInfra {
 	public void gotoIADashboard() {
 		dashboardIcon.click();
 	}
-	
 }

@@ -13,10 +13,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class VCFHomePage extends PageInfra{
 
 	@FindBy(how = How.CSS, using = "a.fa.fa-cogs")
-        WebElement vcfSettingsIcon;
+    WebElement vcfSettingsIcon;
 
-        @FindBy(how = How.CSS, using = "a.fa.fa-home")
-        WebElement vcfHomeIcon;
+    @FindBy(how = How.CSS, using = "a.fa.fa-home")
+    WebElement vcfHomeIcon;
 
 	@FindBy(how = How.CSS, using = "div#pie-vcf-ia span")
 	WebElement vcfIAIcon;
@@ -32,20 +32,26 @@ public class VCFHomePage extends PageInfra{
 
 	@FindBy(css = "a.fa.fa-sign-out")
 	WebElement vcfLogout;
-
+	
 	public VCFHomePage(WebDriver driver) {
          	super(driver);
 	}
 	
 	public void gotoIA() {
+	    System.out.println(driver.toString());
+		driver.navigate().refresh();
+		waitForElementVisibility(vcfIAIcon,1000);
 		vcfIAIcon.click();
 	}	
 		
 	public void gotoPA() {
+		driver.navigate().refresh();
 		vcfPAIcon.click();
 	}
 	
 	public void gotoVCFMgr() {	
+		driver.navigate().refresh();
 		vcfMgrIcon.click();
 	}
+	
 }
