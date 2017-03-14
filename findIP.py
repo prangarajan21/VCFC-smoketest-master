@@ -11,7 +11,6 @@ VCENTER_PASS="MyTest-456"
 ova_name=sys.argv[1]
 
 server.connect(VCENTER_IP,VCENTER_USER,VCENTER_PASS)
-print "Connected to {} {}".format(server.get_server_type(), server.get_api_version())
 
 vm = server.get_vm_by_name(ova_name)
 net_info = vm.get_property('net',False)

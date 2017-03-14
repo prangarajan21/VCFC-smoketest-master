@@ -18,5 +18,4 @@ public class PATest extends TestSetup{
 		home1 = new VCFHomePage(getDriver());
 		paIndex = new VCFPaIndexPage(getDriver());
 	}
-	
 }
