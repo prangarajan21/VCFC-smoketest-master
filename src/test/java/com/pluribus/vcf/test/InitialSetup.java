@@ -107,7 +107,7 @@ public class InitialSetup extends TestSetup {
     }
     
     @Test(groups={"smoke","regression"}, dependsOnMethods = {"addDataNode"}, description = "Logout of VCFC")
-    public void clickOnHome() {
-        login.gotoHome();
+    public void logout() {
+        login.logout();
     }
 }

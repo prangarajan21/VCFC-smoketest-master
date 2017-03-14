@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TestSuite" time="10.604" tests="19" errors="0" skipped="16" failures="3">
+<testsuite name="TestSuite" time="220.89" tests="12" errors="0" skipped="1" failures="1">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib"/>
@@ -27,7 +27,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="os.name" value="Mac OS X"/>
-    <property name="classworlds.conf" value="/Users/pranga/Documents/workspace/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf8918463788311439045.tmp"/>
+    <property name="classworlds.conf" value="/Users/pranga/Documents/workspace/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf1580380093899894663.tmp"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/Users/pranga/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -64,178 +64,88 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase name="cleanLogs" classname="com.pluribus.vcf.test.InitialSetup" time="10.597">
-    <failure message="com.jcraft.jsch.JSchException: timeout: socket is not established" type="java.io.IOException">java.io.IOException: com.jcraft.jsch.JSchException: timeout: socket is not established
-	at com.jcabi.ssh.SSHByPassword.session(SSHByPassword.java:107)
-	at com.jcabi.ssh.AbstractSSHShell.exec(AbstractSSHShell.java:98)
-	at com.jcabi.ssh.SSHByPassword.exec(SSHByPassword.java:51)
-	at com.jcabi.ssh.Shell$Verbose.exec(Shell.java:203)
-	at com.jcabi.ssh.Shell$Plain.exec(Shell.java:172)
-	at com.pluribus.vcf.helper.TestSetup.cleanLogs(TestSetup.java:55)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:80)
-	at org.testng.internal.Invoker.invokeConfigurationMethod(Invoker.java:564)
-	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:213)
-	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:138)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:277)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1198)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1123)
-	at org.testng.TestNG.run(TestNG.java:1031)
-	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:295)
-	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:84)
-	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:90)
-	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:203)
-	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:155)
-	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103)
-Caused by: com.jcraft.jsch.JSchException: timeout: socket is not established
-	at com.jcraft.jsch.Util.createSocket(Util.java:394)
-	at com.jcraft.jsch.Session.connect(Session.java:215)
-	at com.jcraft.jsch.Session.connect(Session.java:183)
-	at com.jcabi.ssh.SSHByPassword.session(SSHByPassword.java:104)
-	at com.jcabi.ssh.AbstractSSHShell.exec(AbstractSSHShell.java:98)
-	at com.jcabi.ssh.SSHByPassword.exec(SSHByPassword.java:51)
-	at com.jcabi.ssh.Shell$Verbose.exec(Shell.java:203)
-	at com.jcabi.ssh.Shell$Plain.exec(Shell.java:172)
-	at com.pluribus.vcf.helper.TestSetup.cleanLogs(TestSetup.java:55)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:80)
-	at org.testng.internal.Invoker.invokeConfigurationMethod(Invoker.java:564)
-	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:213)
-	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:138)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:277)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1198)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1123)
-	at org.testng.TestNG.run(TestNG.java:1031)
-	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:295)
-	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:84)
-	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:90)
-	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:203)
-	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:155)
-	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103)
+  <testcase name="loginAsAdmin" classname="com.pluribus.vcf.test.InitialSetup" time="19.592"/>
+  <testcase name="loginAsTest123" classname="com.pluribus.vcf.test.InitialSetup" time="2.734"/>
+  <testcase name="activateLicense" classname="com.pluribus.vcf.test.InitialSetup" time="18.968"/>
+  <testcase name="vcfsettingsPagenavigations" classname="com.pluribus.vcf.test.InitialSetup" time="14.423"/>
+  <testcase name="addSeedSwitch" classname="com.pluribus.vcf.test.InitialSetup" time="8.692"/>
+  <testcase name="authSeedSwitch" classname="com.pluribus.vcf.test.InitialSetup" time="5.552"/>
+  <testcase name="addDataNode" classname="com.pluribus.vcf.test.InitialSetup" time="0.001"/>
+  <testcase name="logout" classname="com.pluribus.vcf.test.InitialSetup" time="1.43"/>
+  <testcase name="logintoIA" classname="com.pluribus.vcf.test.IATest" time="4.756"/>
+  <testcase name="addCollectorTest" classname="com.pluribus.vcf.test.IATest" time="0.83"/>
+  <testcase name="simpleTrafficTest" classname="com.pluribus.vcf.test.IATest" time="143.912">
+    <failure message="Timed out after 100 seconds waiting for visibility of [[RemoteWebDriver: firefox on WINDOWS (6d761361a0cdfb4cf0edd58069891e85b54c8022)] -&gt; css selector: div.metric-value.ng-binding]&#10;Build info: version: &apos;2.45.0&apos;, revision: &apos;5017cb8e7ca8e37638dc3091b2440b90a1d8686f&apos;, time: &apos;2015-02-27 09:10:26&apos;&#10;System info: host: &apos;pranga-0000039.attlocal.net&apos;, ip: &apos;192.168.1.207&apos;, os.name: &apos;Mac OS X&apos;, os.arch: &apos;x86_64&apos;, os.version: &apos;10.12.3&apos;, java.version: &apos;1.8.0_121&apos;&#10;Driver info: org.openqa.selenium.remote.RemoteWebDriver&#10;Capabilities [{applicationCacheEnabled=false, rotatable=false, handlesAlerts=true, databaseEnabled=true, version=47.0.1, platform=WINDOWS, nativeEvents=false, acceptSslCerts=true, webdriver.remote.sessionid=6d761361a0cdfb4cf0edd58069891e85b54c8022, webStorageEnabled=true, locationContextEnabled=true, browserName=firefox, takesScreenshot=true, javascriptEnabled=true, cssSelectorsEnabled=true}]&#10;Session ID: 6d761361a0cdfb4cf0edd58069891e85b54c8022" type="org.openqa.selenium.TimeoutException">org.openqa.selenium.TimeoutException: Timed out after 100 seconds waiting for visibility of [[RemoteWebDriver: firefox on WINDOWS (6d761361a0cdfb4cf0edd58069891e85b54c8022)] -> css selector: div.metric-value.ng-binding]
+Build info: version: '2.45.0', revision: '5017cb8e7ca8e37638dc3091b2440b90a1d8686f', time: '2015-02-27 09:10:26'
+System info: host: 'pranga-0000039.attlocal.net', ip: '192.168.1.207', os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '10.12.3', java.version: '1.8.0_121'
+Driver info: org.openqa.selenium.remote.RemoteWebDriver
+Capabilities [{applicationCacheEnabled=false, rotatable=false, handlesAlerts=true, databaseEnabled=true, version=47.0.1, platform=WINDOWS, nativeEvents=false, acceptSslCerts=true, webdriver.remote.sessionid=6d761361a0cdfb4cf0edd58069891e85b54c8022, webStorageEnabled=true, locationContextEnabled=true, browserName=firefox, takesScreenshot=true, javascriptEnabled=true, cssSelectorsEnabled=true}]
+Session ID: 6d761361a0cdfb4cf0edd58069891e85b54c8022
+	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:79)
+	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
+	at com.pluribus.vcf.helper.PageInfra.waitForElementVisibility(PageInfra.java:92)
+	at com.pluribus.vcf.pagefactory.VCFIaIndexPage.getInsightCount(VCFIaIndexPage.java:94)
+	at com.pluribus.vcf.pagefactory.VCFIaIndexPage.getConnectionCount(VCFIaIndexPage.java:101)
+	at com.pluribus.vcf.test.IATest.verifyVCFCount(IATest.java:102)
+	at com.pluribus.vcf.test.IATest.simpleTrafficTest(IATest.java:70)
 </failure>
-  </testcase>
-  <testcase name="startDriver" classname="com.pluribus.vcf.test.InitialSetup" time="0">
-    <skipped/>
-  </testcase>
-  <testcase name="init" classname="com.pluribus.vcf.test.InitialSetup" time="0">
-    <skipped/>
-  </testcase>
-  <testcase name="loginAsAdmin" classname="com.pluribus.vcf.test.InitialSetup" time="0">
-    <skipped/>
-  </testcase>
-  <testcase name="loginAsTest123" classname="com.pluribus.vcf.test.InitialSetup" time="0">
-    <skipped/>
-  </testcase>
-  <testcase name="activateLicense" classname="com.pluribus.vcf.test.InitialSetup" time="0">
-    <skipped/>
-  </testcase>
-  <testcase name="vcfsettingsPagenavigations" classname="com.pluribus.vcf.test.InitialSetup" time="0">
-    <skipped/>
-  </testcase>
-  <testcase name="addSeedSwitch" classname="com.pluribus.vcf.test.InitialSetup" time="0">
-    <skipped/>
-  </testcase>
-  <testcase name="authSeedSwitch" classname="com.pluribus.vcf.test.InitialSetup" time="0">
-    <skipped/>
-  </testcase>
-  <testcase name="addDataNode" classname="com.pluribus.vcf.test.InitialSetup" time="0">
-    <skipped/>
-  </testcase>
-  <testcase name="clickOnHome" classname="com.pluribus.vcf.test.InitialSetup" time="0">
-    <skipped/>
-  </testcase>
-  <testcase name="setupAfterSuite" classname="com.pluribus.vcf.test.InitialSetup" time="0.005">
-    <failure type="java.lang.NullPointerException:">java.lang.NullPointerException: null
-	at com.pluribus.vcf.helper.TestSetup.setupAfterSuite(TestSetup.java:101)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:80)
-	at org.testng.internal.Invoker.invokeConfigurationMethod(Invoker.java:564)
-	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:213)
-	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:138)
-	at org.testng.internal.TestMethodWorker.invokeAfterClassMethods(TestMethodWorker.java:225)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:114)
-	at org.testng.TestRunner.privateRun(TestRunner.java:767)
-	at org.testng.TestRunner.run(TestRunner.java:617)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1198)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1123)
-	at org.testng.TestNG.run(TestNG.java:1031)
-	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:295)
-	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:84)
-	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:90)
-	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:203)
-	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:155)
-	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103)
-</failure>
-  </testcase>
-  <testcase name="startDriver" classname="com.pluribus.vcf.test.IATest" time="0">
-    <skipped/>
-  </testcase>
-  <testcase name="init" classname="com.pluribus.vcf.test.IATest" time="0">
-    <skipped/>
-  </testcase>
-  <testcase name="logintoIA" classname="com.pluribus.vcf.test.IATest" time="0">
-    <skipped/>
-  </testcase>
-  <testcase name="addCollectorTest" classname="com.pluribus.vcf.test.IATest" time="0">
-    <skipped/>
-  </testcase>
-  <testcase name="simpleTrafficTest" classname="com.pluribus.vcf.test.IATest" time="0">
-    <skipped/>
+    <system-out><![CDATA[Output:
+Iperf server started
+]]></system-out>
+    <system-err><![CDATA[241282 [main] WARN com.jcabi.ssh.SSH - Permanently added '10.9.97.152' (RSA) to the list of known hosts.
+242336 [main] INFO com.jcabi.ssh.Execution$Default - $ cli --no-login-prompt --quiet -c connection-clear
+243495 [main] WARN com.jcabi.ssh.SSH - Permanently added '10.9.97.152' (RSA) to the list of known hosts.
+244912 [main] INFO com.jcabi.ssh.Execution$Default - $ cli --no-login-prompt --quiet -c connection-clear-history
+246047 [main] WARN com.jcabi.ssh.SSH - Permanently added '10.9.8.97' (RSA) to the list of known hosts.
+246264 [main] INFO com.jcabi.ssh.Execution$Default - $ ps aux| grep -E '[i]perf -s' | awk '{print $2}'
+246299 [Connect thread 10.9.8.97 session] INFO com.jcabi.ssh.Shell$Verbose - 1463
+247392 [main] WARN com.jcabi.ssh.SSH - Permanently added '10.9.8.97' (RSA) to the list of known hosts.
+247599 [main] INFO com.jcabi.ssh.Execution$Default - $ kill -9 1463
+249275 [main] WARN com.jcabi.ssh.SSH - Permanently added '10.9.8.129' (RSA) to the list of known hosts.
+249543 [main] INFO com.jcabi.ssh.Execution$Default - $ iperf -c 4.4.4.97 -P 10 -t 20
+249577 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - ------------------------------------------------------------
+249577 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - Client connecting to 4.4.4.97, TCP port 5001
+249577 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - TCP window size: 85.0 KByte (default)
+249577 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - ------------------------------------------------------------
+249590 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [ 12] local 4.4.4.129 port 54348 connected with 4.4.4.97 port 5001
+249590 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [  3] local 4.4.4.129 port 54330 connected with 4.4.4.97 port 5001
+249591 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [  4] local 4.4.4.129 port 54332 connected with 4.4.4.97 port 5001
+249591 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [  5] local 4.4.4.129 port 54334 connected with 4.4.4.97 port 5001
+249591 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [  6] local 4.4.4.129 port 54336 connected with 4.4.4.97 port 5001
+249591 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [  8] local 4.4.4.129 port 54338 connected with 4.4.4.97 port 5001
+249591 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [  9] local 4.4.4.129 port 54342 connected with 4.4.4.97 port 5001
+249591 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [  7] local 4.4.4.129 port 54340 connected with 4.4.4.97 port 5001
+249591 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [ 10] local 4.4.4.129 port 54344 connected with 4.4.4.97 port 5001
+249591 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [ 11] local 4.4.4.129 port 54346 connected with 4.4.4.97 port 5001
+269616 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [ ID] Interval       Transfer     Bandwidth
+269617 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [  3]  0.0-20.0 sec  1.98 GBytes   851 Mbits/sec
+269617 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [  4]  0.0-20.0 sec  2.06 GBytes   886 Mbits/sec
+269617 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [  5]  0.0-20.0 sec  2.11 GBytes   906 Mbits/sec
+269617 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [  6]  0.0-20.0 sec  2.10 GBytes   902 Mbits/sec
+269617 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [ 12]  0.0-20.0 sec  2.13 GBytes   915 Mbits/sec
+269617 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [  8]  0.0-20.0 sec  2.06 GBytes   885 Mbits/sec
+269617 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [  9]  0.0-20.0 sec  1.98 GBytes   852 Mbits/sec
+269617 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [  7]  0.0-20.0 sec  2.15 GBytes   922 Mbits/sec
+269617 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [ 11]  0.0-20.0 sec  1.92 GBytes   825 Mbits/sec
+269617 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [ 10]  0.0-20.0 sec  2.19 GBytes   938 Mbits/sec
+269618 [Connect thread 10.9.8.129 session] INFO com.jcabi.ssh.Shell$Verbose - [SUM]  0.0-20.0 sec  20.7 GBytes  8.88 Gbits/sec
+271780 [main] WARN com.jcabi.ssh.SSH - Permanently added '10.9.97.152' (RSA) to the list of known hosts.
+272859 [main] INFO com.jcabi.ssh.Execution$Default - $ cli --no-login-prompt --quiet -c "connection-show dst-ip 4.4.4.97"
+273082 [Connect thread 10.9.97.152 session] INFO com.jcabi.ssh.Shell$Verbose - switch    vnet vlan vxlan src-ip    dst-ip   dst-port cur-state syn-resends syn-ack-resends latency obytes ibytes total-bytes age 
+273082 [Connect thread 10.9.97.152 session] INFO com.jcabi.ssh.Shell$Verbose - --------- ---- ---- ----- --------- -------- -------- --------- ----------- --------------- ------- ------ ------ ----------- --- 
+273082 [Connect thread 10.9.97.152 session] INFO com.jcabi.ssh.Shell$Verbose - onvl-vcf1      4    0     4.4.4.129 4.4.4.97 5001     fin       0           0               41.6us  2.10G  1      2.10G       23s 
+273082 [Connect thread 10.9.97.152 session] INFO com.jcabi.ssh.Shell$Verbose - onvl-vcf1      4    0     4.4.4.129 4.4.4.97 5001     fin       0           0               198us   1.98G  1      1.98G       23s 
+273082 [Connect thread 10.9.97.152 session] INFO com.jcabi.ssh.Shell$Verbose - onvl-vcf1      4    0     4.4.4.129 4.4.4.97 5001     fin       0           0               927us   2.15G  1      2.15G       23s 
+273082 [Connect thread 10.9.97.152 session] INFO com.jcabi.ssh.Shell$Verbose - onvl-vcf1      4    0     4.4.4.129 4.4.4.97 5001     fin       0           0               54.6us  2.13G  1      2.13G       23s 
+273082 [Connect thread 10.9.97.152 session] INFO com.jcabi.ssh.Shell$Verbose - onvl-vcf1      4    0     4.4.4.129 4.4.4.97 5001     fin       0           0               356us   2.11G  1      2.11G       23s 
+273082 [Connect thread 10.9.97.152 session] INFO com.jcabi.ssh.Shell$Verbose - onvl-vcf1      4    0     4.4.4.129 4.4.4.97 5001     fin       0           0               37.8us  1.98G  1      1.98G       23s 
+273082 [Connect thread 10.9.97.152 session] INFO com.jcabi.ssh.Shell$Verbose - onvl-vcf1      4    0     4.4.4.129 4.4.4.97 5001     fin       0           0               94.5us  2.19G  1      2.19G       23s 
+273082 [Connect thread 10.9.97.152 session] INFO com.jcabi.ssh.Shell$Verbose - onvl-vcf1      4    0     4.4.4.129 4.4.4.97 5001     fin       0           0               40.3us  2.06G  1      2.06G       23s 
+273082 [Connect thread 10.9.97.152 session] INFO com.jcabi.ssh.Shell$Verbose - onvl-vcf1      4    0     4.4.4.129 4.4.4.97 5001     fin       0           0               42.5us  1.92G  1      1.92G       23s 
+273083 [Connect thread 10.9.97.152 session] INFO com.jcabi.ssh.Shell$Verbose - onvl-vcf1      4    0     4.4.4.129 4.4.4.97 5001     fin       0           0               42.1us  2.06G  1      2.06G       23s 
+]]></system-err>
   </testcase>
   <testcase name="logout" classname="com.pluribus.vcf.test.IATest" time="0">
     <skipped/>
-  </testcase>
-  <testcase name="setupAfterSuite" classname="com.pluribus.vcf.test.IATest" time="0.002">
-    <failure type="java.lang.NullPointerException:">java.lang.NullPointerException: null
-	at com.pluribus.vcf.helper.TestSetup.setupAfterSuite(TestSetup.java:101)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:80)
-	at org.testng.internal.Invoker.invokeConfigurationMethod(Invoker.java:564)
-	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:213)
-	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:138)
-	at org.testng.internal.TestMethodWorker.invokeAfterClassMethods(TestMethodWorker.java:225)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:114)
-	at org.testng.TestRunner.privateRun(TestRunner.java:767)
-	at org.testng.TestRunner.run(TestRunner.java:617)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1198)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1123)
-	at org.testng.TestNG.run(TestNG.java:1031)
-	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:295)
-	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:84)
-	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:90)
-	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:203)
-	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:155)
-	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103)
-</failure>
   </testcase>
 </testsuite>

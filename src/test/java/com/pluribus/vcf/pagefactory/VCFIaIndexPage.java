@@ -49,7 +49,7 @@ public class VCFIaIndexPage extends PageInfra {
 	@FindBy(how = How.NAME, using = "ok")
 	WebElement okButton;
 	
-	@FindBy(how = How.ID, using = "tr_switch_0")
+	@FindBy(how = How.CSS, using = "div.panel.panel-default")
 	WebElement collectorList;
 
 	@FindBy(how = How.CSS, using = "div.metric-value.ng-binding")
@@ -65,6 +65,8 @@ public class VCFIaIndexPage extends PageInfra {
 	String insightCountWidget =  "div.metric-value.ng-binding";
 	String inputTagName = "input";
 	String srchString = "a[title=";
+	String collectorListId = "div.panel.panel-default";
+	String collectorAddButtons = "span.input-group-addon.button";
 	
 	public VCFIaIndexPage(WebDriver driver) {
 		super(driver);
@@ -122,9 +124,9 @@ public class VCFIaIndexPage extends PageInfra {
 	
 	public boolean isCollectorConfigured() {
 		boolean isColl = false;
-		if(collectorList.isDisplayed()) {
+		if(driver.findElements(By.cssSelector(collectorListId)).size() == 1) {
 			isColl = true;
-			} 
+		} 
 		else {
 			isColl = false;
 		}
@@ -135,19 +137,24 @@ public class VCFIaIndexPage extends PageInfra {
 		configIcon.click();
 		boolean status = isCollectorConfigured();
 		if(status==false) {
-			waitForElementVisibility(addButton,1000);
-			addButton.click();
+			
+			List <WebElement> rows = driver.findElements(By.cssSelector(collectorAddButtons));
+			int i = 0;
+			for (WebElement row: rows) {
+				if(rows.get(i).getText().contains("Add NVOS Collector")) {
+					rows.get(i).click();
+				}
+				i++;
+			}
 			waitForElementVisibility(switchDropDown,1000);
 			switchDropDown.click();
-			List <WebElement> rows = getSwitchList();
+			rows = getSwitchList();
 				for (WebElement row : rows) {
-					if(row.getAttribute("outerText").contains(switchName)) {
+					if(row.getText().contains(switchName)) {
 						row.click();
 						break;
 					}
 				}	
-				setValue(userName,user);
-				setValue(password,pwd);
 				okButton.click();
 				waitForElementVisibility(collectorList,1000);
 		}

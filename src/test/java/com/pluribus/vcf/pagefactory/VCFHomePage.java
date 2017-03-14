@@ -38,8 +38,6 @@ public class VCFHomePage extends PageInfra{
 	}
 	
 	public void gotoIA() {
-	    System.out.println(driver.toString());
-		driver.navigate().refresh();
 		waitForElementVisibility(vcfIAIcon,1000);
 		vcfIAIcon.click();
 	}	
