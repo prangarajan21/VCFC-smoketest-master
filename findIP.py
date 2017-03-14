@@ -15,3 +15,4 @@ server.connect(VCENTER_IP,VCENTER_USER,VCENTER_PASS)
 vm = server.get_vm_by_name(ova_name)
 net_info = vm.get_property('net',False)
 vcfc_ip=[ x['ip_addresses'][0]  for  x  in  net_info if x['network'] == 'VM Network' ][0]
+print vcfc_ip
