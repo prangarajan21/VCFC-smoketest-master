@@ -124,6 +124,7 @@ public class VcfSettingsPage extends PageInfra{
 	String licenseList = "ng-transclude";
 	String deleteIcon = "span.icon-img-link.fa fa-trash-o.ng-scope";
 	String msgBox = "span.fa.fa-times-circle";
+	String addButtonCss = "button.btn.btn-sm.btn-primary";
 	
 	public VcfSettingsPage(WebDriver driver) {
 		super(driver);
@@ -136,7 +137,9 @@ public class VcfSettingsPage extends PageInfra{
 	public void addSeedSwitch(String name , String usrname, String mgmtip, String pwd) {
 		vcfSettingsIcon.click();
 		waitForElementVisibility(addButton,1000);
-		addButton.click();
+		WebDriverWait myWaitVar = new WebDriverWait(driver,20);
+		myWaitVar.until(ExpectedConditions.elementToBeClickable (By.cssSelector(addButtonCss)));
+		driver.findElement(By.cssSelector(addButtonCss)).click();
 		setValue(mgmtIp,mgmtip);
 		setValue(username,usrname);
 		setValue(password,pwd);
