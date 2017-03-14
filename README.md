@@ -21,3 +21,4 @@ Optional attributes:
 How to invoke:
 Run shell script in directory (OR)
 mvn -Dvcfp=IP_addr -Dbrowser=Chrome/Firefox/IE -Dgroups=Smoke clean install
+# VCFC-smoketest-master
