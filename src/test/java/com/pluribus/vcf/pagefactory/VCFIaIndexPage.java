@@ -121,21 +121,22 @@ public class VCFIaIndexPage extends PageInfra {
 			driver.switchTo().defaultContent();	
 		return connCount;
 	}
-	
-	public boolean isCollectorConfigured() {
+	public boolean isCollectorConfigured(String switchName) {
 		boolean isColl = false;
-		if(driver.findElements(By.cssSelector(collectorListId)).size() == 1) {
-			isColl = true;
-		} 
-		else {
-			isColl = false;
-		}
-		return isColl;
+			if(driver.findElement(By.cssSelector(collectorListId)).getText().contains(switchName)) {
+				System.out.println("Collector list(true)"+driver.findElement(By.cssSelector(collectorListId)).getText());
+				isColl = true;
+			} 
+			else {
+				isColl = false;
+				System.out.println("Collector list(false)"+driver.findElement(By.cssSelector(collectorListId)).getText());
+			}
+			return isColl;
 	}
-	
+		
 	public void addCollector(String switchName, String user, String pwd) {
 		configIcon.click();
-		boolean status = isCollectorConfigured();
+		boolean status = isCollectorConfigured(switchName);
 		if(status==false) {
 			
 			List <WebElement> rows = driver.findElements(By.cssSelector(collectorAddButtons));
