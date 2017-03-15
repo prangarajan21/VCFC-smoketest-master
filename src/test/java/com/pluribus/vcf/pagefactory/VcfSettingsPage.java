@@ -158,6 +158,7 @@ public class VcfSettingsPage extends PageInfra{
 				rows = driver.findElements(By.cssSelector(authSeedIcon));
 				rows.get(i).click();
 			}
+			waitForElementVisibility(username,1000);
 			setValue(username,usrname);
 			setValue(password,pwd);
 			okButton.click();
