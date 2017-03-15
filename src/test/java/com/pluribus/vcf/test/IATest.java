@@ -31,6 +31,7 @@ public class IATest extends TestSetup {
 		iaIndex = new VCFIaIndexPage(getDriver());
 		perf = new IperfSetup(clientIp,serverIp);
 		cli = new SwitchMethods(mgmtIp);
+		cli.restartTomcat();
 	}
 	
 	@Parameters({"password"}) 
@@ -42,8 +43,11 @@ public class IATest extends TestSetup {
 	
 	@Parameters({"switchName"}) 
 	@Test(groups={"smoke","regression"},dependsOnMethods={"logintoIA"},description="Add collector in IA Page")
-	public void addCollectorTest(String switchName){
-		iaIndex.addCollector(switchName,user,passwd);
+	public void addCollectorTest(String switchName) throws Exception{
+		if(!iaIndex.addCollector(switchName,user,passwd)) {
+			logger.error("Collector addition failed");
+			throw new Exception("Collector addition failed");
+		}
 	}
 	
 	@Parameters({"trafficDestIp","trafficSrcIp","trafficNumSessions","trafficInterval"}) 
