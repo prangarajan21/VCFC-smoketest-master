@@ -25,7 +25,7 @@ public class InitialSetup extends TestSetup {
     private VCFLoginPage login;
     private VCFHomePage home;
     private VcfSettingsPage settings;
-
+    private SwitchMethods cli;
     private String dataNodeName  = "Node1";
     private String heapSize = "30";
     private String nodePassword = "changeme";
@@ -38,12 +38,14 @@ public class InitialSetup extends TestSetup {
     private String switchPassword = "test123";
     final static Logger logger = Logger.getLogger(InitialSetup.class);
     
-    @Parameters({"switchName","mgmtIp","password","dataNodeHost"})  
+    @Parameters({"mgmtIp"})
     @BeforeClass(alwaysRun = true)
-    public void init() {
+    public void init(String mgmtIp) {
        login = new VCFLoginPage(getDriver());
        home = new VCFHomePage(getDriver());
        settings = new VcfSettingsPage(getDriver());
+       cli = new SwitchMethods(mgmtIp);
+       cli.restartTomcat(); 
     }
     
     @Parameters({"password"})  
