@@ -89,7 +89,8 @@ public class VCFIaIndexPage extends PageInfra {
 	
 	public List<WebElement> getInsightCount() {
 		List<WebElement> rows = new ArrayList();
-		driver.navigate().refresh();
+		dashboardIcon.click();
+		waitForElementVisibility(driver.findElement(By.tagName(iframeTag)),1000);
 		driver.switchTo().frame(driver.findElement(By.tagName(iframeTag)));			
 		waitForElementVisibility(countIcons,100);
 		rows = driver.findElements(By.cssSelector(insightCountWidget));
@@ -134,11 +135,11 @@ public class VCFIaIndexPage extends PageInfra {
 			return isColl;
 	}
 		
-	public void addCollector(String switchName, String user, String pwd) {
+	public boolean addCollector(String switchName, String user, String pwd) {
+		boolean status = false;
 		configIcon.click();
-		boolean status = isCollectorConfigured(switchName);
-		if(status==false) {
-			
+		status = isCollectorConfigured(switchName);
+		if(status==false) {	
 			List <WebElement> rows = driver.findElements(By.cssSelector(collectorAddButtons));
 			int i = 0;
 			for (WebElement row: rows) {
@@ -158,7 +159,9 @@ public class VCFIaIndexPage extends PageInfra {
 				}	
 				okButton.click();
 				waitForElementVisibility(collectorList,1000);
+				status = isCollectorConfigured(switchName);
 		}
+		return status;
 	}
 	
 	public void gotoIADashboard() {
