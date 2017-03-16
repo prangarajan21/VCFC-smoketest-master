@@ -25,7 +25,7 @@ public class SwitchMethods {
 			out1 = new Shell.Plain(session).exec("cli --no-login-prompt --quiet -c \"admin-service-modify if data no-web\"");
 			Thread.sleep(20000);
 			out1 = new Shell.Plain(session).exec("cli --no-login-prompt --quiet -c \"admin-service-modify if mgmt web\"");
-			Thread.sleep(60000); //Sleeping as tomcat takes 1 min to start
+			Thread.sleep(20000); //Sleeping as tomcat takes 1 min to start
 		} catch (Exception e) {
 			Logger.error(e, "Tomcat restart failed");
 		}
