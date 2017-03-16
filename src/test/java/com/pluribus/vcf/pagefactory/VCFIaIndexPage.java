@@ -63,7 +63,7 @@ public class VCFIaIndexPage extends PageInfra {
 	String inputTagName = "input";
 	String srchString = "a[title=";
 	String collectorListId = "span.label-text";
-	String collectorAddButtons = "span.input-group-addon.button";
+	String collectorAddButtons = "button.btn.btn-sm.btn-primary";
 	
 	public VCFIaIndexPage(WebDriver driver) {
 		super(driver);
