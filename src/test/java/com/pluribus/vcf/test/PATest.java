@@ -13,6 +13,7 @@ public class PATest extends TestSetup{
 	private VCFHomePage home1;
 	private VCFPaIndexPage paIndex;
 	private VCFLoginPage login;
+	private String pcapName = "localpcap";
 	final static Logger logger = Logger.getLogger(PATest.class);
 
 	@BeforeClass(alwaysRun = true)
@@ -27,5 +28,28 @@ public class PATest extends TestSetup{
 	public void logintoPA(@Optional("test123") String password) {
 		login.login("admin", password);
 		home1.gotoPA();
+	}
+	
+	@Parameters({"password"}) 
+	@Test(alwaysRun = true)
+	public void logintoIA(@Optional("test123") String password) {
+		login.login("admin", password);
+		home1.gotoPA();
+	}
+	
+	@Parameters({"vcfIp"}) 
+	@Test(groups={"smoke","regression"},dependsOnMethods={"logintoPA"},description="Add local Pcap")
+	public void addPcapTest(String vcfIp) throws Exception{
+		paIndex.addLocalPcap(pcapName,vcfIp);
+		if(!paIndex.verifyPcap(pcapName)) {
+			logger.error("Local pcap config failed");
+			throw new Exception("Local pcap config failed");
+		}
+	}
+	
+	
+	@Test(groups={"smoke","regression"},dependsOnMethods={""},description="Logout of VCFC")
+	public void logout() {
+		login.logout();
 	}
 }

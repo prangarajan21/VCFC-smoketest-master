@@ -31,17 +31,12 @@ div.shootout {padding:2em;border:3px #4854A8 solid}
 <body>
 <table cellspacing="0" cellpadding="0" class="result">
 <tr><th>Test</th><th class="numi">Methods<br/>Passed</th><th class="numi">Scenarios<br/>Passed</th><th class="numi"># skipped</th><th class="numi"># failed</th><th class="numi">Total<br/>Time</th><th class="numi">Included<br/>Groups</th><th class="numi">Excluded<br/>Groups</th></tr>
-<tr><td style="text-align:left;padding-right:2em">Test</td><td class="numi">10</td><td class="numi">10</td><td class="numi_attn">1</td><td class="numi_attn">1</td><td class="numi">292.7 seconds</td><td class="numi">smoke </td><td class="numi"></td></tr>
+<tr><td style="text-align:left;padding-right:2em">Test</td><td class="numi">4</td><td class="numi">4</td><td class="numi">0</td><td class="numi">0</td><td class="numi">399.4 seconds</td><td class="numi">smoke </td><td class="numi"></td></tr>
 </table>
 <table cellspacing="0" cellpadding="0" class="passed" id="summary">
 <tr><th>Class</th><th>Method</th><th># of<br/>Scenarios</th><th>Start</th><th>Time<br/>(ms)</th></tr>
-<tr><th colspan="4">Test &#8212; failed</th></tr>
-<tr class="failedodd"><td rowspan="1">com.pluribus.vcf.test.IATest</td><td><a href="#m1"><b>simpleTrafficTest</b> (regression, smoke) ("Send traffic and verify stats")</a></td><td class="numi">1</td><td>1489470327865</td><td class="numi">143860</td></tr>
-<tr><th colspan="4">Test &#8212; skipped</th></tr>
-<tr class="skippedodd"><td rowspan="1">com.pluribus.vcf.test.IATest</td><td><a href="#m2"><b>logout</b> (regression, smoke) ("Logout of VCFC")</a></td><td class="numi">1</td><td>1489470471777</td><td class="numi">0</td></tr>
 <tr><th colspan="4">Test &#8212; passed</th></tr>
-<tr class="passedodd"><td rowspan="8">com.pluribus.vcf.test.InitialSetup</td><td><a href="#m3"><b>loginAsAdmin</b> (regression, smoke) ("Login to VCF as admin  and Change Password")</a></td><td class="numi">1</td><td>1489470217131</td><td class="numi">19592</td></tr><tr class="passedodd"><td><a href="#m4"><b>loginAsTest123</b> (regression, smoke) ("Login to VCF as test123 After Password Change")</a></td><td class="numi">1</td><td>1489470236725</td><td class="numi">2734</td></tr><tr class="passedodd"><td><a href="#m5"><b>activateLicense</b> (regression, smoke) ("Add data node & verify")</a></td><td class="numi">1</td><td>1489470239459</td><td class="numi">18968</td></tr><tr class="passedodd"><td><a href="#m6"><b>vcfsettingsPagenavigations</b> (regression, smoke) ("Navigate all pages in VCF settings page")</a></td><td class="numi">1</td><td>1489470258427</td><td class="numi">14423</td></tr><tr class="passedodd"><td><a href="#m7"><b>addSeedSwitch</b> (regression, smoke) ("Add Seed Switch & verify")</a></td><td class="numi">1</td><td>1489470272850</td><td class="numi">8691</td></tr><tr class="passedodd"><td><a href="#m8"><b>authSeedSwitch</b> (regression, smoke) ("Authorize seed switches")</a></td><td class="numi">1</td><td>1489470281542</td><td class="numi">5551</td></tr><tr class="passedodd"><td><a href="#m9"><b>addDataNode</b> (regression, smoke) ("Add data node & verify")</a></td><td class="numi">1</td><td>1489470287094</td><td class="numi">1</td></tr><tr class="passedodd"><td><a href="#m10"><b>logout</b> (regression, smoke) ("Logout of VCFC")</a></td><td class="numi">1</td><td>1489470287095</td><td class="numi">1429</td></tr>
-<tr class="passedeven"><td rowspan="2">com.pluribus.vcf.test.IATest</td><td><a href="#m11"><b>logintoIA</b>  </a></td><td class="numi">1</td><td>1489470322278</td><td class="numi">4756</td></tr><tr class="passedeven"><td><a href="#m12"><b>addCollectorTest</b> (regression, smoke) ("Add collector in IA Page")</a></td><td class="numi">1</td><td>1489470327034</td><td class="numi">831</td></tr>
+<tr class="passedodd"><td rowspan="4">com.pluribus.vcf.test.IATest</td><td><a href="#m1"><b>logintoIA</b>  </a></td><td class="numi">1</td><td>1489644070369</td><td class="numi">7914</td></tr><tr class="passedodd"><td><a href="#m2"><b>addCollectorTest</b> (regression, smoke) ("Add collector in IA Page")</a></td><td class="numi">1</td><td>1489644078285</td><td class="numi">109026</td></tr><tr class="passedodd"><td><a href="#m3"><b>simpleTrafficTest</b> (regression, smoke) ("Send traffic and verify stats")</a></td><td class="numi">1</td><td>1489644187312</td><td class="numi">162081</td></tr><tr class="passedodd"><td><a href="#m4"><b>logout</b> (regression, smoke) ("Logout of VCFC")</a></td><td class="numi">1</td><td>1489644349394</td><td class="numi">2057</td></tr>
 </table>
 <h1>Test</h1>
 <h2 id="m1">com.pluribus.vcf.test.IATest:simpleTrafficTest</h2>
@@ -52,75 +47,22 @@ div.shootout {padding:2em;border:3px #4854A8 solid}
 <td>10</td>
 <td>20</td>
 </tr>
-<tr><td style="padding-left:3em" colspan="4">
-<p>Timed out after 100 seconds waiting for visibility of [[RemoteWebDriver: firefox on WINDOWS (6d761361a0cdfb4cf0edd58069891e85b54c8022)] -&gt; css selector: div.metric-value.ng-binding]
-Build info: version: &apos;2.45.0&apos;, revision: &apos;5017cb8e7ca8e37638dc3091b2440b90a1d8686f&apos;, time: &apos;2015-02-27 09:10:26&apos;
-System info: host: &apos;pranga-0000039.attlocal.net&apos;, ip: &apos;192.168.1.207&apos;, os.name: &apos;Mac OS X&apos;, os.arch: &apos;x86_64&apos;, os.version: &apos;10.12.3&apos;, java.version: &apos;1.8.0_121&apos;
-Driver info: org.openqa.selenium.remote.RemoteWebDriver
-Capabilities [{applicationCacheEnabled=false, rotatable=false, handlesAlerts=true, databaseEnabled=true, version=47.0.1, platform=WINDOWS, nativeEvents=false, acceptSslCerts=true, webdriver.remote.sessionid=6d761361a0cdfb4cf0edd58069891e85b54c8022, webStorageEnabled=true, locationContextEnabled=true, browserName=firefox, takesScreenshot=true, javascriptEnabled=true, cssSelectorsEnabled=true}]
-Session ID: 6d761361a0cdfb4cf0edd58069891e85b54c8022</p>
-org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:79)
-<br/>at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
-<br/>at com.pluribus.vcf.helper.PageInfra.waitForElementVisibility(PageInfra.java:92)
-<br/>at com.pluribus.vcf.pagefactory.VCFIaIndexPage.getInsightCount(VCFIaIndexPage.java:94)
-<br/>at com.pluribus.vcf.pagefactory.VCFIaIndexPage.getConnectionCount(VCFIaIndexPage.java:101)
-<br/>at com.pluribus.vcf.test.IATest.verifyVCFCount(IATest.java:102)
-<br/>at com.pluribus.vcf.test.IATest.simpleTrafficTest(IATest.java:70)
-<br/>28 lines not shown
-</td></tr>
 </table>
 <p class="totop"><a href="#summary">back to summary</a></p>
-<h2 id="m2">com.pluribus.vcf.test.IATest:logout</h2>
-<p class="totop"><a href="#summary">back to summary</a></p>
-<h2 id="m3">com.pluribus.vcf.test.InitialSetup:loginAsTest123</h2>
-<table cellspacing="0" cellpadding="0" class="result">
-<tr class="param"><th>Parameter #1</th></tr>
-<tr class="param stripe"><td>test123</td>
-</tr>
-</table>
-<p class="totop"><a href="#summary">back to summary</a></p>
-<h2 id="m4">com.pluribus.vcf.test.InitialSetup:logout</h2>
-<p class="totop"><a href="#summary">back to summary</a></p>
-<h2 id="m5">com.pluribus.vcf.test.InitialSetup:authSeedSwitch</h2>
-<p class="totop"><a href="#summary">back to summary</a></p>
-<h2 id="m6">com.pluribus.vcf.test.IATest:addCollectorTest</h2>
+<h2 id="m2">com.pluribus.vcf.test.IATest:addCollectorTest</h2>
 <table cellspacing="0" cellpadding="0" class="result">
 <tr class="param"><th>Parameter #1</th></tr>
 <tr class="param stripe"><td>onvl-vcf1</td>
 </tr>
 </table>
 <p class="totop"><a href="#summary">back to summary</a></p>
-<h2 id="m7">com.pluribus.vcf.test.InitialSetup:addDataNode</h2>
-<table cellspacing="0" cellpadding="0" class="result">
-<tr class="param"><th>Parameter #1</th></tr>
-<tr class="param stripe"><td></td>
-</tr>
-</table>
-<p class="totop"><a href="#summary">back to summary</a></p>
-<h2 id="m8">com.pluribus.vcf.test.InitialSetup:addSeedSwitch</h2>
-<table cellspacing="0" cellpadding="0" class="result">
-<tr class="param"><th>Parameter #1</th><th>Parameter #2</th></tr>
-<tr class="param stripe"><td>onvl-vcf1</td>
-<td>10.9.97.152</td>
-</tr>
-</table>
-<p class="totop"><a href="#summary">back to summary</a></p>
-<h2 id="m9">com.pluribus.vcf.test.IATest:logintoIA</h2>
+<h2 id="m3">com.pluribus.vcf.test.IATest:logintoIA</h2>
 <table cellspacing="0" cellpadding="0" class="result">
 <tr class="param"><th>Parameter #1</th></tr>
 <tr class="param stripe"><td>test123</td>
 </tr>
 </table>
 <p class="totop"><a href="#summary">back to summary</a></p>
-<h2 id="m10">com.pluribus.vcf.test.InitialSetup:vcfsettingsPagenavigations</h2>
-<p class="totop"><a href="#summary">back to summary</a></p>
-<h2 id="m11">com.pluribus.vcf.test.InitialSetup:activateLicense</h2>
-<p class="totop"><a href="#summary">back to summary</a></p>
-<h2 id="m12">com.pluribus.vcf.test.InitialSetup:loginAsAdmin</h2>
-<table cellspacing="0" cellpadding="0" class="result">
-<tr class="param"><th>Parameter #1</th></tr>
-<tr class="param stripe"><td>test123</td>
-</tr>
-</table>
+<h2 id="m4">com.pluribus.vcf.test.IATest:logout</h2>
 <p class="totop"><a href="#summary">back to summary</a></p>
 </body></html>

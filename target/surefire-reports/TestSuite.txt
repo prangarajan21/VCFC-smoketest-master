@@ -1,19 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: TestSuite
 -------------------------------------------------------------------------------
-Tests run: 12, Failures: 1, Errors: 0, Skipped: 1, Time elapsed: 395.441 sec <<< FAILURE! - in TestSuite
-simpleTrafficTest(com.pluribus.vcf.test.IATest)  Time elapsed: 143.912 sec  <<< FAILURE!
-org.openqa.selenium.TimeoutException: Timed out after 100 seconds waiting for visibility of [[RemoteWebDriver: firefox on WINDOWS (6d761361a0cdfb4cf0edd58069891e85b54c8022)] -> css selector: div.metric-value.ng-binding]
-Build info: version: '2.45.0', revision: '5017cb8e7ca8e37638dc3091b2440b90a1d8686f', time: '2015-02-27 09:10:26'
-System info: host: 'pranga-0000039.attlocal.net', ip: '192.168.1.207', os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '10.12.3', java.version: '1.8.0_121'
-Driver info: org.openqa.selenium.remote.RemoteWebDriver
-Capabilities [{applicationCacheEnabled=false, rotatable=false, handlesAlerts=true, databaseEnabled=true, version=47.0.1, platform=WINDOWS, nativeEvents=false, acceptSslCerts=true, webdriver.remote.sessionid=6d761361a0cdfb4cf0edd58069891e85b54c8022, webStorageEnabled=true, locationContextEnabled=true, browserName=firefox, takesScreenshot=true, javascriptEnabled=true, cssSelectorsEnabled=true}]
-Session ID: 6d761361a0cdfb4cf0edd58069891e85b54c8022
-	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:79)
-	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
-	at com.pluribus.vcf.helper.PageInfra.waitForElementVisibility(PageInfra.java:92)
-	at com.pluribus.vcf.pagefactory.VCFIaIndexPage.getInsightCount(VCFIaIndexPage.java:94)
-	at com.pluribus.vcf.pagefactory.VCFIaIndexPage.getConnectionCount(VCFIaIndexPage.java:101)
-	at com.pluribus.vcf.test.IATest.verifyVCFCount(IATest.java:102)
-	at com.pluribus.vcf.test.IATest.simpleTrafficTest(IATest.java:70)
-
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 399.777 sec - in TestSuite

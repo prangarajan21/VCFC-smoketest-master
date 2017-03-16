@@ -26,11 +26,12 @@ public class IATest extends TestSetup {
 	@Parameters({"clientIp","serverIp","mgmtIp"})
 	@BeforeClass(alwaysRun = true)
 	public void init(String clientIp, String serverIp, String mgmtIp) {
+		cli = new SwitchMethods(mgmtIp);
+		cli.restartTomcat();//Workaround for bug 15007
 		login = new VCFLoginPage(getDriver());
 		home1 = new VCFHomePage(getDriver());
 		iaIndex = new VCFIaIndexPage(getDriver());
 		perf = new IperfSetup(clientIp,serverIp);
-		cli = new SwitchMethods(mgmtIp);
 	}
 	
 	@Parameters({"password"}) 
@@ -42,8 +43,11 @@ public class IATest extends TestSetup {
 	
 	@Parameters({"switchName"}) 
 	@Test(groups={"smoke","regression"},dependsOnMethods={"logintoIA"},description="Add collector in IA Page")
-	public void addCollectorTest(String switchName){
-		iaIndex.addCollector(switchName,user,passwd);
+	public void addCollectorTest(String switchName) throws Exception{
+		if(!iaIndex.addCollector(switchName,user,passwd)) {
+			logger.error("Collector addition failed");
+			throw new Exception("Collector addition failed");
+		}
 	}
 	
 	@Parameters({"trafficDestIp","trafficSrcIp","trafficNumSessions","trafficInterval"}) 
@@ -100,9 +104,9 @@ public class IATest extends TestSetup {
 	public boolean verifyVCFCount(int trafficNumSessions) {
 		boolean status = true;
 		int vcfcConnCount = iaIndex.getConnectionCount();
-		logger.error("vcfcConnCount:"+vcfcConnCount);
+		logger.debug("vcfcConnCount:"+vcfcConnCount);
 		int vcfcAppCount = iaIndex.getAppCount();
-		logger.error("vcfcAppCount:"+vcfcAppCount);
+		logger.debug("vcfcAppCount:"+vcfcAppCount);
 
 		if (vcfcConnCount != trafficNumSessions) {
 			logger.error("vcfcConnCount:"+vcfcConnCount+"expected:"+trafficNumSessions);

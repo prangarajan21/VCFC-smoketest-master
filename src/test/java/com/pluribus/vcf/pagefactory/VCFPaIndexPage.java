@@ -77,7 +77,10 @@ public class VCFPaIndexPage extends PageInfra {
 		setValue(port,"8080");
 		okButton.click();
 	}	
-	
+	public boolean verifyPcap(String pcapName) {
+		boolean status = false; 
+		return status;
+	}
 	public void addVFlow(String flowName,String switchName, String inPort, String outPort, String pcapName) {
 		waitForElementVisibility(addButton,1000);
 		addButton.click();

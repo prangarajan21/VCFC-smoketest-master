@@ -20,3 +20,19 @@
 2017-03-09 19:52:31 ERROR IATest:93 - vcfcConnCount:10
 2017-03-09 19:52:54 ERROR IATest:95 - vcfcAppCount:1
 2017-03-09 19:52:54 ERROR IATest:84 - VCFC count verification after applying dstIP filter failed
+2017-03-14 13:10:44 ERROR InitialSetup:62 - Seed Switch addition failed
+2017-03-14 13:32:02 ERROR InitialSetup:62 - Seed Switch addition failed
+2017-03-14 17:32:58 ERROR InitialSetup:62 - Seed Switch addition failed
+2017-03-15 11:10:46 ERROR InitialSetup:66 - Seed Switch addition failed
+2017-03-15 13:10:20 ERROR IATest:48 - Collector addition failed
+2017-03-15 14:02:53 ERROR IATest:48 - Collector addition failed
+2017-03-15 14:44:19 ERROR IATest:48 - Collector addition failed
+2017-03-15 14:46:49 ERROR IATest:48 - Collector addition failed
+2017-03-15 15:27:58 ERROR IATest:48 - Collector addition failed
+2017-03-15 22:31:53 ERROR IATest:48 - Collector addition failed
+2017-03-15 23:04:58 ERROR IATest:107 - vcfcConnCount:10
+2017-03-15 23:05:01 ERROR IATest:109 - vcfcAppCount:1
+2017-03-15 23:05:22 ERROR IATest:107 - vcfcConnCount:10
+2017-03-15 23:05:25 ERROR IATest:109 - vcfcAppCount:1
+2017-03-15 23:05:45 ERROR IATest:107 - vcfcConnCount:10
+2017-03-15 23:05:49 ERROR IATest:109 - vcfcAppCount:1

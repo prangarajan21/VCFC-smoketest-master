@@ -158,6 +158,7 @@ public class VcfSettingsPage extends PageInfra{
 				rows = driver.findElements(By.cssSelector(authSeedIcon));
 				rows.get(i).click();
 			}
+			waitForElementVisibility(username,1000);
 			setValue(username,usrname);
 			setValue(password,pwd);
 			okButton.click();
@@ -256,7 +257,8 @@ public class VcfSettingsPage extends PageInfra{
 	     for (int i=0; i < rows.size(); i++) {
 		    rows = driver.findElements(By.cssSelector("ng-transclude div.panel.panel-default"));
 	            if (rows.get(i).getText().contains(type.toString())) {
-	            	System.out.println(type.toString());
+	            	//System.out.println(type.toString());
+	            	
 	                rows.get(i).findElement(By.cssSelector("button.btn.btn-xs.btn-primary")).click();
 	                break;
 	            }

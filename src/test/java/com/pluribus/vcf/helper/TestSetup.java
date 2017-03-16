@@ -39,10 +39,11 @@ public class TestSetup {
    private WebDriver driver;
    private ResourceBundle bundle;
    Local bsLocal = new Local();
-   @Parameters({"vcfIp","cleanBeforeTest"})
-   @BeforeSuite(alwaysRun = true) 
-   public void cleanLogs(String vcfIp,@Optional("1") String cleanBeforeTest) throws IOException,InterruptedException {
-	if(Integer.parseInt(cleanBeforeTest) == 1) {
+   
+   @Parameters({"vcfIp","clean"})
+   @BeforeSuite(alwaysRun = true)
+   public void cleanLogs(String vcfIp,@Optional("1")String clean) throws IOException,InterruptedException {
+	   if(Integer.parseInt(clean) == 1) {
 		Shell sh1 = new Shell.Verbose(
 	            new SSHByPassword(
 	                vcfIp,
@@ -98,7 +99,7 @@ public class TestSetup {
    
    @AfterClass(alwaysRun = true)
     public void setupAfterSuite() throws Exception {
-        driver.close();
+        //driver.close();
         driver.quit();
     	bsLocal.stop();
     }

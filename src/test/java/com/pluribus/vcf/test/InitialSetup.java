@@ -1,4 +1,5 @@
 package com.pluribus.vcf.test;
+import com.pluribus.vcf.helper.SwitchMethods;
 import com.pluribus.vcf.helper.TestSetup;
 import junit.framework.Assert;
 import com.pluribus.vcf.pagefactory.LicenseTypes;
@@ -36,11 +37,14 @@ public class InitialSetup extends TestSetup {
     private String firstPassword = "admin";
     private String switchUserName = "network-admin";
     private String switchPassword = "test123";
+    private SwitchMethods cli;
     final static Logger logger = Logger.getLogger(InitialSetup.class);
     
-    @Parameters({"switchName","mgmtIp","password","dataNodeHost"})  
+    @Parameters({"mgmtIp"})  
     @BeforeClass(alwaysRun = true)
-    public void init() {
+    public void init(String mgmtIp) {
+    	cli = new SwitchMethods(mgmtIp);
+        cli.restartTomcat();//Workaround for bug 15007	
        login = new VCFLoginPage(getDriver());
        home = new VCFHomePage(getDriver());
        settings = new VcfSettingsPage(getDriver());
