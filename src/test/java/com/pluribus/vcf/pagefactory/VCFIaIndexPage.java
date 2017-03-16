@@ -137,8 +137,10 @@ public class VCFIaIndexPage extends PageInfra {
 		configIcon.click();
 		status = isCollectorConfigured(switchName);
 		if(status==false) {	
-			List <WebElement> rows = driver.findElements(By.cssSelector(collectorAddButtons));
+			//driver.navigate().refresh();
+			waitForElementVisibility(driver.findElement(By.cssSelector(collectorAddButtons)),1000);
 			int i = 0;
+			List<WebElement> rows = driver.findElements(By.cssSelector(collectorAddButtons));
 			for (WebElement row: rows) {
 				if(rows.get(i).getText().contains("Add NVOS Collector")) {
 					rows.get(i).click();
