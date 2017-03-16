@@ -86,7 +86,7 @@ public class InitialSetup extends TestSetup {
     	}
     }
     
-    @Test(groups = {"smoke","regression"}, dependsOnMethods = { "loginAsTest123" },description = "Add data node & verify")
+    @Test(groups = {"smoke","regression"}, dependsOnMethods = { "loginAsTest123" },description = "Activate License")
     public void activateLicense() throws Exception{
     	settings.activateLicense(pncuName, pncPwd, LicenseTypes.VCFC_SSC_1YR_10M);
     }
