@@ -26,7 +26,6 @@ public class InitialSetup extends TestSetup {
     private VCFLoginPage login;
     private VCFHomePage home;
     private VcfSettingsPage settings;
-
     private String dataNodeName  = "Node1";
     private String heapSize = "30";
     private String nodePassword = "changeme";
@@ -43,8 +42,8 @@ public class InitialSetup extends TestSetup {
     @Parameters({"mgmtIp"})  
     @BeforeClass(alwaysRun = true)
     public void init(String mgmtIp) {
-    	cli = new SwitchMethods(mgmtIp);
-        cli.restartTomcat();//Workaround for bug 15007	
+       cli = new SwitchMethods(mgmtIp);
+       cli.restartTomcat();//Workaround for bug 15007	
        login = new VCFLoginPage(getDriver());
        home = new VCFHomePage(getDriver());
        settings = new VcfSettingsPage(getDriver());

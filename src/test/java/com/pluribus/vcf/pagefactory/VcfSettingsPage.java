@@ -125,7 +125,7 @@ public class VcfSettingsPage extends PageInfra{
 	String deleteIcon = "span.icon-img-link.fa fa-trash-o.ng-scope";
 	String msgBox = "span.fa.fa-times-circle";
 	String addButtonCss = "button.btn.btn-sm.btn-primary";
-	
+
 	public VcfSettingsPage(WebDriver driver) {
 		super(driver);
 	}

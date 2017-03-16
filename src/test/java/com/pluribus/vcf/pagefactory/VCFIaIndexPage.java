@@ -48,9 +48,6 @@ public class VCFIaIndexPage extends PageInfra {
 
 	@FindBy(how = How.NAME, using = "ok")
 	WebElement okButton;
-	
-	@FindBy(how = How.CSS, using = "div.panel.panel-default")
-	WebElement collectorList;
 
 	@FindBy(how = How.CSS, using = "div.metric-value.ng-binding")
 	WebElement countIcons;
@@ -122,7 +119,7 @@ public class VCFIaIndexPage extends PageInfra {
 			driver.switchTo().defaultContent();	
 		return connCount;
 	}
-	
+
 	public boolean isCollectorConfigured(String switchName) {
 		boolean isColl = false;
 		List<WebElement> collCount = driver.findElements(By.cssSelector(collectorListId));
@@ -164,7 +161,6 @@ public class VCFIaIndexPage extends PageInfra {
 		}
 		return status;
 	}
-	
 	public void gotoIADashboard() {
 		dashboardIcon.click();
 		waitForElementVisibility(driver.findElement(By.tagName(iframeTag)),1000);
