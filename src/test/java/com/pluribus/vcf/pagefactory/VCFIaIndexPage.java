@@ -99,8 +99,9 @@ public class VCFIaIndexPage extends PageInfra {
 		List <WebElement> rows = getInsightCount();
 			if(!rows.isEmpty()) {
 				String connOutput = rows.get(0).getText();
+				System.out.println();
 				if(StringUtils.contains(connOutput, ',')) {
-					StringUtils.remove(connOutput, ',');
+					connOutput = StringUtils.remove(connOutput, ',');
 				}
 				connCount = Integer.parseInt(connOutput);
 			}
@@ -112,8 +113,10 @@ public class VCFIaIndexPage extends PageInfra {
 		int connCount = 0;
 		List <WebElement> rows = getInsightCount();
 			if(!rows.isEmpty()) {
-				String connOutput = rows.get(1).getText();
-				StringUtils.remove(connOutput, ',');
+				String connOutput = rows.get(1).getText();	
+				if(StringUtils.contains(connOutput, ',')) {
+					connOutput = StringUtils.remove(connOutput, ',');
+				}
 				connCount = Integer.parseInt(connOutput);
 			}
 			driver.switchTo().defaultContent();	
