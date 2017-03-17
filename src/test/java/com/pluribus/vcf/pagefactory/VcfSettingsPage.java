@@ -103,7 +103,7 @@ public class VcfSettingsPage extends PageInfra{
 	@FindBy(how = How.NAME, using = "ldapUserSearchFilter")
 	WebElement ldapUserSearchFilter;
 	
-	@FindBy(how = How.CSS, using = "div.table.my-table.case-list")
+	@FindBy(how = How.CSS, using = "div.td")
 	WebElement switchList;
 	
 	@FindBy(how = How.CSS, using = "div.stats.ng-scope")
@@ -125,6 +125,7 @@ public class VcfSettingsPage extends PageInfra{
 	String deleteIcon = "span.icon-img-link.fa fa-trash-o.ng-scope";
 	String msgBox = "span.fa.fa-times-circle";
 	String addButtonCss = "button.btn.btn-sm.btn-primary";
+	String switchListId = "div.td";
 
 	public VcfSettingsPage(WebDriver driver) {
 		super(driver);
@@ -162,7 +163,7 @@ public class VcfSettingsPage extends PageInfra{
 			setValue(username,usrname);
 			setValue(password,pwd);
 			okButton.click();
-			waitForElementVisibility(switchList,1000);
+			waitForElementVisibility(driver.findElement(By.cssSelector(switchListId)),1000);
 		}
 	}	
 
@@ -257,8 +258,8 @@ public class VcfSettingsPage extends PageInfra{
 	     for (int i=0; i < rows.size(); i++) {
 		    rows = driver.findElements(By.cssSelector("ng-transclude div.panel.panel-default"));
 	            if (rows.get(i).getText().contains(type.toString())) {
-	            	//System.out.println(type.toString());
-	            	
+	            	System.out.println(type.toString());
+	            	//driver.findElements(By.cssSelector("ng-transclude div.panel.panel-default")).get(i).findElement(By.cssSelector("button.btn.btn-xs.btn-primary")).click();
 	                rows.get(i).findElement(By.cssSelector("button.btn.btn-xs.btn-primary")).click();
 	                break;
 	            }
