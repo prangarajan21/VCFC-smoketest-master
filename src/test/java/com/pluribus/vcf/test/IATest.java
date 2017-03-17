@@ -27,7 +27,7 @@ public class IATest extends TestSetup {
 	@BeforeClass(alwaysRun = true)
 	public void init(String clientIp, String serverIp, String mgmtIp) {
 		cli = new SwitchMethods(mgmtIp);
-		cli.restartTomcat();//Workaround for bug 15007
+		//cli.restartTomcat();//Workaround for bug 15007
 		login = new VCFLoginPage(getDriver());
 		home1 = new VCFHomePage(getDriver());
 		iaIndex = new VCFIaIndexPage(getDriver());
