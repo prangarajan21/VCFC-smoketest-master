@@ -76,7 +76,7 @@ public class VCFIaIndexPage extends PageInfra {
 	}
 	
 	public void applySearchFilter(String searchString) {
-		waitForElementVisibility(searchBox,1000);
+		waitForElementVisibility(searchBox,100);
 		setValue(searchBox,searchString);
 		WebElement searchItem = driver.findElement(By.cssSelector(srchString+"'"+searchString+"'"));
 		if(searchItem.isDisplayed()) {
@@ -89,7 +89,7 @@ public class VCFIaIndexPage extends PageInfra {
 		dashboardIcon.click();
 		waitForElementVisibility(driver.findElement(By.tagName(iframeTag)),1000);
 		driver.switchTo().frame(driver.findElement(By.tagName(iframeTag)));			
-		waitForElementVisibility(countIcons,100);
+		waitForElementVisibility(countIcons,180);
 		rows = driver.findElements(By.cssSelector(insightCountWidget));
 		return rows;
 	}
@@ -140,8 +140,13 @@ public class VCFIaIndexPage extends PageInfra {
 		configIcon.click();
 		status = isCollectorConfigured(switchName);
 		if(status==false) {	
+			try {
+			Thread.sleep(5000);
+			}catch(Exception e){
+				System.out.println(e.toString());			
+			}
 			//driver.navigate().refresh();
-			waitForElementVisibility(driver.findElement(By.cssSelector(collectorAddButtons)),1000);
+			//waitForElementVisibility(driver.findElement(By.cssSelector(collectorAddButtons)),1000);
 			int i = 0;
 			List<WebElement> rows = driver.findElements(By.cssSelector(collectorAddButtons));
 			for (WebElement row: rows) {
@@ -160,7 +165,7 @@ public class VCFIaIndexPage extends PageInfra {
 					}
 				}	
 				okButton.click();
-				WebDriverWait myWaitVar = new WebDriverWait(driver,20);
+				WebDriverWait myWaitVar = new WebDriverWait(driver,100);
 				myWaitVar.until(ExpectedConditions.elementToBeClickable (By.cssSelector(collectorListId)));
 				status = isCollectorConfigured(switchName);
 		}
