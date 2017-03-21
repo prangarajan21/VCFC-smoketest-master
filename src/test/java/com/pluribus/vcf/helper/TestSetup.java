@@ -31,6 +31,7 @@ import com.jcabi.ssh.Shell;
 import com.pluribus.vcf.test.IATest;
 import com.jcabi.ssh.SSHByPassword;
 
+
 /**
  *
  * @author Haritha
@@ -94,7 +95,7 @@ public class TestSetup {
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
         // Get a handle to the driver. This will throw an exception if a matching driver cannot be located
-	driver.get("https://"+ vcfIp);
+	    driver.get("https://"+ vcfIp);
     }
    
    @AfterClass(alwaysRun = true)

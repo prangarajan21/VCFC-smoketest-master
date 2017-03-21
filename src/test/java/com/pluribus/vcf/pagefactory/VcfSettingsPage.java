@@ -123,7 +123,7 @@ public class VcfSettingsPage extends PageInfra{
 	String seedList = "div[name=form]";
 	String licenseList = "ng-transclude";
 	String deleteIcon = "span.icon-img-link.fa fa-trash-o.ng-scope";
-	String msgBox = "span.fa.fa-times-circle";
+	String msgPopup = "span.fa.fa-times-circle";
 	String addButtonCss = "button.btn.btn-sm.btn-primary";
 	String switchListId = "div.td";
 
@@ -146,7 +146,9 @@ public class VcfSettingsPage extends PageInfra{
 		setValue(password,pwd);
 		okButton.click();
 		waitForElementVisibility(switchList,1000);
+		//closePopUp();
 	}
+	
 	public void authSeedSwitches(String usrname, String pwd) throws InterruptedException {
 		waitForElementVisibility(switchList,1000);
 		List<WebElement> rows = new ArrayList();
@@ -165,6 +167,7 @@ public class VcfSettingsPage extends PageInfra{
 			okButton.click();
 			waitForElementVisibility(driver.findElement(By.cssSelector(switchListId)),1000);
 		}
+		//closePopUp();
 	}	
 
 	public boolean verifySeedSwitch(String name , String usrname, String mgmtip, String pwd) {
@@ -209,6 +212,7 @@ public class VcfSettingsPage extends PageInfra{
 			rows = driver.findElements(By.cssSelector(seedList));
 		}
 		waitForElementVisibility(switchList,100);
+		//closePopUp();
 	}
 	
 	public boolean verifyDataNode(String host) {		
@@ -260,12 +264,20 @@ public class VcfSettingsPage extends PageInfra{
 	            if (rows.get(i).getText().contains(type.toString())) {
 	            	System.out.println(type.toString());
 	            	//driver.findElements(By.cssSelector("ng-transclude div.panel.panel-default")).get(i).findElement(By.cssSelector("button.btn.btn-xs.btn-primary")).click();
-	                rows.get(i).findElement(By.cssSelector("button.btn.btn-xs.btn-primary")).click();
+	            	//rows.get(i).findElement(By.cssSelector("button.btn.btn-xs.btn-primary")).click();
+	                retryingFindClick(rows.get(i),By.cssSelector("button.btn.btn-xs.btn-primary"));
 	                break;
 	            }
 	     }
+	     //closePopUp();
 	}
 	
+	public void closePopUp(){
+		List <WebElement> popout = driver.findElements(By.cssSelector(msgPopup));
+		if (popout.size() > 0) {
+			driver.findElement(By.cssSelector(msgPopup)).click();
+		}
+	}
 	
 	public void removeLicense(LicenseTypes type) {
 		vcfSettingsIcon.click();
@@ -282,6 +294,7 @@ public class VcfSettingsPage extends PageInfra{
 	                break;
 	            }
 	        }
+	      closePopUp();
 	}
 	
 	

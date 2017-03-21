@@ -23,6 +23,8 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import java.util.concurrent.TimeUnit;
+
 
 public class VCFIaIndexPage extends PageInfra {
 
@@ -125,11 +127,14 @@ public class VCFIaIndexPage extends PageInfra {
 
 	public boolean isCollectorConfigured(String switchName) {
 		boolean isColl = false;
-		List<WebElement> collCount = driver.findElements(By.cssSelector(collectorListId));
-		if(collCount.size() > 0) {
+		driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
+		boolean exists = (driver.findElements(By.cssSelector(collectorListId)).size() != 0);
+		//List<WebElement> collCount = driver.findElements(By.cssSelector(collectorListId));
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		if(exists) {
 				if(driver.findElement(By.cssSelector(collectorListId)).getText().contains(switchName)) {
 					isColl = true;
-					System.out.println("Collector list(false)"+driver.findElement(By.cssSelector(collectorListId)).getText());
+					System.out.println("Collector list"+driver.findElement(By.cssSelector(collectorListId)).getText());
 				 } 
 		}
 		return isColl;

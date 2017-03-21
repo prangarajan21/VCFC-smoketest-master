@@ -37,3 +37,9 @@
 2017-03-15 23:05:45 ERROR IATest:107 - vcfcConnCount:10
 2017-03-15 23:05:49 ERROR IATest:109 - vcfcAppCount:1
 2017-03-16 19:14:46 ERROR InitialSetup:65 - Seed Switch addition failed
+2017-03-21 11:52:30 ERROR IATest:112 - vcfcConnCount:20expected:10
+2017-03-21 11:52:30 ERROR IATest:78 - VCFC count verification failed
+2017-03-21 11:52:39 ERROR IATest:112 - vcfcConnCount:20expected:10
+2017-03-21 11:52:39 ERROR IATest:87 - VCFC count verification after applying srcIP filter failed
+2017-03-21 11:52:47 ERROR IATest:112 - vcfcConnCount:20expected:10
+2017-03-21 11:52:47 ERROR IATest:96 - VCFC count verification after applying dstIP filter failed
