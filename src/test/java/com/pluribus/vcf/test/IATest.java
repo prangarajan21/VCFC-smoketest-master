@@ -95,6 +95,9 @@ public class IATest extends TestSetup {
 		} else {
 			logger.error("VCFC count verification after applying dstIP filter failed");			
 		}
+		if(status == false) {
+			throw new Exception(" Simple traffic test failed");
+		}
 	}
 	
 	@Test(groups={"smoke","regression"},dependsOnMethods={"simpleTrafficTest"},description="Logout of VCFC")
