@@ -36,6 +36,9 @@ public class VCFIaIndexPage extends PageInfra {
 	@FindBy(how = How.CSS, using = "a.list-group-item.category.ia-config-menu")
 	WebElement configIcon;
 	
+	@FindBy(how = How.CSS, using = "a.list-group-item.category.ia-tag-menu")
+	WebElement tagIcon;
+	
 	@FindBy(how= How.CSS, using = "button.btn.btn-primary.btn-xs")
 	WebElement addButton;
 	
@@ -180,4 +183,10 @@ public class VCFIaIndexPage extends PageInfra {
 		dashboardIcon.click();
 		waitForElementVisibility(driver.findElement(By.tagName(iframeTag)),1000);
 	}
+	/*
+	public void uploadTag() {
+		tagIcon.click();
+		waitForElementVisibility()
+	}
+	*/
 }

@@ -138,10 +138,10 @@ public class VcfSettingsPage extends PageInfra{
 	public void addSeedSwitch(String name , String usrname, String mgmtip, String pwd) {
 		vcfSettingsIcon.click();
 		waitForElementVisibility(addButton,1000);
+		WebDriverWait myWaitVar = new WebDriverWait(driver,100);
+		myWaitVar.until(ExpectedConditions.elementToBeClickable (By.cssSelector(addButtonCss)));
 		addButton.click();
 		/*
-		WebDriverWait myWaitVar = new WebDriverWait(driver,20);
-		myWaitVar.until(ExpectedConditions.elementToBeClickable (By.cssSelector(addButtonCss)));
 		driver.findElement(By.cssSelector(addButtonCss)).click();
 		*/
 		setValue(mgmtIp,mgmtip);
@@ -272,7 +272,7 @@ public class VcfSettingsPage extends PageInfra{
 	                break;
 	            }
 	     }
-	     //closePopUp();
+	     closePopUp();
 	}
 	
 	public void closePopUp(){
