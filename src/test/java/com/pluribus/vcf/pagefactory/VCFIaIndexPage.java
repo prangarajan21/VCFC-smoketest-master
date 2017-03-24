@@ -99,7 +99,7 @@ public class VCFIaIndexPage extends PageInfra {
 		dashboardIcon.click();
 		waitForElementVisibility(driver.findElement(By.tagName(iframeTag)),1000);
 		driver.switchTo().frame(driver.findElement(By.tagName(iframeTag)));			
-		waitForElementVisibility(countIcons,180);
+		waitForElementVisibility(countIcons,240);
 		rows = driver.findElements(By.cssSelector(insightCountWidget));
 		return rows;
 	}

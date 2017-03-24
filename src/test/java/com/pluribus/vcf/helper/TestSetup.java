@@ -114,7 +114,6 @@ public class TestSetup {
 		}  
 	    com.jcabi.log.Logger.info(driver, "BrowserStack Session ID:"+sessionId);
 	    com.jcabi.log.Logger.info(driver, "BrowserStack command:"+command);
-	    com.jcabi.log.Logger.info(driver, "BrowserStack session logs:"+output.toString());
     }
    
    @AfterClass(alwaysRun = true)
