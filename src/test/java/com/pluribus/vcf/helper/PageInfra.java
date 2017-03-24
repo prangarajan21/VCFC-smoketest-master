@@ -101,15 +101,31 @@ public class PageInfra {
         return (new WebDriverWait(driver, 25))
                 .until(ExpectedConditions.elementToBeClickable(locator));
     }
+    
+    public boolean retryingFindClick(By by) {
+    	 boolean result = false;
+         int attempts = 0;
+         while(attempts < 2) {
+             try {
+            	 driver.findElement(by);
+            	 result = true;
+            	 break;
+             } catch(Exception e) {
+             }
+             attempts++;
+         }
+         return result;
+     }
+    
 
     public boolean retryingFindClick(WebElement el, By by) {
         boolean result = false;
         int attempts = 0;
         while(attempts < 2) {
             try {
-                el.findElement(by).click();
-                result = true;
-                break;
+            		el.findElement(by).click();
+                    result = true;
+                    break;
             } catch(Exception e) {
             }
             attempts++;

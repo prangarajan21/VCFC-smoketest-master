@@ -1,20 +1,15 @@
 package com.pluribus.vcf.test;
 import com.pluribus.vcf.helper.SwitchMethods;
 import com.pluribus.vcf.helper.TestSetup;
-import junit.framework.Assert;
 import com.pluribus.vcf.pagefactory.LicenseTypes;
 import com.pluribus.vcf.pagefactory.VCFLoginPage;
 import com.pluribus.vcf.pagefactory.VCFHomePage;
 import com.pluribus.vcf.pagefactory.VcfSettingsPage;
 import static org.testng.Assert.*;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Optional;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -37,7 +32,6 @@ public class InitialSetup extends TestSetup {
     private String switchUserName = "network-admin";
     private String switchPassword = "test123";
     private SwitchMethods cli;
-    final static Logger logger = Logger.getLogger(InitialSetup.class);
     
     @Parameters({"mgmtIp"})  
     @BeforeClass(alwaysRun = true)
@@ -47,6 +41,7 @@ public class InitialSetup extends TestSetup {
        login = new VCFLoginPage(getDriver());
        home = new VCFHomePage(getDriver());
        settings = new VcfSettingsPage(getDriver());
+       //com.jcabi.log.Logger.info(source, msg);
     }
     
     @Parameters({"password"})  
@@ -62,9 +57,11 @@ public class InitialSetup extends TestSetup {
     public void addSeedSwitch(String switchName,String mgmtIp) throws Exception{
     	settings.addSeedSwitch(switchName, switchUserName, mgmtIp, switchPassword);
     	if(!settings.verifySeedSwitch(switchName, switchUserName, mgmtIp, switchPassword)) {
-    		logger.error("Seed Switch addition failed");
+    		com.jcabi.log.Logger.error("addSeedSwitch", "Seed switch addition failed");
     		throw new Exception(" Seed Switch addition failed");
-    	} 
+    	} else {
+    		com.jcabi.log.Logger.info("addSeedSwitch", "Successfully added & verified seed switch"+switchName);
+    	}
     }
     
     @Test(groups = {"smoke","regression"}, dependsOnMethods = { "addSeedSwitch" }, description = "Authorize seed switches")
@@ -76,12 +73,15 @@ public class InitialSetup extends TestSetup {
     @Parameters({"dataNodeHost"}) 
     @Test(groups = {"smoke","regression"}, dependsOnMethods = { "authSeedSwitch" },description = "Add data node & verify")
     public void addDataNode(@Optional("") String dataNodeHost) throws Exception{
-    	System.out.println("dataNodeHost"+dataNodeHost);
     	if(!dataNodeHost.isEmpty()) {
     		settings.addDataNode(dataNodeName, dataNodeHost, nodeUserName, heapSize, nodePassword);
     	    if(!settings.verifyDataNode(dataNodeName)) {
-    	    	logger.error("Add Data Node failed");
+    	    	//logger.error("Add Data Node failed");
+    	    	com.jcabi.log.Logger.error(login, "Data Node addition failed");
     	    	throw new Exception(" Add Data Node failed ");
+    	    }
+    	    else {
+    	    	com.jcabi.log.Logger.info("addDataNode", "Successfully added & verified data node"+dataNodeHost); 
     	    }
     	}
     }

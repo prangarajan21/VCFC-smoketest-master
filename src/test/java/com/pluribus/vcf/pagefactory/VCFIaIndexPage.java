@@ -45,6 +45,9 @@ public class VCFIaIndexPage extends PageInfra {
 	@FindBy(how= How.CSS, using = "button.btn.btn-default.btn-sm")
 	WebElement switchDropDown;
     
+	@FindBy(how= How.CSS, using = "a#taggingOptions.btn.btn-default.dropdown-toggle")
+	WebElement tagOptions;
+	
 	@FindBy(how = How.NAME, using = "username")
 	WebElement userName;
 	
@@ -60,7 +63,6 @@ public class VCFIaIndexPage extends PageInfra {
 	@FindBy(how = How.CSS, using = "input[type = 'text']")
 	WebElement searchBox;
 	
-	
 	/* Field names used for webdriver findElement*/
 	String iframeTag = "iframe";
 	String switchListName = "ul.dropdown-menu";
@@ -69,6 +71,9 @@ public class VCFIaIndexPage extends PageInfra {
 	String srchString = "a[title=";
 	String collectorListId = "span.label-text";
 	String collectorAddButtons = "button.btn.btn-sm.btn-primary";
+	String uploadTagStr = "Upload Tags";
+	String clearTagStr = "Clear Tags";
+	String fileUpload = "div.holder"; 
 	
 	public VCFIaIndexPage(WebDriver driver) {
 		super(driver);
@@ -104,7 +109,6 @@ public class VCFIaIndexPage extends PageInfra {
 		List <WebElement> rows = getInsightCount();
 			if(!rows.isEmpty()) {
 				String connOutput = rows.get(0).getText();
-				System.out.println();
 				if(StringUtils.contains(connOutput, ',')) {
 					connOutput = StringUtils.remove(connOutput, ',');
 				}
@@ -137,8 +141,7 @@ public class VCFIaIndexPage extends PageInfra {
 		if(exists) {
 				if(driver.findElement(By.cssSelector(collectorListId)).getText().contains(switchName)) {
 					isColl = true;
-					System.out.println("Collector list"+driver.findElement(By.cssSelector(collectorListId)).getText());
-				 } 
+					com.jcabi.log.Logger.info("collectorConfigured","Collector List:"+driver.findElement(By.cssSelector(collectorListId)).getText());				 } 
 		}
 		return isColl;
 	}
@@ -184,9 +187,37 @@ public class VCFIaIndexPage extends PageInfra {
 		waitForElementVisibility(driver.findElement(By.tagName(iframeTag)),1000);
 	}
 	/*
+	public void uploadFile(WebElement fileUpload, String filePath, WebElement okButton) {
+		WebElement element = driver.findElement(fileUpload);
+		element.sendKeys(filePath);
+		okButton.click();
+	}
+	
 	public void uploadTag() {
 		tagIcon.click();
-		waitForElementVisibility()
+		waitForElementVisibility(tagOptions,100);
+		tagOptions.click();
+		WebElement uploadTags = findAnchorTags(uploadTagStr);
+		uploadTags.click();
+		waitForElementVisibility(By.cssSelector(fileUpload),100);
+		WebElement element = driver.findElement(By.cssSelector(fileUpload));
+		//To input the filename along with path
+		element.sendKeys("/VCFC-smoketest-master/src/test/resources/srcIp.csv");
+		// To click on the submit button (Not the browse button)
+		driver.findElement(By.name("SubmitBtn")).click();
+		String checkText = driver.findElement(By.id("message")).getText();
+		Assert.assertEquals("File uploaded successfully", checkText);	
+	}
+	
+	public WebElement findAnchorTags(String anchorText) {
+		List <WebElement> anchorTags = driver.findElements(By.cssSelector("a"));
+		WebElement row = null;
+		for (row:anchorTags) {
+			if(row.getText().equalsIgnoreCase(anchorText)) {
+				break;
+			}
+		}
+		return row;
 	}
 	*/
 }

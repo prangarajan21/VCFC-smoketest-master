@@ -141,15 +141,11 @@ public class VcfSettingsPage extends PageInfra{
 		WebDriverWait myWaitVar = new WebDriverWait(driver,100);
 		myWaitVar.until(ExpectedConditions.elementToBeClickable (By.cssSelector(addButtonCss)));
 		addButton.click();
-		/*
-		driver.findElement(By.cssSelector(addButtonCss)).click();
-		*/
 		setValue(mgmtIp,mgmtip);
 		setValue(username,usrname);
 		setValue(password,pwd);
 		okButton.click();
 		waitForElementVisibility(switchList,1000);
-		//closePopUp();
 	}
 	
 	public void authSeedSwitches(String usrname, String pwd) throws InterruptedException {
@@ -168,7 +164,7 @@ public class VcfSettingsPage extends PageInfra{
 			setValue(username,usrname);
 			setValue(password,pwd);
 			okButton.click();
-			waitForElementVisibility(driver.findElement(By.cssSelector(switchListId)),1000);
+			retryingFindClick(By.cssSelector(switchListId));
 		}
 		//closePopUp();
 	}	
@@ -180,8 +176,8 @@ public class VcfSettingsPage extends PageInfra{
 		rows = driver.findElements(By.cssSelector(seedList));
 		String rowTable = null;
 	       for (WebElement row : rows) {
-	                System.out.println("Row text"+row.getText());
-	            if (row.getText().contains(name)) {
+	    	   if (row.getText().contains(name)) {
+		    	   com.jcabi.log.Logger.info("verifySeedSwitch", "Seed switch found:"+name);
 	                rowTable = row.getText();
 	                status = true;
 	                break;
@@ -265,7 +261,7 @@ public class VcfSettingsPage extends PageInfra{
 	     for (int i=0; i < rows.size(); i++) {
 		    rows = driver.findElements(By.cssSelector("ng-transclude div.panel.panel-default"));
 	            if (rows.get(i).getText().contains(type.toString())) {
-	            	System.out.println(type.toString());
+	            	com.jcabi.log.Logger.info("activateLicense", "License to be selected:"+type.toString());
 	            	//driver.findElements(By.cssSelector("ng-transclude div.panel.panel-default")).get(i).findElement(By.cssSelector("button.btn.btn-xs.btn-primary")).click();
 	            	//rows.get(i).findElement(By.cssSelector("button.btn.btn-xs.btn-primary")).click();
 	                retryingFindClick(rows.get(i),By.cssSelector("button.btn.btn-xs.btn-primary"));

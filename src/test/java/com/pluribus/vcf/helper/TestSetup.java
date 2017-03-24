@@ -1,8 +1,11 @@
 package com.pluribus.vcf.helper;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -37,7 +40,7 @@ import com.jcabi.ssh.SSHByPassword;
  * @author Haritha
  */
 public class TestSetup {
-   private WebDriver driver;
+   private RemoteWebDriver driver;
    private ResourceBundle bundle;
    Local bsLocal = new Local();
    
@@ -77,6 +80,9 @@ public class TestSetup {
    @BeforeClass(alwaysRun = true)
 	public void startDriver(String vcfIp,String browser,@Optional("pratikdam1")String bsUserId, @Optional("uZCXEzKXwgzgzMr3G7R6") String bsKey) throws Exception {
 		HashMap<String,String> bsLocalArgs = new HashMap<String,String>();
+		String sessionId = null;
+		String command = null;
+		
 		bsLocalArgs.put("key",bsKey); //BrowserStack Key
 		bsLocalArgs.put("force", "true"); //Kill previously open BrowserStack local sessions
 		bsLocal.start(bsLocalArgs);
@@ -96,12 +102,25 @@ public class TestSetup {
 		driver.manage().deleteAllCookies();
         // Get a handle to the driver. This will throw an exception if a matching driver cannot be located
 	    driver.get("https://"+ vcfIp);
+	    sessionId = driver.getSessionId().toString();
+	    command = "curl -u \""+bsUserId+":"+bsKey+"\" https://www.browserstack.com/automate/sessions/"+sessionId;
+	    Process p = Runtime.getRuntime().exec(command);
+	    p.waitFor();
+		StringBuffer output = new StringBuffer();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream())); 
+		String line = ""; 
+		while ((line = reader.readLine())!= null) { 
+			output.append(line + "\n"); 
+		}  
+	    com.jcabi.log.Logger.info(driver, "BrowserStack Session ID:"+sessionId);
+	    com.jcabi.log.Logger.info(driver, "BrowserStack command:"+command);
+	    com.jcabi.log.Logger.info(driver, "BrowserStack session logs:"+output.toString());
     }
    
    @AfterClass(alwaysRun = true)
     public void setupAfterSuite() throws Exception {
         //driver.close();
-        driver.quit();
+	    driver.quit();
     	bsLocal.stop();
     }
 	

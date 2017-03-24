@@ -7,14 +7,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import org.testng.annotations.Parameters;
-import org.apache.log4j.Logger;
 
 public class PATest extends TestSetup{
 	private VCFHomePage home1;
 	private VCFPaIndexPage paIndex;
 	private VCFLoginPage login;
 	private String pcapName = "localpcap";
-	final static Logger logger = Logger.getLogger(PATest.class);
 
 	@BeforeClass(alwaysRun = true)
 	public void init() {

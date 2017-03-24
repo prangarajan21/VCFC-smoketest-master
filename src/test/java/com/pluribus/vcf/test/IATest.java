@@ -11,7 +11,6 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import org.testng.annotations.Parameters;
-import org.apache.log4j.Logger;
 
 public class IATest extends TestSetup {
 	private VCFHomePage home1;
@@ -21,7 +20,6 @@ public class IATest extends TestSetup {
 	private SwitchMethods cli;
 	private String user = "network-admin";
 	private String passwd = "test123";
-	final static Logger logger = Logger.getLogger(IATest.class);
 	
 	@Parameters({"clientIp","serverIp","mgmtIp"})
 	@BeforeClass(alwaysRun = true)
@@ -45,14 +43,16 @@ public class IATest extends TestSetup {
 	@Test(groups={"smoke","regression"},dependsOnMethods={"logintoIA"},description="Add collector in IA Page")
 	public void addCollectorTest(String switchName) throws Exception{
 		if(!iaIndex.addCollector(switchName,user,passwd)) {
-			logger.error("Collector addition failed");
+			com.jcabi.log.Logger.error("addCollector","Collector addition failed");
 			throw new Exception("Collector addition failed");
+		} else {
+			com.jcabi.log.Logger.info("addSeedSwitch", "Successfully added & verified collector"+switchName);
 		}
 	}
 	
-	@Parameters({"trafficDestIp","trafficSrcIp","trafficNumSessions","trafficInterval"}) 
+	@Parameters({"switchName","trafficDestIp","trafficSrcIp","trafficNumSessions","trafficInterval"}) 
 	@Test(groups={"smoke","regression"},dependsOnMethods={"addCollectorTest"},description="Send traffic and verify stats")
-	public void simpleTrafficTest(String trafficDestIp, String trafficSrcIp, int trafficNumSessions, int trafficInterval) throws Exception{
+	public void simpleTrafficTest(String switchName, String trafficDestIp, String trafficSrcIp, int trafficNumSessions, int trafficInterval) throws Exception{
 		/* Clearing switch before test*/
 		cli.clearSessions();
 		
@@ -63,9 +63,9 @@ public class IATest extends TestSetup {
 		/* Verify on switch first */
 		int connCount = cli.getConnectionCount(trafficDestIp);
 		if(connCount == trafficNumSessions) {
-			logger.debug("Switch connection count test passed");
+			com.jcabi.log.Logger.info("simpleTrafficTest","Connection count test passed on switch"+switchName);
 		} else {
-			logger.error("Switch connection count test failed");
+			com.jcabi.log.Logger.error("simpleTrafficTest","Connection count test failed on switch"+switchName);
 		}
 		boolean status = false;
 		iaIndex.gotoIADashboard();
@@ -73,27 +73,27 @@ public class IATest extends TestSetup {
 		
 		status = verifyVCFCount(trafficNumSessions);
 		if(status == true) {
-			logger.debug("VCFC count verification passed");
+			com.jcabi.log.Logger.info("simpleTrafficTest","VCFC count verification passed");
 		} else {
-			logger.error("VCFC count verification failed");			
+			com.jcabi.log.Logger.error("simpleTrafficTest","VCFC count verification failed");			
 		}
 		
 		//Apply search filter for srcIp
 		iaIndex.applySearchFilter("srcIp: "+trafficSrcIp);
 		status = verifyVCFCount(trafficNumSessions);
 		if(status == true) {
-			logger.debug("VCFC count verification after applying srcIp filter passed");
+			com.jcabi.log.Logger.info("simpleTrafficTest","VCFC count verification after applying srcIp filter passed");
 		} else {
-			logger.error("VCFC count verification after applying srcIP filter failed");			
+			com.jcabi.log.Logger.error("simpleTrafficTest","VCFC count verification after applying srcIP filter failed");			
 		}
 		
 		//Apply search filter for dstIp
 		iaIndex.applySearchFilter("dstIp: "+trafficDestIp);
 		status = verifyVCFCount(trafficNumSessions);
 		if(status == true) {
-			logger.debug("VCFC count verification after applying dstIp filter passed");
+			com.jcabi.log.Logger.info("simpleTrafficTest","VCFC count verification after applying dstIp filter passed");
 		} else {
-			logger.error("VCFC count verification after applying dstIP filter failed");			
+			com.jcabi.log.Logger.error("simpleTrafficTest","VCFC count verification after applying dstIP filter failed");			
 		}
 		if(status == false) {
 			throw new Exception(" Simple traffic test failed");
