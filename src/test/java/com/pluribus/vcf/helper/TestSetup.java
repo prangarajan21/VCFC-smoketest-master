@@ -1,6 +1,4 @@
 package com.pluribus.vcf.helper;
-import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,7 +38,7 @@ import com.jcabi.ssh.SSHByPassword;
  * @author Haritha
  */
 public class TestSetup {
-   private RemoteWebDriver driver;
+   private WebDriver driver;
    private ResourceBundle bundle;
    Local bsLocal = new Local();
    
@@ -102,19 +100,39 @@ public class TestSetup {
 		driver.manage().deleteAllCookies();
         // Get a handle to the driver. This will throw an exception if a matching driver cannot be located
 	    driver.get("https://"+ vcfIp);
-	    sessionId = driver.getSessionId().toString();
-	    command = "curl -u \""+bsUserId+":"+bsKey+"\" https://www.browserstack.com/automate/sessions/"+sessionId;
-	    Process p = Runtime.getRuntime().exec(command);
-	    p.waitFor();
-		StringBuffer output = new StringBuffer();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream())); 
-		String line = ""; 
-		while ((line = reader.readLine())!= null) { 
-			output.append(line + "\n"); 
-		}  
-	    com.jcabi.log.Logger.info(driver, "BrowserStack Session ID:"+sessionId);
-	    com.jcabi.log.Logger.info(driver, "BrowserStack command:"+command);
-    }
+	    /*
+	   sessionId = driver.getSessionId().toString();
+	   String browserStackLogs = null;
+	   try {
+	   DefaultHttpClient httpClient = new DefaultHttpClient();
+		HttpGet getRequest = new HttpGet(
+			"curl -u \""+bsUserId+":"+bsKey+"\" https://www.browserstack.com/automate/sessions/"+sessionId);
+		getRequest.addHeader("accept", "application/json");
+		HttpResponse response = httpClient.execute(getRequest);
+		if (response.getStatusLine().getStatusCode() != 200) {
+			throw new RuntimeException("Failed : HTTP error code : "
+			   + response.getStatusLine().getStatusCode());
+		}
+		BufferedReader br = new BufferedReader(
+                new InputStreamReader((response.getEntity().getContent())));
+
+		String output;
+		System.out.println("Output from Server .... \n");
+		while ((output = br.readLine()) != null) {
+			System.out.println(output);
+		}
+		httpClient.getConnectionManager().shutdown();
+
+		  } catch (ClientProtocolException e) {
+
+			e.printStackTrace();
+
+		  } catch (IOException e) {
+
+			e.printStackTrace();
+		  }
+		  */
+   }
    
    @AfterClass(alwaysRun = true)
     public void setupAfterSuite() throws Exception {

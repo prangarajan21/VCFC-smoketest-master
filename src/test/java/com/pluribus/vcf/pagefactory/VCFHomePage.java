@@ -43,12 +43,12 @@ public class VCFHomePage extends PageInfra{
 	}	
 		
 	public void gotoPA() {
-		driver.navigate().refresh();
+		waitForElementVisibility(vcfPAIcon,1000);
 		vcfPAIcon.click();
 	}
 	
 	public void gotoVCFMgr() {	
-		driver.navigate().refresh();
+		waitForElementVisibility(vcfMgrIcon,1000);
 		vcfMgrIcon.click();
 	}
 	

@@ -74,6 +74,7 @@ public class VCFIaIndexPage extends PageInfra {
 	String uploadTagStr = "Upload Tags";
 	String clearTagStr = "Clear Tags";
 	String fileUpload = "div.holder"; 
+	String countIconsId = "div.metric-value.ng-binding";
 	
 	public VCFIaIndexPage(WebDriver driver) {
 		super(driver);
@@ -98,8 +99,9 @@ public class VCFIaIndexPage extends PageInfra {
 		List<WebElement> rows = new ArrayList();
 		dashboardIcon.click();
 		waitForElementVisibility(driver.findElement(By.tagName(iframeTag)),1000);
-		driver.switchTo().frame(driver.findElement(By.tagName(iframeTag)));			
-		waitForElementVisibility(countIcons,240);
+		driver.switchTo().frame(driver.findElement(By.tagName(iframeTag)));	
+		//retryingFindClick(By.cssSelector(countIconsId));
+		waitForElementVisibility(countIcons,180);
 		rows = driver.findElements(By.cssSelector(insightCountWidget));
 		return rows;
 	}

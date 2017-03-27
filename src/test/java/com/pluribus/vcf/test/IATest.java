@@ -107,16 +107,16 @@ public class IATest extends TestSetup {
 	public boolean verifyVCFCount(int trafficNumSessions) {
 		boolean status = true;
 		int vcfcConnCount = iaIndex.getConnectionCount();
-		logger.debug("vcfcConnCount:"+vcfcConnCount);
+		com.jcabi.log.Logger.info("verifyVCFCCount","vcfcConnCount:"+vcfcConnCount);
 		int vcfcAppCount = iaIndex.getAppCount();
-		logger.debug("vcfcAppCount:"+vcfcAppCount);
+		com.jcabi.log.Logger.info("verifyVCFCCount","vcfcAppCount:"+vcfcAppCount);
 
 		if (vcfcConnCount != trafficNumSessions) {
-			logger.error("vcfcConnCount:"+vcfcConnCount+"expected:"+trafficNumSessions);
+			com.jcabi.log.Logger.error("verifyVCFCCount","vcfcConnCount:"+vcfcConnCount+"expected:"+trafficNumSessions);
 			status = false;
 		} 
 		if (vcfcAppCount != 1) {
-			logger.error("vcfcAppCount:"+vcfcAppCount);
+			com.jcabi.log.Logger.error("verifyVCFCCount","vcfcAppCount:"+vcfcAppCount);
 			status = false;
 		}
 		return status;

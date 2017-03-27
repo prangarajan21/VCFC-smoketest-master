@@ -39,15 +39,12 @@ public class PATest extends TestSetup{
 	@Test(groups={"smoke","regression"},dependsOnMethods={"logintoPA"},description="Add local Pcap")
 	public void addPcapTest(String vcfIp) throws Exception{
 		paIndex.addLocalPcap(pcapName,vcfIp);
-		if(!paIndex.verifyPcap(pcapName)) {
-			logger.error("Local pcap config failed");
-			throw new Exception("Local pcap config failed");
-		}
 	}
 	
-	
-	@Test(groups={"smoke","regression"},dependsOnMethods={""},description="Logout of VCFC")
-	public void logout() {
-		login.logout();
+	@Parameters({"switchName"})
+	@Test(groups={"smoke","regression"},dependsOnMethods={"addPcapTest"},description="Add vflow")
+	public void addVflowTest(String switchName) throws Exception{
+		paIndex.addVFlow("flow1",switchName,"7","8",pcapName);
 	}
+	
 }

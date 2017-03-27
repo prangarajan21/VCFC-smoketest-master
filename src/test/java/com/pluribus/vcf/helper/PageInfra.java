@@ -1,6 +1,7 @@
 package com.pluribus.vcf.helper;
 
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -105,15 +106,21 @@ public class PageInfra {
     public boolean retryingFindClick(By by) {
     	 boolean result = false;
          int attempts = 0;
-         while(attempts < 2) {
+         while(attempts < 10) {
              try {
-            	 driver.findElement(by);
-            	 result = true;
-            	 break;
+         		driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
+            	 boolean exists = (driver.findElements(by)).size() != 0;
+            	 if(exists) {
+            		 result = true;
+            		 break;
+            	 } else {
+            		 new WebDriverWait(driver,30);
+            	 }
              } catch(Exception e) {
              }
              attempts++;
          }
+ 		 driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
          return result;
      }
     
@@ -121,7 +128,7 @@ public class PageInfra {
     public boolean retryingFindClick(WebElement el, By by) {
         boolean result = false;
         int attempts = 0;
-        while(attempts < 2) {
+        while(attempts < 10) {
             try {
             		el.findElement(by).click();
                     result = true;

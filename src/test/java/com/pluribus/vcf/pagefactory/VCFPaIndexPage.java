@@ -1,5 +1,7 @@
 package com.pluribus.vcf.pagefactory;
 
+import com.jcabi.ssh.SSHByPassword;
+import com.jcabi.ssh.Shell;
 import com.pluribus.vcf.helper.PageInfra;
 
 import java.util.ArrayList;
@@ -30,6 +32,9 @@ public class VCFPaIndexPage extends PageInfra {
 	@FindBy(how= How.CSS, using = "button.btn.btn-sm.btn-primary")
 	WebElement addButton;
 	
+	@FindBy(how= How.CSS, using = "button.btn.btn-primary.btn-sm")
+	WebElement fetchButton;
+	
 	@FindBy(how = How.NAME, using = "name")
 	WebElement name;
 		
@@ -48,9 +53,17 @@ public class VCFPaIndexPage extends PageInfra {
 	@FindBy(how = How.ID, using = "selectedOutport")
 	WebElement outPortText;
 	
+	@FindBy(how = How.CSS, using = "div.col-sm-9")
+	WebElement interfaceList;
+	
+	@FindBy(how = How.CSS, using = "div.table.my-table.case-list")
+	WebElement pcapList;
+	
 	/* Names for findElement(s) methods */
 	String switchListName = "ul.dropdown-menu";
 	String dropdownName = "button.btn.btn-default.btn-sm";
+	String lblCheckBox = "label.checkbox span.add- span";
+	String checkBox = "label.checkbox input";
 	
 	public VCFPaIndexPage(WebDriver driver) {
 		super(driver);
@@ -68,19 +81,61 @@ public class VCFPaIndexPage extends PageInfra {
 		return rows;
 	}
 	
+	public String getEth1Ip(String hostIp) {
+		String eth1Ip = null;
+		try {
+			Shell sh1 = new Shell.Verbose(
+					new SSHByPassword(
+							hostIp,
+							22,
+							"vcf",
+							"changeme"
+					)
+	        );
+			String out1 = new Shell.Plain(sh1).exec("ifconfig eth1 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'");
+			eth1Ip = out1.trim();
+		}
+		catch(Exception e) {
+		}
+		return eth1Ip;
+	}
 	public void addLocalPcap(String pcapName, String hostIp) {
+		String eth0Ip = hostIp;
+		String eth1Ip = getEth1Ip(hostIp); 
+		configIcon.click();
 		waitForElementVisibility(addButton,1000);
 		addButton.click();
 		waitForElementVisibility(pcapAddMenu,100);
 		setValue(name,pcapName);
-		setValue(ip,hostIp);
+		setValue(ip,eth1Ip);
 		setValue(port,"8080");
+		fetchButton.click();
+		waitForElementVisibility(interfaceList,100);
+		List <WebElement> ifNames = driver.findElements(By.cssSelector(lblCheckBox));
+		List <WebElement> checkBoxes = driver.findElements(By.cssSelector(checkBox));
+		int index = 0;
+		int hitIdx = 0;
+		for (WebElement row: ifNames) {
+			if(row.getText().contains("eth0")) {
+				checkBoxes.get(index).click();
+				hitIdx += 1;
+			}
+			if(row.getText().contains("eth1")) {
+				checkBoxes.get(index).click();
+				hitIdx += 1;
+			}
+			if(hitIdx == 2) break;
+			index++;
+		}
 		okButton.click();
+		waitForElementVisibility(pcapList,100);
 	}	
+	
 	public boolean verifyPcap(String pcapName) {
 		boolean status = false; 
 		return status;
 	}
+	
 	public void addVFlow(String flowName,String switchName, String inPort, String outPort, String pcapName) {
 		waitForElementVisibility(addButton,1000);
 		addButton.click();
@@ -113,12 +168,6 @@ public class VCFPaIndexPage extends PageInfra {
 			}
 		}
 		okButton.click();
-	}
-	
-	public boolean verifyPcapAdd(String pcapName) {
-		boolean status = false;
-		
-		return status;
 	}
 	
 	public void gotoPADashboard() {

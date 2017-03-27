@@ -35,9 +35,9 @@ public class IperfSetup {
 		String line = ""; 
 		while ((line = reader.readLine())!= null) { 
 			output.append(line + "\n"); 
-			}  
-		System.out.println("Output:"+output.toString());
-		System.out.println("Iperf server started");
+			} 
+		com.jcabi.log.Logger.info("startIperfServer","output.toString()");
+		com.jcabi.log.Logger.info("startIperfServer","iperf server started");
 		return;
 	}
 	
@@ -72,6 +72,7 @@ public class IperfSetup {
 
 		    String command = "iperf -c " + destIp + " -P " + numSessions + " -t " +timeVal;
 			String out1 = new Shell.Plain(clientSession).exec(command);
+			com.jcabi.log.Logger.info("sendTraffic","Traffic sent from iperf client: number of sessions"+numSessions+"for "+timeVal+" seconds");
 			Thread.sleep(1000); //Sleeping after traffic run so that stats can be updated
 			return status; 
 	}
