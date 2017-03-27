@@ -11,7 +11,7 @@
     <parameter name="trafficDestIp" value="4.4.4.97"></parameter>
     <parameter name="trafficNumSessions" value="10"></parameter>
     <parameter name="trafficInterval" value="20"></parameter>
-    <!-- NOTE: Additional optional parameters are: 
+       <!-- NOTE: Additional optional parameters are: 
     	<parameter name="dataNodeHost" value="10.9.8.85"></parameter>
     	<parameter name = "password" value="value_to_be_set_for_vcfc_instance"></parameter>
     	<parameter name= "bsUserId" value="BS_uid"></parameter>
