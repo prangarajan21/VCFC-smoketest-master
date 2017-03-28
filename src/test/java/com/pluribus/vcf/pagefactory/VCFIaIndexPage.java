@@ -24,6 +24,10 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.concurrent.TimeUnit;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 
 
 public class VCFIaIndexPage extends PageInfra {
@@ -158,13 +162,12 @@ public class VCFIaIndexPage extends PageInfra {
 			}catch(Exception e){
 				System.out.println(e.toString());			
 			}
-			//driver.navigate().refresh();
-			//waitForElementVisibility(driver.findElement(By.cssSelector(collectorAddButtons)),1000);
 			int i = 0;
 			List<WebElement> rows = driver.findElements(By.cssSelector(collectorAddButtons));
 			for (WebElement row: rows) {
-				if(rows.get(i).getText().contains("Add NVOS Collector")) {
-					rows.get(i).click();
+				if(rows.get(i).getText().contains("Add Netvisor Collector")) {
+					retryingFindClick(rows.get(i));
+					//rows.get(i).click();
 				}
 				i++;
 			}
@@ -194,32 +197,47 @@ public class VCFIaIndexPage extends PageInfra {
 		element.sendKeys(filePath);
 		okButton.click();
 	}
+	*/
+	public static void setClipboardData(String string) {
+		//StringSelection is a class that can be used for copy and paste operations.
+		StringSelection stringSelection = new StringSelection(string);
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+	}
 	
-	public void uploadTag() {
+	public void uploadTag(String fileLocation) throws Exception{
 		tagIcon.click();
 		waitForElementVisibility(tagOptions,100);
 		tagOptions.click();
 		WebElement uploadTags = findAnchorTags(uploadTagStr);
 		uploadTags.click();
-		waitForElementVisibility(By.cssSelector(fileUpload),100);
+		waitForElementVisibility(driver.findElement(By.cssSelector(fileUpload)),100);
 		WebElement element = driver.findElement(By.cssSelector(fileUpload));
-		//To input the filename along with path
-		element.sendKeys("/VCFC-smoketest-master/src/test/resources/srcIp.csv");
+		element.click(); //Click on fileUpload
+		setClipboardData(fileLocation);
+		 Robot robot = new Robot();
+		 robot.keyPress(KeyEvent.VK_CONTROL);
+         robot.keyPress(KeyEvent.VK_V);
+         robot.keyRelease(KeyEvent.VK_V);
+         robot.keyRelease(KeyEvent.VK_CONTROL);
+         robot.keyPress(KeyEvent.VK_ENTER);
+         robot.keyRelease(KeyEvent.VK_ENTER);
 		// To click on the submit button (Not the browse button)
-		driver.findElement(By.name("SubmitBtn")).click();
-		String checkText = driver.findElement(By.id("message")).getText();
-		Assert.assertEquals("File uploaded successfully", checkText);	
+		okButton.click();
+		//String checkText = driver.findElement(By.id("message")).getText();
+		//Assert.assertEquals("File uploaded successfully", checkText);	
 	}
+	
 	
 	public WebElement findAnchorTags(String anchorText) {
 		List <WebElement> anchorTags = driver.findElements(By.cssSelector("a"));
-		WebElement row = null;
-		for (row:anchorTags) {
+		WebElement returnRow = null;
+		for (WebElement row:anchorTags) {
 			if(row.getText().equalsIgnoreCase(anchorText)) {
+				returnRow = row;
 				break;
 			}
 		}
-		return row;
+		return returnRow;
 	}
-	*/
+	
 }

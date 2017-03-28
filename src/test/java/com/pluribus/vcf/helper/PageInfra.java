@@ -124,7 +124,21 @@ public class PageInfra {
          return result;
      }
     
-
+    public boolean retryingFindClick (WebElement el) {
+    	boolean result = false;
+    	int attempts = 0;
+        while(attempts < 10) {
+        	try {
+        		el.click();
+        		result = true;
+        		break;
+        	} catch (Exception e) {
+        	}
+        	attempts++;
+        }
+        return result;
+    }
+    
     public boolean retryingFindClick(WebElement el, By by) {
         boolean result = false;
         int attempts = 0;

@@ -11,6 +11,14 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import org.testng.annotations.Parameters;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 public class IATest extends TestSetup {
 	private VCFHomePage home1;
@@ -49,18 +57,18 @@ public class IATest extends TestSetup {
 			com.jcabi.log.Logger.info("addSeedSwitch", "Successfully added & verified collector"+switchName);
 		}
 	}
-	
+	/*
 	@Parameters({"switchName","trafficDestIp","trafficSrcIp","trafficNumSessions","trafficInterval"}) 
 	@Test(groups={"smoke","regression"},dependsOnMethods={"addCollectorTest"},description="Send traffic and verify stats")
 	public void simpleTrafficTest(String switchName, String trafficDestIp, String trafficSrcIp, int trafficNumSessions, int trafficInterval) throws Exception{
-		/* Clearing switch before test*/
+		// Clearing switch before test
 		cli.clearSessions();
 		
-		/* Iperf setup */
+		// Iperf setup 
 		perf.startServer();
 		perf.sendTraffic(trafficNumSessions, trafficInterval, trafficDestIp);
 		
-		/* Verify on switch first */
+		//Verify on switch first
 		int connCount = cli.getConnectionCount(trafficDestIp);
 		if(connCount == trafficNumSessions) {
 			com.jcabi.log.Logger.info("simpleTrafficTest","Connection count test passed on switch"+switchName);
@@ -69,7 +77,7 @@ public class IATest extends TestSetup {
 		}
 		boolean status = false;
 		iaIndex.gotoIADashboard();
-		/* Verify on VCFC */
+		// Verify on VCFC 
 		
 		status = verifyVCFCount(trafficNumSessions);
 		if(status == true) {
@@ -99,8 +107,15 @@ public class IATest extends TestSetup {
 			throw new Exception(" Simple traffic test failed");
 		}
 	}
+	*/
+	@Test(groups={"smoke","regression"},dependsOnMethods={"addCollectorTest"},description="src IP tagging test")
+	public void tagTest() throws Exception{
+		String fileLoc = "C:\\Desktop\\srcIp.csv";
+		writeToFile(fileLoc,"item_srcip,item_dstip,Owner,Device,Group,Function,Name,Security_List\n4.4.4.129,,,,,,,");
+		iaIndex.uploadTag(fileLoc);
+	}
 	
-	@Test(groups={"smoke","regression"},dependsOnMethods={"simpleTrafficTest"},description="Logout of VCFC")
+	@Test(groups={"smoke","regression"},dependsOnMethods={"tagTest"},description="Logout of VCFC")
 	public void logout() {
 		login.logout();
 	}
@@ -121,4 +136,9 @@ public class IATest extends TestSetup {
 		}
 		return status;
 	}
+	public void writeToFile(String fileName, String strToWrite) throws Exception {
+		Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName)));
+	    writer.write(strToWrite);
+	}
+	
 }

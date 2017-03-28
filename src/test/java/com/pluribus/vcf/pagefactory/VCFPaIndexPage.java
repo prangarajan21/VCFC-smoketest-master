@@ -6,6 +6,7 @@ import com.pluribus.vcf.helper.PageInfra;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -35,6 +36,9 @@ public class VCFPaIndexPage extends PageInfra {
 	@FindBy(how= How.CSS, using = "button.btn.btn-primary.btn-sm")
 	WebElement fetchButton;
 	
+	@FindBy(how= How.CSS, using = "button.btn.btn-primary")
+	WebElement confirmOkButton;
+	
 	@FindBy(how = How.NAME, using = "name")
 	WebElement name;
 		
@@ -56,14 +60,21 @@ public class VCFPaIndexPage extends PageInfra {
 	@FindBy(how = How.CSS, using = "div.col-sm-9")
 	WebElement interfaceList;
 	
-	@FindBy(how = How.CSS, using = "div.table.my-table.case-list")
+	@FindBy(how = How.CSS, using = "ng-transclude")
 	WebElement pcapList;
 	
 	/* Names for findElement(s) methods */
 	String switchListName = "ul.dropdown-menu";
 	String dropdownName = "button.btn.btn-default.btn-sm";
-	String lblCheckBox = "label.checkbox span.add- span";
-	String checkBox = "label.checkbox input";
+	String lblCheckBox = "label.checkbox";
+	String checkBox = "input.ng-pristine.ng-untouched.ng-valid.ng-empty";
+	String pcapNameId = "div.td span";
+	String pcapListId = "ng-form";
+	String flowHeaderId = "div.panel-heading.mirror-head";
+	String flowNameId = "span.name-ellipsis";
+	String toggleSwitch = "span.switch";
+	String switchOnState = "span.toggle-bg.on";
+	String switchOffState = "span.toggle-bg.off";
 	
 	public VCFPaIndexPage(WebDriver driver) {
 		super(driver);
@@ -103,40 +114,52 @@ public class VCFPaIndexPage extends PageInfra {
 		String eth0Ip = hostIp;
 		String eth1Ip = getEth1Ip(hostIp); 
 		configIcon.click();
-		waitForElementVisibility(addButton,1000);
-		addButton.click();
-		waitForElementVisibility(pcapAddMenu,100);
-		setValue(name,pcapName);
-		setValue(ip,eth1Ip);
-		setValue(port,"8080");
-		fetchButton.click();
-		waitForElementVisibility(interfaceList,100);
-		List <WebElement> ifNames = driver.findElements(By.cssSelector(lblCheckBox));
-		List <WebElement> checkBoxes = driver.findElements(By.cssSelector(checkBox));
-		int index = 0;
-		int hitIdx = 0;
-		for (WebElement row: ifNames) {
-			if(row.getText().contains("eth0")) {
-				checkBoxes.get(index).click();
-				hitIdx += 1;
+		
+		//Check if pcap by that name already exists. Then skip adding it. 
+		if(!verifyPcap(pcapName)) {
+			waitForElementVisibility(addButton,1000);
+			addButton.click();
+			waitForElementVisibility(pcapAddMenu,100);
+			setValue(name,pcapName);
+			setValue(ip,eth1Ip);
+			setValue(port,"8080");
+			fetchButton.click();
+			waitForElementVisibility(interfaceList,100);
+			List <WebElement> ifNames = driver.findElements(By.cssSelector(lblCheckBox));
+			int index = 0;
+			int hitIdx = 0;
+			for (WebElement row: ifNames) {
+				if(row.getText().contains("eth1")) {
+					row.findElement(By.cssSelector(checkBox)).click();
+					break;
+				}
+				index++;
 			}
-			if(row.getText().contains("eth1")) {
-				checkBoxes.get(index).click();
-				hitIdx += 1;
-			}
-			if(hitIdx == 2) break;
-			index++;
+			okButton.click();
+			waitForElementVisibility(pcapList,100);
 		}
-		okButton.click();
-		waitForElementVisibility(pcapList,100);
-	}	
+	}
 	
 	public boolean verifyPcap(String pcapName) {
 		boolean status = false; 
+		driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
+		boolean exists = (driver.findElements(By.cssSelector(pcapListId)).size() != 0);
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		List <WebElement> configuredPcaps = null;
+		if(exists) {
+			configuredPcaps = driver.findElements(By.cssSelector(pcapNameId));
+			for (WebElement row:configuredPcaps) {
+				if(row.getText().equalsIgnoreCase(pcapName)) {
+					status = true;
+					break;
+				}
+			}
+ 		}
 		return status;
 	}
 	
-	public void addVFlow(String flowName,String switchName, String inPort, String outPort, String pcapName) {
+	public void addVFlow(String flowName,String switchName, String inPort, String outPort, String duration, String pcapName) {
+		vFlowConfig.click();
 		waitForElementVisibility(addButton,1000);
 		addButton.click();
 		setValue(name,flowName);
@@ -144,7 +167,7 @@ public class VCFPaIndexPage extends PageInfra {
 		dds.get(0).click();
 		List <WebElement> rows = getSwitchList();
 		for (WebElement row : rows) {
-			if(row.getAttribute("outerText").contains(switchName)) {
+			if(row.getText().contains(switchName)) {
 				row.click();
 				break;
 			}
@@ -154,7 +177,7 @@ public class VCFPaIndexPage extends PageInfra {
 		dds.get(1).click();
 		rows = getSwitchList();
 		for (WebElement row : rows) {
-			if(row.getAttribute("outerText").contains("60")) {
+			if(row.getText().contains(duration)) {
 				row.click();
 				break;
 			}
@@ -162,12 +185,58 @@ public class VCFPaIndexPage extends PageInfra {
 		dds.get(2).click();
 		rows = getSwitchList();
 		for (WebElement row : rows) {
-			if(row.getAttribute("outerText").contains(pcapName)) {
+			if(row.getText().contains(pcapName)) {
 				row.click();
 				break;
 			}
 		}
 		okButton.click();
+	}
+	
+	public boolean chkCurrentFlowState (WebElement flow) {
+		driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
+		boolean existsOn = false;
+		existsOn = (flow.findElements(By.cssSelector(switchOnState)).size() != 0);
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		return existsOn;	
+	}
+	
+	public boolean chkCurrentFlowState (WebElement flow,boolean expState) {
+		boolean status = false;
+		driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
+		boolean existsOn = false;
+		existsOn = (flow.findElements(By.cssSelector(switchOnState)).size() != 0);
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		if(existsOn == expState) {
+			status = true;
+		}
+		return status;
+	}
+	
+	public boolean togglevFlowState(String flowName) {
+		boolean status = false;
+		boolean currentState = false;
+		driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
+		boolean exists = (driver.findElements(By.cssSelector(flowHeaderId)).size() != 0);
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		if(exists) {
+			List <WebElement> flowList = driver.findElements(By.cssSelector(flowHeaderId));
+			for (WebElement flow: flowList) {
+				if(flow.findElement(By.cssSelector(flowNameId)).getText().contains(flowName)) {
+					currentState = chkCurrentFlowState(flow); //findCurrentState of the switch
+					flow.findElement(By.cssSelector(toggleSwitch)).click();
+					waitForElementVisibility(confirmOkButton,100);
+					confirmOkButton.click();
+					if(chkCurrentFlowState(flow,!currentState)) {
+						status = true;
+					}
+					break;
+				}			
+			}
+		} else {
+			com.jcabi.log.Logger.error("togglevFlowState","No vflows configured!");
+		}
+		return status;
 	}
 	
 	public void gotoPADashboard() {
