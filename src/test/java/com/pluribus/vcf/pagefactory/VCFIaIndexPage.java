@@ -179,7 +179,7 @@ public class VCFIaIndexPage extends PageInfra {
 						row.click();
 						break;
 					}
-				}	
+				}
 				okButton.click();
 				WebDriverWait myWaitVar = new WebDriverWait(driver,100);
 				myWaitVar.until(ExpectedConditions.elementToBeClickable (By.cssSelector(collectorListId)));
@@ -221,8 +221,12 @@ public class VCFIaIndexPage extends PageInfra {
          robot.keyRelease(KeyEvent.VK_CONTROL);
          robot.keyPress(KeyEvent.VK_ENTER);
          robot.keyRelease(KeyEvent.VK_ENTER);
+         
+         WebDriverWait myWaitVar = new WebDriverWait(driver,1000);
+		 myWaitVar.until(ExpectedConditions.elementToBeClickable(okButton));
+		 waitForElementVisibility(okButton,100);
 		// To click on the submit button (Not the browse button)
-		okButton.click();
+		 okButton.click();
 		//String checkText = driver.findElement(By.id("message")).getText();
 		//Assert.assertEquals("File uploaded successfully", checkText);	
 	}

@@ -57,7 +57,7 @@ public class IATest extends TestSetup {
 			com.jcabi.log.Logger.info("addSeedSwitch", "Successfully added & verified collector"+switchName);
 		}
 	}
-	/*
+	
 	@Parameters({"switchName","trafficDestIp","trafficSrcIp","trafficNumSessions","trafficInterval"}) 
 	@Test(groups={"smoke","regression"},dependsOnMethods={"addCollectorTest"},description="Send traffic and verify stats")
 	public void simpleTrafficTest(String switchName, String trafficDestIp, String trafficSrcIp, int trafficNumSessions, int trafficInterval) throws Exception{
@@ -107,7 +107,7 @@ public class IATest extends TestSetup {
 			throw new Exception(" Simple traffic test failed");
 		}
 	}
-	*/
+	/*
 	@Test(groups={"smoke","regression"},dependsOnMethods={"addCollectorTest"},description="src IP tagging test")
 	public void tagTest() throws Exception{
 		String fileLoc = "C:\\Desktop\\srcIp.csv";
@@ -119,6 +119,7 @@ public class IATest extends TestSetup {
 	public void logout() {
 		login.logout();
 	}
+	*/
 	public boolean verifyVCFCount(int trafficNumSessions) {
 		boolean status = true;
 		int vcfcConnCount = iaIndex.getConnectionCount();
@@ -136,9 +137,6 @@ public class IATest extends TestSetup {
 		}
 		return status;
 	}
-	public void writeToFile(String fileName, String strToWrite) throws Exception {
-		Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName)));
-	    writer.write(strToWrite);
-	}
+	
 	
 }
