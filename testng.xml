@@ -27,9 +27,8 @@
 	//Currently these optional parameters are being set to default values if the user doesn't specify them.
    END OF NOTE -->
     <classes>
-      <!--class name="com.pluribus.vcf.test.InitialSetup"/-->
+      <class name="com.pluribus.vcf.test.InitialSetup"/>
       <class name="com.pluribus.vcf.test.IATest"/>
-      <!--class name="com.pluribus.vcf.test.PATest"/-->
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
