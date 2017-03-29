@@ -1,5 +1,6 @@
 package com.pluribus.vcf.test;
 import com.pluribus.vcf.helper.TestSetup;
+import com.jcabi.ssh.Shell;
 import com.pluribus.vcf.helper.IperfSetup;
 import com.pluribus.vcf.helper.SwitchMethods;
 import com.pluribus.vcf.helper.PageInfra;
@@ -58,9 +59,9 @@ public class IATest extends TestSetup {
 		}
 	}
 	
-	@Parameters({"switchName","trafficDestIp","trafficSrcIp","trafficNumSessions","trafficInterval"}) 
+	@Parameters({"vcfIp","switchName","trafficDestIp","trafficSrcIp","trafficNumSessions","trafficInterval"}) 
 	@Test(groups={"smoke","regression"},dependsOnMethods={"addCollectorTest"},description="Send traffic and verify stats")
-	public void simpleTrafficTest(String switchName, String trafficDestIp, String trafficSrcIp, int trafficNumSessions, int trafficInterval) throws Exception{
+	public void simpleTrafficTest(String vcfIp, String switchName, String trafficDestIp, String trafficSrcIp, int trafficNumSessions, int trafficInterval) throws Exception{
 		// Clearing switch before test
 		cli.clearSessions();
 		
@@ -75,11 +76,11 @@ public class IATest extends TestSetup {
 		} else {
 			com.jcabi.log.Logger.error("simpleTrafficTest","Connection count test failed on switch"+switchName);
 		}
+		
 		boolean status = false;
 		iaIndex.gotoIADashboard();
 		// Verify on VCFC 
-		
-		status = verifyVCFCount(trafficNumSessions);
+		status = verifyVCFCount(trafficNumSessions,vcfIp);
 		if(status == true) {
 			com.jcabi.log.Logger.info("simpleTrafficTest","VCFC count verification passed");
 		} else {
@@ -88,7 +89,7 @@ public class IATest extends TestSetup {
 		
 		//Apply search filter for srcIp
 		iaIndex.applySearchFilter("srcIp: "+trafficSrcIp);
-		status = verifyVCFCount(trafficNumSessions);
+		status = verifyVCFCount(trafficNumSessions,vcfIp);
 		if(status == true) {
 			com.jcabi.log.Logger.info("simpleTrafficTest","VCFC count verification after applying srcIp filter passed");
 		} else {
@@ -97,7 +98,7 @@ public class IATest extends TestSetup {
 		
 		//Apply search filter for dstIp
 		iaIndex.applySearchFilter("dstIp: "+trafficDestIp);
-		status = verifyVCFCount(trafficNumSessions);
+		status = verifyVCFCount(trafficNumSessions,vcfIp);
 		if(status == true) {
 			com.jcabi.log.Logger.info("simpleTrafficTest","VCFC count verification after applying dstIp filter passed");
 		} else {
@@ -108,7 +109,7 @@ public class IATest extends TestSetup {
 		}
 	}
 	/*
-	@Test(groups={"smoke","regression"},dependsOnMethods={"addCollectorTest"},description="src IP tagging test")
+	@Test(groups={"smoke","regression"},dependsOnMethods={"addCollectorTest"},description="Tagging test")
 	public void tagTest() throws Exception{
 		String fileLoc = "C:\\Desktop\\srcIp.csv";
 		writeToFile(fileLoc,"item_srcip,item_dstip,Owner,Device,Group,Function,Name,Security_List\n4.4.4.129,,,,,,,");
@@ -120,7 +121,7 @@ public class IATest extends TestSetup {
 		login.logout();
 	}
 	*/
-	public boolean verifyVCFCount(int trafficNumSessions) {
+	public boolean verifyVCFCount(int trafficNumSessions, String vcfIp) {
 		boolean status = true;
 		int vcfcConnCount = iaIndex.getConnectionCount();
 		com.jcabi.log.Logger.info("verifyVCFCCount","vcfcConnCount:"+vcfcConnCount);
@@ -134,6 +135,18 @@ public class IATest extends TestSetup {
 		if (vcfcAppCount != 1) {
 			com.jcabi.log.Logger.error("verifyVCFCCount","vcfcAppCount:"+vcfcAppCount);
 			status = false;
+		}
+		if(status == false) {
+			Shell sh1 = getVcfShell(vcfIp);
+			String out1;
+			try {
+				out1 = new Shell.Plain(sh1).exec("docker exec -it vcf-elastic bash");	
+				com.jcabi.log.Logger.info("verifyVCFCount",out1);
+				out1 = new Shell.Plain(sh1).exec("curl localhost:9200/_cat/indices?v");
+				com.jcabi.log.Logger.info("verifyVCFCount",out1);
+			} catch(Exception e) {
+				com.jcabi.log.Logger.error("verifyVCFCount",e.toString());
+			}
 		}
 		return status;
 	}

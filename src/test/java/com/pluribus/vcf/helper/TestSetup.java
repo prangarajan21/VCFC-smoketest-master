@@ -46,14 +46,7 @@ public class TestSetup {
    @BeforeSuite(alwaysRun = true)
    public void cleanLogs(String vcfIp,@Optional("1")String clean) throws IOException,InterruptedException {
 	   if(Integer.parseInt(clean) == 1) {
-		Shell sh1 = new Shell.Verbose(
-	            new SSHByPassword(
-	                vcfIp,
-			22,
-	                "vcf",
-	                "changeme"
-	            )
-	        );
+		Shell sh1 = getVcfShell(vcfIp);
 		String out1;
 		out1 = new Shell.Plain(sh1).exec("rm  /home/vcf/srv/vcf/config/flowfilters.json");	
 		out1 = new Shell.Plain(sh1).exec("rm  /home/vcf/srv/vcf/config/pcap-agent.properties");	
@@ -74,13 +67,30 @@ public class TestSetup {
 		Thread.sleep(30000);
 	}
    }
+   
+   public Shell getVcfShell(String vcfIp) {
+	   Shell sh1 = null;
+	   try{
+		   sh1 = new Shell.Verbose(
+				   new SSHByPassword(
+	               vcfIp,
+	               22,
+	               "vcf",
+	               "changeme"
+	            )
+	        );
+	   } catch(Exception e) {
+		   com.jcabi.log.Logger.error("getVcfShell",e.toString());
+	   }
+	   return sh1;
+   }
+   
    @Parameters({"vcfIp","browser","bsUserId","bsKey"}) 
    @BeforeClass(alwaysRun = true)
 	public void startDriver(String vcfIp,String browser,@Optional("pratikdam1")String bsUserId, @Optional("uZCXEzKXwgzgzMr3G7R6") String bsKey) throws Exception {
 		HashMap<String,String> bsLocalArgs = new HashMap<String,String>();
 		String sessionId = null;
 		String command = null;
-		
 		bsLocalArgs.put("key",bsKey); //BrowserStack Key
 		bsLocalArgs.put("force", "true"); //Kill previously open BrowserStack local sessions
 		bsLocal.start(bsLocalArgs);
