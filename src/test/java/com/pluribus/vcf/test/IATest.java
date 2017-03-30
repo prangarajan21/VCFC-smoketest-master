@@ -18,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
@@ -77,10 +78,21 @@ public class IATest extends TestSetup {
 			com.jcabi.log.Logger.error("simpleTrafficTest","Connection count test failed on switch"+switchName);
 		}
 		
+		//Verify on elastic search CLI 	
+		Process p = Runtime.getRuntime().exec("src/test/resources/es_script.expect "+vcfIp);
+		p.waitFor();
+		StringBuffer output = new StringBuffer();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream())); 
+		String line = ""; 
+		while ((line = reader.readLine())!= null) { 
+			output.append(line + "\n"); 
+			} 
+		com.jcabi.log.Logger.info("elasticSearchVerification",output.toString());
+	
 		boolean status = false;
 		iaIndex.gotoIADashboard();
 		// Verify on VCFC 
-		status = verifyVCFCount(trafficNumSessions,vcfIp);
+		status = verifyVCFCount(trafficNumSessions);
 		if(status == true) {
 			com.jcabi.log.Logger.info("simpleTrafficTest","VCFC count verification passed");
 		} else {
@@ -89,7 +101,7 @@ public class IATest extends TestSetup {
 		
 		//Apply search filter for srcIp
 		iaIndex.applySearchFilter("srcIp: "+trafficSrcIp);
-		status = verifyVCFCount(trafficNumSessions,vcfIp);
+		status = verifyVCFCount(trafficNumSessions);
 		if(status == true) {
 			com.jcabi.log.Logger.info("simpleTrafficTest","VCFC count verification after applying srcIp filter passed");
 		} else {
@@ -98,7 +110,7 @@ public class IATest extends TestSetup {
 		
 		//Apply search filter for dstIp
 		iaIndex.applySearchFilter("dstIp: "+trafficDestIp);
-		status = verifyVCFCount(trafficNumSessions,vcfIp);
+		status = verifyVCFCount(trafficNumSessions);
 		if(status == true) {
 			com.jcabi.log.Logger.info("simpleTrafficTest","VCFC count verification after applying dstIp filter passed");
 		} else {
@@ -121,7 +133,7 @@ public class IATest extends TestSetup {
 		login.logout();
 	}
 	*/
-	public boolean verifyVCFCount(int trafficNumSessions, String vcfIp) {
+	public boolean verifyVCFCount(int trafficNumSessions) {
 		boolean status = true;
 		int vcfcConnCount = iaIndex.getConnectionCount();
 		com.jcabi.log.Logger.info("verifyVCFCCount","vcfcConnCount:"+vcfcConnCount);
@@ -136,18 +148,7 @@ public class IATest extends TestSetup {
 			com.jcabi.log.Logger.error("verifyVCFCCount","vcfcAppCount:"+vcfcAppCount);
 			status = false;
 		}
-		if(status == false) {
-			Shell sh1 = getVcfShell(vcfIp);
-			String out1;
-			try {
-				out1 = new Shell.Plain(sh1).exec("docker exec -it vcf-elastic bash");	
-				com.jcabi.log.Logger.info("verifyVCFCount",out1);
-				out1 = new Shell.Plain(sh1).exec("curl localhost:9200/_cat/indices?v");
-				com.jcabi.log.Logger.info("verifyVCFCount",out1);
-			} catch(Exception e) {
-				com.jcabi.log.Logger.error("verifyVCFCount",e.toString());
-			}
-		}
+		
 		return status;
 	}
 	

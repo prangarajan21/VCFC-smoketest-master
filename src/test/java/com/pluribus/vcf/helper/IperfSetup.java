@@ -36,7 +36,7 @@ public class IperfSetup {
 		while ((line = reader.readLine())!= null) { 
 			output.append(line + "\n"); 
 			} 
-		com.jcabi.log.Logger.info("startIperfServer","output.toString()");
+		com.jcabi.log.Logger.info("startIperfServer",output.toString());
 		com.jcabi.log.Logger.info("startIperfServer","iperf server started");
 		return;
 	}

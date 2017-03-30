@@ -105,7 +105,7 @@ public class VCFIaIndexPage extends PageInfra {
 		waitForElementVisibility(driver.findElement(By.tagName(iframeTag)),1000);
 		driver.switchTo().frame(driver.findElement(By.tagName(iframeTag)));	
 		//retryingFindClick(By.cssSelector(countIconsId));
-		waitForElementVisibility(countIcons,180);
+		waitForElementVisibility(countIcons,120);
 		rows = driver.findElements(By.cssSelector(insightCountWidget));
 		return rows;
 	}
@@ -118,7 +118,11 @@ public class VCFIaIndexPage extends PageInfra {
 				if(StringUtils.contains(connOutput, ',')) {
 					connOutput = StringUtils.remove(connOutput, ',');
 				}
-				connCount = Integer.parseInt(connOutput);
+				if(connOutput.equals("")) {
+					connCount = 0;
+				} else {
+					connCount = Integer.parseInt(connOutput);
+				}
 			}
 			driver.switchTo().defaultContent();
 		return connCount;
@@ -131,8 +135,12 @@ public class VCFIaIndexPage extends PageInfra {
 				String connOutput = rows.get(1).getText();	
 				if(StringUtils.contains(connOutput, ',')) {
 					connOutput = StringUtils.remove(connOutput, ',');
+				} 
+				if(connOutput.equals("")) {
+					connCount = 0;
+				} else {
+					connCount = Integer.parseInt(connOutput);
 				}
-				connCount = Integer.parseInt(connOutput);
 			}
 			driver.switchTo().defaultContent();	
 		return connCount;

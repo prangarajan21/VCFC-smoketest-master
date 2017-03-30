@@ -108,19 +108,17 @@ public class PageInfra {
          int attempts = 0;
          while(attempts < 10) {
              try {
-         		driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
             	 boolean exists = (driver.findElements(by)).size() != 0;
             	 if(exists) {
             		 result = true;
             		 break;
             	 } else {
-            		 new WebDriverWait(driver,30);
+            		 //WebDriver wait = new WebDriverWait(driver,30);
             	 }
              } catch(Exception e) {
              }
              attempts++;
          }
- 		 driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
          return result;
      }
     
