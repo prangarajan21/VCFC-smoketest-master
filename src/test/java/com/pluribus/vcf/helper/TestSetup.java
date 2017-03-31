@@ -10,8 +10,11 @@ import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.HashMap;
+
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.TakesScreenshot;
@@ -30,6 +33,9 @@ import static org.testng.Assert.assertTrue;
 import com.browserstack.local.Local;
 import com.jcabi.ssh.Shell;
 import com.pluribus.vcf.test.IATest;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 import com.jcabi.ssh.SSHByPassword;
 
 
@@ -38,7 +44,7 @@ import com.jcabi.ssh.SSHByPassword;
  * @author Haritha
  */
 public class TestSetup {
-   private WebDriver driver;
+   private RemoteWebDriver driver;
    private ResourceBundle bundle;
    Local bsLocal = new Local();
    
@@ -90,12 +96,10 @@ public class TestSetup {
    @BeforeClass(alwaysRun = true)
 	public void startDriver(String vcfIp,String browser,@Optional("pratikdam1")String bsUserId, @Optional("uZCXEzKXwgzgzMr3G7R6") String bsKey) throws Exception {
 		HashMap<String,String> bsLocalArgs = new HashMap<String,String>();
-		String sessionId = null;
-		String command = null;
 		bsLocalArgs.put("key",bsKey); //BrowserStack Key
 		bsLocalArgs.put("force", "true"); //Kill previously open BrowserStack local sessions
 		bsLocal.start(bsLocalArgs);
-	        DesiredCapabilities caps = new DesiredCapabilities();
+	    DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setCapability("browser",browser);
 		caps.setCapability("build", "VCFC SmokeTest Cases");
 		caps.setCapability("acceptSslCerts","true");
@@ -111,39 +115,31 @@ public class TestSetup {
 		driver.manage().deleteAllCookies();
         // Get a handle to the driver. This will throw an exception if a matching driver cannot be located
 	    driver.get("https://"+ vcfIp);
-	    /*
-	   sessionId = driver.getSessionId().toString();
-	   String browserStackLogs = null;
-	   try {
-	   DefaultHttpClient httpClient = new DefaultHttpClient();
-		HttpGet getRequest = new HttpGet(
-			"curl -u \""+bsUserId+":"+bsKey+"\" https://www.browserstack.com/automate/sessions/"+sessionId);
-		getRequest.addHeader("accept", "application/json");
-		HttpResponse response = httpClient.execute(getRequest);
-		if (response.getStatusLine().getStatusCode() != 200) {
-			throw new RuntimeException("Failed : HTTP error code : "
-			   + response.getStatusLine().getStatusCode());
-		}
-		BufferedReader br = new BufferedReader(
-                new InputStreamReader((response.getEntity().getContent())));
-
-		String output;
-		System.out.println("Output from Server .... \n");
-		while ((output = br.readLine()) != null) {
-			System.out.println(output);
-		}
-		httpClient.getConnectionManager().shutdown();
-
-		  } catch (ClientProtocolException e) {
-
-			e.printStackTrace();
-
-		  } catch (IOException e) {
-
-			e.printStackTrace();
-		  }
-		  */
+	    com.jcabi.log.Logger.info("Browserstack logs:",getBSLogs(bsUserId,bsKey));
    }
+   
+   public String getBSLogs(String bsUserId,String bsKey) {
+	    String sessId = driver.getSessionId().toString();
+	    //System.out.println("sessionId:"+sessId);
+	    //URL url = new URL ("https://browserstack.com/automate/sessions/"+sessId+".json");
+	    String url = "https://browserstack.com/automate/sessions/"+sessId+".json";
+	    //System.out.println("url:"+url.toString());
+	    String authUser = bsUserId+":"+bsKey;
+	    String encoding = Base64.encodeBase64String(authUser.getBytes());
+	    Client restClient = Client.create();
+        WebResource webResource = restClient.resource(url);
+        ClientResponse resp = webResource.accept("application/json")
+                                        .header("Authorization", "Basic " + encoding)
+                                        .get(ClientResponse.class);
+       if(resp.getStatus() != 200){
+           System.err.println("Unable to connect to the server");
+       }
+       String output = resp.getEntity(String.class);
+       JSONObject obj = new JSONObject(output);
+       JSONObject bsLogs = (JSONObject) obj.get("automation_session");
+       String publicUrl = bsLogs.get("public_url").toString();
+       return publicUrl;
+  }
    
    @AfterClass(alwaysRun = true)
     public void setupAfterSuite() throws Exception {
