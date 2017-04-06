@@ -98,8 +98,8 @@ public class PageInfra {
                 .until(ExpectedConditions.visibilityOf(el));
     }
 
-    public WebElement waitForElementToClick(final By locator) {
-        return (new WebDriverWait(driver, 25))
+    public WebElement waitForElementToClick(final By locator,int waitTime) {
+        return (new WebDriverWait(driver, waitTime))
                 .until(ExpectedConditions.elementToBeClickable(locator));
     }
     

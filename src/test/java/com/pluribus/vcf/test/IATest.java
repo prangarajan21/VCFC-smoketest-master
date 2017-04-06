@@ -49,19 +49,29 @@ public class IATest extends TestSetup {
 		home1.gotoIA();
 	}
 	
-	@Parameters({"switchName"}) 
+	@Parameters({"switchName","collectorName"}) 
 	@Test(groups={"smoke","regression"},dependsOnMethods={"logintoIA"},description="Add collector in IA Page")
-	public void addCollectorTest(String switchName) throws Exception{
-		if(!iaIndex.addCollector(switchName,user,passwd)) {
-			com.jcabi.log.Logger.error("addCollector","Collector addition failed");
+	public void addCollectorTest(String switchName,@Optional("coll1") String collectorName) throws Exception{
+		if(!iaIndex.addCollector(collectorName,switchName,user,passwd)) {
+			printLogs ("error","addCollector","Collector addition failed");
 			throw new Exception("Collector addition failed");
 		} else {
-			com.jcabi.log.Logger.info("addSeedSwitch", "Successfully added & verified collector"+switchName);
+			printLogs("info","addCollector","Collector addition was successful");
+		}
+	}
+	@Parameters({"collectorName"}) 
+	@Test(groups={"smoke","regression"},dependsOnMethods={"addCollectorTest"},description="Activate collector Test")
+	public void activateCollectorTest(@Optional("coll1") String collectorName) throws Exception{
+		if(!iaIndex.toggleCollState(collectorName,true)) {
+			printLogs ("error","activateCollector","Collector activation failed");
+			throw new Exception("Collector activation failed");
+		} else {
+			printLogs("info","addCollector","Collector activation was successful");
 		}
 	}
 	
 	@Parameters({"vcfIp","switchName","trafficDestIp","trafficSrcIp","trafficNumSessions","trafficInterval"}) 
-	@Test(groups={"smoke","regression"},dependsOnMethods={"addCollectorTest"},description="Send traffic and verify stats")
+	@Test(groups={"smoke","regression"},dependsOnMethods={"activateCollectorTest"},description="Send traffic and verify stats")
 	public void simpleTrafficTest(String vcfIp, String switchName, String trafficDestIp, String trafficSrcIp, int trafficNumSessions, int trafficInterval) throws Exception{
 		// Clearing switch before test
 		cli.clearSessions();
@@ -73,9 +83,9 @@ public class IATest extends TestSetup {
 		//Verify on switch first
 		int connCount = cli.getConnectionCount(trafficDestIp);
 		if(connCount == trafficNumSessions) {
-			com.jcabi.log.Logger.info("simpleTrafficTest","Connection count test passed on switch"+switchName);
+			printLogs("info","simpleTrafficTest","Connection count test passed on switch"+switchName);
 		} else {
-			com.jcabi.log.Logger.error("simpleTrafficTest","Connection count test failed on switch"+switchName);
+			printLogs("error","simpleTrafficTest","Connection count test failed on switch"+switchName);
 		}
 		
 		//Verify on elastic search CLI 	
@@ -87,34 +97,34 @@ public class IATest extends TestSetup {
 		while ((line = reader.readLine())!= null) { 
 			output.append(line + "\n"); 
 			} 
-		com.jcabi.log.Logger.info("elasticSearchVerification",output.toString());
+		printLogs("info","elasticSearchVerification",output.toString());
 	
 		boolean status = false;
 		iaIndex.gotoIADashboard();
 		// Verify on VCFC 
 		status = verifyVCFCount(trafficNumSessions);
 		if(status == true) {
-			com.jcabi.log.Logger.info("simpleTrafficTest","VCFC count verification passed");
+			printLogs("info","simpleTrafficTest","VCFC count verification passed");
 		} else {
-			com.jcabi.log.Logger.error("simpleTrafficTest","VCFC count verification failed");			
+			printLogs("error","simpleTrafficTest","VCFC count verification failed");			
 		}
 		
 		//Apply search filter for srcIp
 		iaIndex.applySearchFilter("srcIp: "+trafficSrcIp);
 		status = verifyVCFCount(trafficNumSessions);
 		if(status == true) {
-			com.jcabi.log.Logger.info("simpleTrafficTest","VCFC count verification after applying srcIp filter passed");
+			printLogs("info","simpleTrafficTest","VCFC count verification after applying srcIp filter passed");
 		} else {
-			com.jcabi.log.Logger.error("simpleTrafficTest","VCFC count verification after applying srcIP filter failed");			
+			printLogs("error","simpleTrafficTest","VCFC count verification after applying srcIP filter failed");			
 		}
 		
 		//Apply search filter for dstIp
 		iaIndex.applySearchFilter("dstIp: "+trafficDestIp);
 		status = verifyVCFCount(trafficNumSessions);
 		if(status == true) {
-			com.jcabi.log.Logger.info("simpleTrafficTest","VCFC count verification after applying dstIp filter passed");
+			printLogs("info","simpleTrafficTest","VCFC count verification after applying dstIp filter passed");
 		} else {
-			com.jcabi.log.Logger.error("simpleTrafficTest","VCFC count verification after applying dstIP filter failed");			
+			printLogs("error","simpleTrafficTest","VCFC count verification after applying dstIP filter failed");			
 		}
 		if(status == false) {
 			throw new Exception(" Simple traffic test failed");
@@ -138,14 +148,14 @@ public class IATest extends TestSetup {
 		int vcfcConnCount = iaIndex.getConnectionCount();
 		com.jcabi.log.Logger.info("verifyVCFCCount","vcfcConnCount:"+vcfcConnCount);
 		int vcfcAppCount = iaIndex.getAppCount();
-		com.jcabi.log.Logger.info("verifyVCFCCount","vcfcAppCount:"+vcfcAppCount);
+		printLogs("info","verifyVCFCCount","vcfcAppCount:"+vcfcAppCount);
 
 		if (vcfcConnCount != trafficNumSessions) {
-			com.jcabi.log.Logger.error("verifyVCFCCount","vcfcConnCount:"+vcfcConnCount+"expected:"+trafficNumSessions);
+			printLogs("error","verifyVCFCCount","vcfcConnCount:"+vcfcConnCount+"expected:"+trafficNumSessions);
 			status = false;
 		} 
 		if (vcfcAppCount != 1) {
-			com.jcabi.log.Logger.error("verifyVCFCCount","vcfcAppCount:"+vcfcAppCount);
+			printLogs("error","verifyVCFCCount","vcfcAppCount:"+vcfcAppCount);
 			status = false;
 		}
 		

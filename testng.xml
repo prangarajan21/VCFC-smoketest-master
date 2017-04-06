@@ -16,18 +16,18 @@
     <parameter name="inPort" value ="7"></parameter>
     <parameter name="outPort" value ="32"></parameter>
     <parameter name="flowDuration" value = "60"></parameter>
-    <parameter name="pcapToggleCount" value = "10"></parameter>
        <!-- NOTE: Additional optional parameters are: 
     	<parameter name="dataNodeHost" value="10.9.8.85"></parameter>
     	<parameter name = "password" value="value_to_be_set_for_vcfc_instance"></parameter>
     	<parameter name= "bsUserId" value="BS_uid"></parameter>
     	<parameter name= "bsKey" value="BS_Key"></parameter>
+    	<parameter name="collectorName" value="coll1"></parameter>
     	<parameter name= "pcapName" value="pcap1"></parameter>
     	<parameter name= "flowName" value="flow1"></parameter>
 	//Currently these optional parameters are being set to default values if the user doesn't specify them.
    END OF NOTE -->
     <classes>
-      <class name="com.pluribus.vcf.test.InitialSetup"/>
+      <!--class name="com.pluribus.vcf.test.InitialSetup"/-->
       <class name="com.pluribus.vcf.test.IATest"/>
     </classes>
   </test> <!-- Test -->

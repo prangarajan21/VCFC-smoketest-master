@@ -55,6 +55,9 @@ public class VCFIaIndexPage extends PageInfra {
 	@FindBy(how = How.NAME, using = "username")
 	WebElement userName;
 	
+	@FindBy(how = How.NAME, using = "name")
+	WebElement name;
+	
 	@FindBy(how = How.NAME, using = "password")
 	WebElement password;
 
@@ -67,18 +70,31 @@ public class VCFIaIndexPage extends PageInfra {
 	@FindBy(how = How.CSS, using = "input[type = 'text']")
 	WebElement searchBox;
 	
+	@FindBy(how= How.CSS, using = "button.btn.btn-primary")
+	WebElement confirmOkButton;
+	
+	@FindBy(how= How.CSS, using = "ng-transclude")
+	WebElement collectorList;
+	
+	@FindBy(how= How.CSS, using = "span.switch")
+	WebElement spanSwitch;
+	
 	/* Field names used for webdriver findElement*/
 	String iframeTag = "iframe";
 	String switchListName = "ul.dropdown-menu";
 	String insightCountWidget =  "div.metric-value.ng-binding";
 	String inputTagName = "input";
 	String srchString = "a[title=";
-	String collectorListId = "span.label-text";
+	String collectorListId = "div.panel-heading.mirror-head";
 	String collectorAddButtons = "button.btn.btn-sm.btn-primary";
 	String uploadTagStr = "Upload Tags";
 	String clearTagStr = "Clear Tags";
 	String fileUpload = "div.holder"; 
 	String countIconsId = "div.metric-value.ng-binding";
+	String toggleSwitch = "span.switch";
+	String switchOnState = "span.toggle-bg.on";
+	String switchOffState = "span.toggle-bg.off";
+	String collButtonString = "Add Netvisor Collector";
 	
 	public VCFIaIndexPage(WebDriver driver) {
 		super(driver);
@@ -145,25 +161,65 @@ public class VCFIaIndexPage extends PageInfra {
 			driver.switchTo().defaultContent();	
 		return connCount;
 	}
-
-	public boolean isCollectorConfigured(String switchName) {
+	
+    public boolean checkCollectorState(WebElement collector) {
+    	driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
+		boolean existsOn = false;
+		existsOn = (collector.findElements(By.cssSelector(switchOnState)).size() != 0);
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		return existsOn;	
+    }
+    
+    public boolean toggleCollState(String collName, boolean expState) {
+    	boolean status = false;
+		boolean currentState = false;
+		driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
+		boolean exists = (driver.findElements(By.cssSelector(collectorListId)).size() != 0);
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		if(exists) {
+			List <WebElement> collList = driver.findElements(By.cssSelector(collectorListId));
+			for (WebElement coll: collList) {
+				if(coll.getText().contains(collName)) {
+					currentState = checkCollectorState(coll); //findCurrentState of the switch
+					if(currentState != expState) {
+						coll.findElement(By.cssSelector(toggleSwitch)).click();
+						waitForElementVisibility(confirmOkButton,100);
+						confirmOkButton.click();
+						waitForElementVisibility(collectorList,100);
+					}
+					if(expState == checkCollectorState(coll)) status = true;
+				}
+				break;
+			}
+			
+		} else {
+			com.jcabi.log.Logger.error("toggleCollectorState","No collector configured!");
+		}
+		return status;
+    }
+	
+    public boolean isCollectorConfigured(String collName) {
 		boolean isColl = false;
 		driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
 		boolean exists = (driver.findElements(By.cssSelector(collectorListId)).size() != 0);
 		//List<WebElement> collCount = driver.findElements(By.cssSelector(collectorListId));
 		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
 		if(exists) {
-				if(driver.findElement(By.cssSelector(collectorListId)).getText().contains(switchName)) {
-					isColl = true;
-					com.jcabi.log.Logger.info("collectorConfigured","Collector List:"+driver.findElement(By.cssSelector(collectorListId)).getText());				 } 
+			    List <WebElement> collector = driver.findElements(By.cssSelector(collectorListId));
+			    for (WebElement row:collector) {
+			    	if(row.getText().contains(collName)) {
+			    		isColl = true;
+			    		com.jcabi.log.Logger.info("collectorConfigured","Collector List:"+row.getText());
+			    	}
+			    }	    
 		}
 		return isColl;
 	}
 	
-	public boolean addCollector(String switchName, String user, String pwd) {
+	public boolean addCollector(String collName, String switchName, String user, String pwd) {
 		boolean status = false;
 		configIcon.click();
-		status = isCollectorConfigured(switchName);
+		status = isCollectorConfigured(collName);
 		if(status==false) {	
 			try {
 			Thread.sleep(5000);
@@ -173,12 +229,12 @@ public class VCFIaIndexPage extends PageInfra {
 			int i = 0;
 			List<WebElement> rows = driver.findElements(By.cssSelector(collectorAddButtons));
 			for (WebElement row: rows) {
-				if(rows.get(i).getText().contains("Add Netvisor Collector")) {
+				if(rows.get(i).getText().contains(collButtonString)) {
 					retryingFindClick(rows.get(i));
-					//rows.get(i).click();
 				}
 				i++;
-			}
+			} 
+			setValue(name,collName);
 			waitForElementVisibility(switchDropDown,1000);
 			switchDropDown.click();
 			rows = getSwitchList();
@@ -189,12 +245,13 @@ public class VCFIaIndexPage extends PageInfra {
 					}
 				}
 				okButton.click();
-				WebDriverWait myWaitVar = new WebDriverWait(driver,100);
-				myWaitVar.until(ExpectedConditions.elementToBeClickable (By.cssSelector(collectorListId)));
-				status = isCollectorConfigured(switchName);
+				waitForElementVisibility(spanSwitch,100);
+				waitForElementToClick(By.cssSelector(toggleSwitch),100);
+				status = isCollectorConfigured(collName);
 		}
 		return status;
 	}
+	
 	public void gotoIADashboard() {
 		dashboardIcon.click();
 		waitForElementVisibility(driver.findElement(By.tagName(iframeTag)),1000);

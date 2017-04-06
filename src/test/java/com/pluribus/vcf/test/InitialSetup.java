@@ -41,7 +41,6 @@ public class InitialSetup extends TestSetup {
        login = new VCFLoginPage(getDriver());
        home = new VCFHomePage(getDriver());
        settings = new VcfSettingsPage(getDriver());
-       //com.jcabi.log.Logger.info(source, msg);
     }
     
     @Parameters({"password"})  
@@ -57,10 +56,12 @@ public class InitialSetup extends TestSetup {
     public void addSeedSwitch(String switchName,String mgmtIp) throws Exception{
     	settings.addSeedSwitch(switchName, switchUserName, mgmtIp, switchPassword);
     	if(!settings.verifySeedSwitch(switchName, switchUserName, mgmtIp, switchPassword)) {
-    		com.jcabi.log.Logger.error("addSeedSwitch", "Seed switch addition failed");
+    		printLogs("error","addSeedSwitch", "Seed switch addition failed");
+    		//com.jcabi.log.Logger.error("addSeedSwitch", "Seed switch addition failed");
     		throw new Exception(" Seed Switch addition failed");
     	} else {
-    		com.jcabi.log.Logger.info("addSeedSwitch", "Successfully added & verified seed switch"+switchName);
+    		printLogs("info","addSeedSwitch", "Successfully added & verified seed switch"+switchName);
+    		//com.jcabi.log.Logger.info("addSeedSwitch", "Successfully added & verified seed switch"+switchName);
     	}
     }
     
@@ -76,19 +77,18 @@ public class InitialSetup extends TestSetup {
     	if(!dataNodeHost.isEmpty()) {
     		settings.addDataNode(dataNodeName, dataNodeHost, nodeUserName, heapSize, nodePassword);
     	    if(!settings.verifyDataNode(dataNodeName)) {
-    	    	//logger.error("Add Data Node failed");
-    	    	com.jcabi.log.Logger.error(login, "Data Node addition failed");
+    	    	printLogs("error","addDataNode","Data Node addition failed");
     	    	throw new Exception(" Add Data Node failed ");
     	    }
     	    else {
-    	    	com.jcabi.log.Logger.info("addDataNode", "Successfully added & verified data node"+dataNodeHost); 
+    	    	printLogs("info","addDataNode", "Successfully added & verified data node"+dataNodeHost); 
     	    }
     	}
     }
     
     @Test(groups = {"smoke","regression"}, dependsOnMethods = { "loginAsTest123" },description = "Activate License")
     public void activateLicense() throws Exception{
-    	settings.activateLicense(pncuName, pncPwd, LicenseTypes.VCFC_SSC_1YR_10M);
+    	settings.activateLicense(pncuName, pncPwd, LicenseTypes.VCFC_SSC_1YR_100M);
     }
 
     

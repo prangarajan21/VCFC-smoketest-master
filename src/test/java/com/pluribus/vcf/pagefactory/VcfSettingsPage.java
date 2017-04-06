@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -272,8 +274,10 @@ public class VcfSettingsPage extends PageInfra{
 	}
 	
 	public void closePopUp(){
-		List <WebElement> popout = driver.findElements(By.cssSelector(msgPopup));
-		if (popout.size() > 0) {
+		driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
+		boolean exists = (driver.findElements(By.cssSelector(msgPopup)).size() != 0);
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		if (exists) {
 			driver.findElement(By.cssSelector(msgPopup)).click();
 		}
 	}

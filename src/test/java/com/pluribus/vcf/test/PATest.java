@@ -51,17 +51,4 @@ public class PATest extends TestSetup{
 		}
 	}
 	
-	@Parameters({"pcapToggleCount","flowName","flowDuration"})
-	@Test(groups={"smoke","regression"},dependsOnMethods={"addEnableFlowTest"},description="Turn on pcap after it gets turned off each time for n iterations")
-	public void reEnablePcap (String pcapToggleCount, @Optional("flow1") String flowName, String flowDuration) throws Exception{
-		int loopCount = Integer.parseInt(pcapToggleCount);
-		Thread.sleep(Integer.parseInt(flowDuration)*1000);
-		for(int i =0; i < loopCount; i++) {
-			if(!paIndex.togglevFlowState(flowName)) {
-				com.jcabi.log.Logger.error("reEnablePcap","Could not reenable vFlow after "+(i-1)+" times");
-				throw new Exception("Reenabling pcap test failed");
-			}
-		}
-	}
-	
 }

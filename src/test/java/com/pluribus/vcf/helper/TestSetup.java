@@ -87,9 +87,20 @@ public class TestSetup {
 	            )
 	        );
 	   } catch(Exception e) {
-		   com.jcabi.log.Logger.error("getVcfShell",e.toString());
+		   printLogs("error","getVcfShell",e.toString());
 	   }
 	   return sh1;
+   }
+   
+   /*Routine for logging. So any changes to this routine will be a single point of edit for all log messages */
+   public void printLogs (String level, String msg1, String msg2) {
+	   if(level.equalsIgnoreCase("error")) {
+		   com.jcabi.log.Logger.error(msg1,msg2);
+	   } 
+	   if(level.equalsIgnoreCase("info")) {
+		   com.jcabi.log.Logger.info(msg1, msg2);
+	   }
+	   System.out.println(level+": "+ msg1 +" "+msg2);
    }
    
    @Parameters({"vcfIp","browser","bsUserId","bsKey"}) 
@@ -115,13 +126,12 @@ public class TestSetup {
 		driver.manage().deleteAllCookies();
         // Get a handle to the driver. This will throw an exception if a matching driver cannot be located
 	    driver.get("https://"+ vcfIp);
-	    com.jcabi.log.Logger.info("Browserstack logs:",getBSLogs(bsUserId,bsKey));
+	    printLogs("info","Browserstack logs:",getBSLogs(bsUserId,bsKey));
    }
    
    public String getBSLogs(String bsUserId,String bsKey) {
 	    String sessId = driver.getSessionId().toString();
 	    //System.out.println("sessionId:"+sessId);
-	    //URL url = new URL ("https://browserstack.com/automate/sessions/"+sessId+".json");
 	    String url = "https://browserstack.com/automate/sessions/"+sessId+".json";
 	    //System.out.println("url:"+url.toString());
 	    String authUser = bsUserId+":"+bsKey;
@@ -132,7 +142,7 @@ public class TestSetup {
                                         .header("Authorization", "Basic " + encoding)
                                         .get(ClientResponse.class);
        if(resp.getStatus() != 200){
-           System.err.println("Unable to connect to the server");
+    	   printLogs("error","getBSLogs","Unable to connect to the server");
        }
        String output = resp.getEntity(String.class);
        JSONObject obj = new JSONObject(output);
@@ -142,10 +152,13 @@ public class TestSetup {
   }
    
    @AfterClass(alwaysRun = true)
-    public void setupAfterSuite() throws Exception {
-        //driver.close();
-	    driver.quit();
-    	bsLocal.stop();
+    public void setupAfterSuite() {
+	    try {
+	    	driver.quit();
+	    	bsLocal.stop();
+	    } catch (Exception e) {
+	    	printLogs("info","setupAfterSuite","driver already closed");
+	    }
     }
 	
     public boolean isContainsText(String text) {
