@@ -73,7 +73,7 @@ public class VCFIaIndexPage extends PageInfra {
 	@FindBy(how= How.CSS, using = "button.btn.btn-primary")
 	WebElement confirmOkButton;
 	
-	@FindBy(how= How.CSS, using = "ng-transclude")
+	@FindBy(how= How.CSS, using = "div.panel-heading.mirror-head")
 	WebElement collectorList;
 	
 	@FindBy(how= How.CSS, using = "span.switch")

@@ -57,11 +57,9 @@ public class InitialSetup extends TestSetup {
     	settings.addSeedSwitch(switchName, switchUserName, mgmtIp, switchPassword);
     	if(!settings.verifySeedSwitch(switchName, switchUserName, mgmtIp, switchPassword)) {
     		printLogs("error","addSeedSwitch", "Seed switch addition failed");
-    		//com.jcabi.log.Logger.error("addSeedSwitch", "Seed switch addition failed");
     		throw new Exception(" Seed Switch addition failed");
     	} else {
     		printLogs("info","addSeedSwitch", "Successfully added & verified seed switch"+switchName);
-    		//com.jcabi.log.Logger.info("addSeedSwitch", "Successfully added & verified seed switch"+switchName);
     	}
     }
     
@@ -88,7 +86,13 @@ public class InitialSetup extends TestSetup {
     
     @Test(groups = {"smoke","regression"}, dependsOnMethods = { "loginAsTest123" },description = "Activate License")
     public void activateLicense() throws Exception{
-    	settings.activateLicense(pncuName, pncPwd, LicenseTypes.VCFC_SSC_1YR_100M);
+    	if(!settings.activateLicense(pncuName, pncPwd, LicenseTypes.VCFC_SSC_1YR_100M)) {
+    		printLogs("error","activateLicense","License activation failed");
+    		throw new Exception("Activate License failed");
+    	}
+    	else {
+    		printLogs("info","activateLicense","License activation was successful");
+    	}
     }
 
     

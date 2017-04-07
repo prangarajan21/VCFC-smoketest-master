@@ -125,7 +125,7 @@ public class VcfSettingsPage extends PageInfra{
 	String seedList = "div[name=form]";
 	String licenseList = "ng-transclude";
 	String deleteIcon = "span.icon-img-link.fa fa-trash-o.ng-scope";
-	String msgPopup = "span.fa.fa-times-circle";
+	String msgPopup = "button.close";
 	String addButtonCss = "button.btn.btn-sm.btn-primary";
 	String switchListId = "div.td";
 
@@ -254,8 +254,9 @@ public class VcfSettingsPage extends PageInfra{
 		waitForElementVisibility(driver.findElement(By.tagName(licenseList)),1000);
 	}
 
-	public void activateLicense(String usrname, String pwd,LicenseTypes type) throws Exception {
-	    logintoPnc(usrname , pwd);
+	public boolean activateLicense(String usrname, String pwd,LicenseTypes type) throws Exception {
+	    boolean status = false;
+		logintoPnc(usrname , pwd);
 	    Thread.sleep(2000); 
 	    driver.navigate().refresh();
 	    List<WebElement> rows = new ArrayList();
@@ -267,10 +268,12 @@ public class VcfSettingsPage extends PageInfra{
 	            	//driver.findElements(By.cssSelector("ng-transclude div.panel.panel-default")).get(i).findElement(By.cssSelector("button.btn.btn-xs.btn-primary")).click();
 	            	//rows.get(i).findElement(By.cssSelector("button.btn.btn-xs.btn-primary")).click();
 	                retryingFindClick(rows.get(i),By.cssSelector("button.btn.btn-xs.btn-primary"));
+	                status = true;
 	                break;
 	            }
 	     }
 	     closePopUp();
+	     return status;
 	}
 	
 	public void closePopUp(){
