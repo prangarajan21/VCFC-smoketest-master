@@ -218,7 +218,6 @@ public class VCFIaIndexPage extends PageInfra {
 	
 	public boolean addCollector(String collName, String switchName, String user, String pwd) {
 		boolean status = false;
-		configIcon.click();
 		status = isCollectorConfigured(collName);
 		if(status==false) {	
 			try {
@@ -256,13 +255,11 @@ public class VCFIaIndexPage extends PageInfra {
 		dashboardIcon.click();
 		waitForElementVisibility(driver.findElement(By.tagName(iframeTag)),1000);
 	}
-	/*
-	public void uploadFile(WebElement fileUpload, String filePath, WebElement okButton) {
-		WebElement element = driver.findElement(fileUpload);
-		element.sendKeys(filePath);
-		okButton.click();
+	public void gotoIAConfig() {
+		configIcon.click();
+		waitForElementVisibility(collectorList,100);
 	}
-	*/
+	
 	public static void setClipboardData(String string) {
 		//StringSelection is a class that can be used for copy and paste operations.
 		StringSelection stringSelection = new StringSelection(string);

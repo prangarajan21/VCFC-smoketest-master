@@ -120,6 +120,9 @@ public class VcfSettingsPage extends PageInfra{
 	@FindBy(how = How.CSS, using = "button.btn.btn-primary.btn-xs")
 	WebElement addAdmin;
 	
+	@FindBy(how = How.CSS, using = "ng-transclude")
+	WebElement listLicense;
+	
 	/*Widget names for findElement(s) calls */
 	String authSeedIcon = "span.icon-img-link.fa.fa-pencil";
 	String seedList = "div[name=form]";
@@ -258,7 +261,8 @@ public class VcfSettingsPage extends PageInfra{
 	    boolean status = false;
 		logintoPnc(usrname , pwd);
 	    Thread.sleep(2000); 
-	    driver.navigate().refresh();
+	    //driver.navigate().refresh();
+	    waitForElementVisibility(listLicense,100);
 	    List<WebElement> rows = new ArrayList();
 	     rows = driver.findElements(By.cssSelector("ng-transclude div.panel.panel-default"));
 	     for (int i=0; i < rows.size(); i++) {
@@ -277,10 +281,8 @@ public class VcfSettingsPage extends PageInfra{
 	}
 	
 	public void closePopUp(){
-		driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
-		boolean exists = (driver.findElements(By.cssSelector(msgPopup)).size() != 0);
-		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-		if (exists) {
+		List <WebElement> popout = driver.findElements(By.cssSelector(msgPopup));
+		if (popout.size() > 0) {
 			driver.findElement(By.cssSelector(msgPopup)).click();
 		}
 	}

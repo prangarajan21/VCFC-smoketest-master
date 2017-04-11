@@ -48,7 +48,7 @@ public class IATest extends TestSetup {
 		login.login("admin", password);
 		home1.gotoIA();
 	}
-	
+	/* In 2.2 they added default NVOS and SFLOW collector. So adding collector isn't required anymore
 	@Parameters({"switchName","collectorName"}) 
 	@Test(groups={"smoke","regression"},dependsOnMethods={"logintoIA"},description="Add collector in IA Page")
 	public void addCollectorTest(String switchName,@Optional("coll1") String collectorName) throws Exception{
@@ -59,9 +59,11 @@ public class IATest extends TestSetup {
 			printLogs("info","addCollector","Collector addition was successful");
 		}
 	}
+	*/
 	@Parameters({"collectorName"}) 
-	@Test(groups={"smoke","regression"},dependsOnMethods={"addCollectorTest"},description="Activate collector Test")
-	public void activateCollectorTest(@Optional("coll1") String collectorName) throws Exception{
+	@Test(groups={"smoke","regression"},dependsOnMethods={"logintoIA"},description="Activate collector Test")
+	public void activateNvosCollectorTest(@Optional("default-netvisor-collector") String collectorName) throws Exception{
+		iaIndex.gotoIAConfig();
 		if(!iaIndex.toggleCollState(collectorName,true)) {
 			printLogs ("error","activateCollector","Collector activation failed");
 			throw new Exception("Collector activation failed");
@@ -71,7 +73,7 @@ public class IATest extends TestSetup {
 	}
 	
 	@Parameters({"vcfIp","switchName","trafficDestIp","trafficSrcIp","trafficNumSessions","trafficInterval"}) 
-	@Test(groups={"smoke","regression"},dependsOnMethods={"activateCollectorTest"},description="Send traffic and verify stats")
+	@Test(groups={"smoke","regression"},dependsOnMethods={"activateNvosCollectorTest"},description="Send traffic and verify stats")
 	public void simpleTrafficTest(String vcfIp, String switchName, String trafficDestIp, String trafficSrcIp, int trafficNumSessions, int trafficInterval) throws Exception{
 		// Clearing switch before test
 		cli.clearSessions();
