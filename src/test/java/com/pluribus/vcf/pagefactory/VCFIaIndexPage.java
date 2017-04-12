@@ -43,7 +43,7 @@ public class VCFIaIndexPage extends PageInfra {
 	@FindBy(how = How.CSS, using = "a.list-group-item.category.ia-tag-menu")
 	WebElement tagIcon;
 	
-	@FindBy(how= How.CSS, using = "button.btn.btn-primary.btn-xs")
+	@FindBy(how= How.CSS, using = "button.btn.btn-sm.btn-primary")
 	WebElement addButton;
 	
 	@FindBy(how= How.CSS, using = "button.btn.btn-default.btn-sm")
@@ -94,6 +94,7 @@ public class VCFIaIndexPage extends PageInfra {
 	String toggleSwitch = "span.switch";
 	String switchOnState = "span.toggle-bg.on";
 	String switchOffState = "span.toggle-bg.off";
+	String editIcon = "span.icon-img-link.fa.fa-pencil";
 	String collButtonString = "Add Netvisor Collector";
 	
 	public VCFIaIndexPage(WebDriver driver) {
@@ -186,12 +187,12 @@ public class VCFIaIndexPage extends PageInfra {
 						waitForElementVisibility(confirmOkButton,100);
 						confirmOkButton.click();
 						waitForElementVisibility(collectorList,100);
+						waitForElementToClick(By.cssSelector(collectorListId),100);
 					}
 					if(expState == checkCollectorState(coll)) status = true;
 				}
 				break;
 			}
-			
 		} else {
 			com.jcabi.log.Logger.error("toggleCollectorState","No collector configured!");
 		}
@@ -215,7 +216,38 @@ public class VCFIaIndexPage extends PageInfra {
 		}
 		return isColl;
 	}
-	
+	public boolean editCollector(String collName, String switchName) {
+		boolean status = false;
+		status = isCollectorConfigured(collName);
+		if(status) {
+			List <WebElement> collList = driver.findElements(By.cssSelector(collectorListId));
+			for (WebElement coll: collList) {
+				if(coll.getText().contains(collName)) {
+					boolean currentState = checkCollectorState(coll);
+					if(currentState == false) {
+						coll.findElement(By.cssSelector(editIcon)).click();
+						switchDropDown.click();
+						List <WebElement> rows = getSwitchList();
+						for (WebElement row : rows) {
+							if(row.getText().contains(switchName)) {
+								row.click();
+								break;
+							}
+						}
+						okButton.click();
+						waitForElementVisibility(spanSwitch,100);
+						waitForElementToClick(By.cssSelector(toggleSwitch),100);
+						status = true;
+						break;
+					} else {
+						return true; //No need to edit since the collector is already in running state. Edit will fail at this point.
+					}
+				}
+			}
+		} 
+		return status;
+	}
+	/*Might need this when we add multiple collectors feature
 	public boolean addCollector(String collName, String switchName, String user, String pwd) {
 		boolean status = false;
 		status = isCollectorConfigured(collName);
@@ -250,7 +282,7 @@ public class VCFIaIndexPage extends PageInfra {
 		}
 		return status;
 	}
-	
+	*/
 	public void gotoIADashboard() {
 		dashboardIcon.click();
 		waitForElementVisibility(driver.findElement(By.tagName(iframeTag)),1000);

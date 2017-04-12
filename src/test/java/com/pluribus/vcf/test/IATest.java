@@ -60,10 +60,22 @@ public class IATest extends TestSetup {
 		}
 	}
 	*/
-	@Parameters({"collectorName"}) 
-	@Test(groups={"smoke","regression"},dependsOnMethods={"logintoIA"},description="Activate collector Test")
-	public void activateNvosCollectorTest(@Optional("default-netvisor-collector") String collectorName) throws Exception{
+	@Parameters({"collectorName","switchName"})
+	@Test(groups={"smoke","regression"},dependsOnMethods={"logintoIA"},description="Edit collector and update switch information")
+	public void editCollectorTest(@Optional("default-netvisor-collector") String collectorName, String switchName) throws Exception{
 		iaIndex.gotoIAConfig();
+		if(!iaIndex.editCollector(collectorName, switchName)) {
+			printLogs ("error","editCollector","Editing collector config failed");
+			throw new Exception("Collector edit failed");
+		} else {
+			printLogs("info","editCollector","Collector edit was successful");
+		}
+	}
+	
+	@Parameters({"collectorName"}) 
+	@Test(groups={"smoke","regression"},dependsOnMethods={"editCollectorTest"},description="Activate collector Test")
+	public void activateNvosCollectorTest(@Optional("default-netvisor-collector") String collectorName) throws Exception{
+		//iaIndex.gotoIAConfig();
 		if(!iaIndex.toggleCollState(collectorName,true)) {
 			printLogs ("error","activateCollector","Collector activation failed");
 			throw new Exception("Collector activation failed");
@@ -112,21 +124,21 @@ public class IATest extends TestSetup {
 		}
 		
 		//Apply search filter for srcIp
-		iaIndex.applySearchFilter("srcIp: "+trafficSrcIp);
-		status = verifyVCFCount(trafficNumSessions);
-		if(status == true) {
-			printLogs("info","simpleTrafficTest","VCFC count verification after applying srcIp filter passed");
-		} else {
-			printLogs("error","simpleTrafficTest","VCFC count verification after applying srcIP filter failed");			
-		}
-		
-		//Apply search filter for dstIp
 		iaIndex.applySearchFilter("dstIp: "+trafficDestIp);
 		status = verifyVCFCount(trafficNumSessions);
 		if(status == true) {
 			printLogs("info","simpleTrafficTest","VCFC count verification after applying dstIp filter passed");
 		} else {
 			printLogs("error","simpleTrafficTest","VCFC count verification after applying dstIP filter failed");			
+		}
+		
+		//Apply search filter for srcIp
+		iaIndex.applySearchFilter("srcIp: "+trafficSrcIp);
+		status = verifyVCFCount(trafficNumSessions);
+		if(status == true) {
+			printLogs("info","simpleTrafficTest","VCFC count verification after applying srcIp filter passed");
+		} else {
+			printLogs("error","simpleTrafficTest","VCFC count verification after applying srcIP filter failed");			
 		}
 		if(status == false) {
 			throw new Exception(" Simple traffic test failed");

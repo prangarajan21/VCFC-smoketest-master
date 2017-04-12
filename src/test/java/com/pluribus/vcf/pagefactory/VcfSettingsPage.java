@@ -254,13 +254,14 @@ public class VcfSettingsPage extends PageInfra{
 		setValue(username,usrname);
 		setValue(password,pwd);
 		okButton.click();
-		waitForElementVisibility(driver.findElement(By.tagName(licenseList)),1000);
+		waitForElementVisibility(driver.findElement(By.tagName(licenseList)),100);
+		waitForElementToClick(By.tagName(licenseList),100);
 	}
 
 	public boolean activateLicense(String usrname, String pwd,LicenseTypes type) throws Exception {
 	    boolean status = false;
 		logintoPnc(usrname , pwd);
-	    Thread.sleep(2000); 
+	    Thread.sleep(10000); 
 	    //driver.navigate().refresh();
 	    waitForElementVisibility(listLicense,100);
 	    List<WebElement> rows = new ArrayList();
@@ -269,8 +270,6 @@ public class VcfSettingsPage extends PageInfra{
 		    rows = driver.findElements(By.cssSelector("ng-transclude div.panel.panel-default"));
 	            if (rows.get(i).getText().contains(type.toString())) {
 	            	com.jcabi.log.Logger.info("activateLicense", "License to be selected:"+type.toString());
-	            	//driver.findElements(By.cssSelector("ng-transclude div.panel.panel-default")).get(i).findElement(By.cssSelector("button.btn.btn-xs.btn-primary")).click();
-	            	//rows.get(i).findElement(By.cssSelector("button.btn.btn-xs.btn-primary")).click();
 	                retryingFindClick(rows.get(i),By.cssSelector("button.btn.btn-xs.btn-primary"));
 	                status = true;
 	                break;
