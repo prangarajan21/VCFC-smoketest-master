@@ -108,9 +108,12 @@ public class VCFIaIndexPage extends PageInfra {
 	public void applySearchFilter(String searchString) {
 		waitForElementVisibility(searchBox,100);
 		setValue(searchBox,searchString);
-		WebElement searchItem = driver.findElement(By.cssSelector(srchString+"'"+searchString+"'"));
-		if(searchItem.isDisplayed()) {
-			searchItem.click();
+		driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
+		boolean existsOn = false;
+		existsOn = (driver.findElements(By.cssSelector(srchString+"'"+searchString+"'")).size() != 0);
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		if(existsOn) {
+			driver.findElement(By.cssSelector(srchString+"'"+searchString+"'")).click();
 		}
 	}
 	
@@ -228,7 +231,7 @@ public class VCFIaIndexPage extends PageInfra {
 						List <WebElement> rows = getSwitchList();
 						for (WebElement row : rows) {
 							if(row.getText().contains(switchName)) {
-								row.click();
+									row.click();
 								break;
 							}
 						}
