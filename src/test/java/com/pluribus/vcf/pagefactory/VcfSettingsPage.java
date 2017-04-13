@@ -140,7 +140,7 @@ public class VcfSettingsPage extends PageInfra{
 		vcfSettingsIcon.click();
 	}
 
-	public void addSeedSwitch(String name , String usrname, String mgmtip, String pwd) {
+	public void addSeedSwitch(String name , String usrname, String mgmtip, String pwd) throws Exception{
 		vcfSettingsIcon.click();
 		waitForElementVisibility(addButton,1000);
 		WebDriverWait myWaitVar = new WebDriverWait(driver,100);
@@ -150,6 +150,7 @@ public class VcfSettingsPage extends PageInfra{
 		setValue(username,usrname);
 		setValue(password,pwd);
 		okButton.click();
+		Thread.sleep(5000);
 		waitForElementVisibility(switchList,1000);
 	}
 	
@@ -301,7 +302,8 @@ public class VcfSettingsPage extends PageInfra{
 	                break;
 	            }
 	        }
-	      closePopUp();
+	        waitForElementToClick(By.cssSelector(msgPopup),100);
+	        closePopUp();
 	}
 	
 	

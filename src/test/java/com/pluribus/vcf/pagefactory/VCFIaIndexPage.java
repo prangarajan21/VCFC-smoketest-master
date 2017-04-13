@@ -32,8 +32,6 @@ import java.awt.event.KeyEvent;
 
 public class VCFIaIndexPage extends PageInfra {
 
-	private static final Object source = null;
-
 	@FindBy(how = How.CSS, using = "a.list-group-item.category.ia-dashboard-menu")
 	WebElement dashboardIcon;
 	
@@ -216,7 +214,7 @@ public class VCFIaIndexPage extends PageInfra {
 		}
 		return isColl;
 	}
-	public boolean editCollector(String collName, String switchName) {
+	public boolean editCollector(String collName, String switchName) throws Exception{
 		boolean status = false;
 		status = isCollectorConfigured(collName);
 		if(status) {
@@ -235,8 +233,8 @@ public class VCFIaIndexPage extends PageInfra {
 							}
 						}
 						okButton.click();
-						waitForElementVisibility(spanSwitch,100);
-						waitForElementToClick(By.cssSelector(toggleSwitch),100);
+						Thread.sleep(5000);
+						waitForElementVisibility(driver.findElement(By.cssSelector(toggleSwitch)),100);
 						status = true;
 						break;
 					} else {
@@ -247,6 +245,7 @@ public class VCFIaIndexPage extends PageInfra {
 		} 
 		return status;
 	}
+	
 	/*Might need this when we add multiple collectors feature
 	public boolean addCollector(String collName, String switchName, String user, String pwd) {
 		boolean status = false;
@@ -283,6 +282,7 @@ public class VCFIaIndexPage extends PageInfra {
 		return status;
 	}
 	*/
+	
 	public void gotoIADashboard() {
 		dashboardIcon.click();
 		waitForElementVisibility(driver.findElement(By.tagName(iframeTag)),1000);
