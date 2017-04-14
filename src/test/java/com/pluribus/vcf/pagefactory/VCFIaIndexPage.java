@@ -172,7 +172,7 @@ public class VCFIaIndexPage extends PageInfra {
 		return existsOn;	
     }
     
-    public boolean toggleCollState(String collName, boolean expState) {
+    public boolean toggleCollState(String collName, boolean expState) throws Exception{
     	boolean status = false;
 		boolean currentState = false;
 		driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
@@ -187,6 +187,7 @@ public class VCFIaIndexPage extends PageInfra {
 						coll.findElement(By.cssSelector(toggleSwitch)).click();
 						waitForElementVisibility(confirmOkButton,100);
 						confirmOkButton.click();
+						Thread.sleep(5000); //waiting for the toggle to go through
 						waitForElementVisibility(collectorList,100);
 						waitForElementToClick(By.cssSelector(collectorListId),100);
 					}
