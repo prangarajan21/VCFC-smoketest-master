@@ -170,7 +170,9 @@ public class VcfSettingsPage extends PageInfra{
 			setValue(username,usrname);
 			setValue(password,pwd);
 			okButton.click();
-			retryingFindClick(By.cssSelector(switchListId));
+			Thread.sleep(5000); //sleeping for authorization to take place
+			waitForElementToClick(By.cssSelector(switchListId),100);
+			//retryingFindClick(By.cssSelector(switchListId));
 		}
 		//closePopUp();
 	}	
@@ -276,8 +278,12 @@ public class VcfSettingsPage extends PageInfra{
 	                break;
 	            }
 	     }
-	     closePopUp();
-	     return status;
+	     if(status == false) {
+	    	 com.jcabi.log.Logger.error("activateLicense","Couldn't find license"+type.toString()+" for activation");
+	     } else {
+	    	 closePopUp();
+	     } 
+	    return status;
 	}
 	
 	public void closePopUp(){
