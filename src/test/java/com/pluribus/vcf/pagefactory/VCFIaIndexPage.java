@@ -79,7 +79,7 @@ public class VCFIaIndexPage extends PageInfra {
 	
 	/* Field names used for webdriver findElement*/
 	String iframeTag = "iframe";
-	String switchListName = "ul.dropdown-menu";
+	String switchListName = "ul.dropdown-menu li";
 	String insightCountWidget =  "div.metric-value.ng-binding";
 	String inputTagName = "input";
 	String srchString = "a[title=";
