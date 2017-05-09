@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
@@ -107,8 +108,10 @@ public class TestSetup {
    @BeforeClass(alwaysRun = true)
 	public void startDriver(String vcfIp,String browser,@Optional("pratikdam1")String bsUserId, @Optional("uZCXEzKXwgzgzMr3G7R6") String bsKey) throws Exception {
 		HashMap<String,String> bsLocalArgs = new HashMap<String,String>();
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddhhmmss");
+	    String dateAsString = simpleDateFormat.format(new Date());
+	    String localId = "convergenceTest"+dateAsString;
 		bsLocalArgs.put("key",bsKey); //BrowserStack Key
-		bsLocalArgs.put("force", "true"); //Kill previously open BrowserStack local sessions
 		bsLocal.start(bsLocalArgs);
 	    DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setCapability("browser",browser);
@@ -117,6 +120,7 @@ public class TestSetup {
 		caps.setCapability("browserstack.local", "true");
 		caps.setCapability("browserstack.debug","true");
 		caps.setCapability("platform","ANY");
+		caps.setCapability("browserstack.localIdentifier",localId);
 		driver = new RemoteWebDriver(
 			      new URL("https://"+bsUserId+":"+bsKey+"@hub-cloud.browserstack.com/wd/hub"),
 			      caps
