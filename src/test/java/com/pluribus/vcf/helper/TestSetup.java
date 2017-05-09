@@ -110,7 +110,7 @@ public class TestSetup {
 		HashMap<String,String> bsLocalArgs = new HashMap<String,String>();
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddhhmmss");
 	    String dateAsString = simpleDateFormat.format(new Date());
-	    String localId = "convergenceTest"+dateAsString;
+	    String localId = "VCFCTest"+dateAsString;
 		bsLocalArgs.put("key",bsKey); //BrowserStack Key
 		bsLocal.start(bsLocalArgs);
 	    DesiredCapabilities caps = new DesiredCapabilities();
