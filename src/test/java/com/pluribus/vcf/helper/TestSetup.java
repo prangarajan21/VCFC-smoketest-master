@@ -111,6 +111,7 @@ public class TestSetup {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddhhmmss");
 	    String dateAsString = simpleDateFormat.format(new Date());
 	    String localId = "VCFCTest"+dateAsString;
+	    bsLocalArgs.put("localIdentifier",localId);
 		bsLocalArgs.put("key",bsKey); //BrowserStack Key
 		bsLocal.start(bsLocalArgs);
 	    DesiredCapabilities caps = new DesiredCapabilities();
@@ -119,6 +120,7 @@ public class TestSetup {
 		caps.setCapability("acceptSslCerts","true");
 		caps.setCapability("browserstack.local", "true");
 		caps.setCapability("browserstack.debug","true");
+		caps.setCapability("browserstack.idleTimeout","150");
 		caps.setCapability("platform","ANY");
 		caps.setCapability("browserstack.localIdentifier",localId);
 		driver = new RemoteWebDriver(
