@@ -83,7 +83,7 @@ public class IATest extends TestSetup {
 			printLogs("info","addCollector","Collector activation was successful");
 		}
 	}
-	/*
+	
 	@Parameters({"vcfIp","switchName","trafficDestIp","trafficSrcIp","trafficNumSessions","trafficInterval"}) 
 	@Test(groups={"smoke","regression"},dependsOnMethods={"activateNvosCollectorTest"},description="Send traffic and verify stats")
 	public void simpleTrafficTest(String vcfIp, String switchName, String trafficDestIp, String trafficSrcIp, int trafficNumSessions, int trafficInterval) throws Exception{
@@ -144,7 +144,7 @@ public class IATest extends TestSetup {
 			throw new Exception(" Simple traffic test failed");
 		}
 	}
-	*/
+	
 	/*
 	@Test(groups={"smoke","regression"},dependsOnMethods={"addCollectorTest"},description="Tagging test")
 	public void tagTest() throws Exception{
