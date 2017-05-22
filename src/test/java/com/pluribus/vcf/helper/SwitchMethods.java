@@ -47,6 +47,19 @@ public class SwitchMethods {
 		return serverSession;
 	}
 	
+	public void assignFabric() {
+		Shell session = getSwitchSession();
+		String out1;
+		try {
+			out1 = new Shell.Plain(session).exec("cli --no-login-prompt --quiet -c fabric-node-show");
+			if(out1.contains("fabric-node-show: Not joined to fabric")) {
+				out1 = new Shell.Plain(session).exec("cli --no-login-prompt --quiet -c \"fabric-create name vcfc-smoke\"");
+			}
+		} catch (IOException e) {
+			System.out.println(e.toString());
+		}
+	}
+	
 	public void clearSessions() {
 		Shell session = getSwitchSession();
 		String out1;

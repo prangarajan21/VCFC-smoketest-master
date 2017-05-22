@@ -37,7 +37,7 @@ public class InitialSetup extends TestSetup {
     @BeforeClass(alwaysRun = true)
     public void init(String mgmtIp) {
        cli = new SwitchMethods(mgmtIp);
-       //cli.restartTomcat();//Workaround for bug 15007	
+       cli.assignFabric();
        login = new VCFLoginPage(getDriver());
        home = new VCFHomePage(getDriver());
        settings = new VcfSettingsPage(getDriver());
