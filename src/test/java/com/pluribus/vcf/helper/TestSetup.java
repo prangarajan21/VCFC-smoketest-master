@@ -49,7 +49,7 @@ public class TestSetup {
    private ResourceBundle bundle;
    Local bsLocal = new Local();
    
-   @Parameters({"vcfIp","upgrade","git_revision","vcfc_version","build_number"})
+   @Parameters({"vcfIp","upgrade","git_revision","vcfc_version","buildNum"})
    @BeforeSuite(alwaysRun = true)
    public void upgradeVCFC(String vcfIp,@Optional("0")String upgrade, @Optional("")String git_revision, @Optional("")String vcfc_version,@Optional("")String build_number) throws IOException,InterruptedException {
 	   if(Integer.parseInt(upgrade) == 1) {
