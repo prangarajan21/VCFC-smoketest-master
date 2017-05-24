@@ -10,7 +10,7 @@
     <!-- Traffic parameters -->
     <parameter name="trafficSrcIp" value="4.4.4.129"></parameter>
     <parameter name="trafficDestIp" value="4.4.4.97"></parameter>
-    <parameter name="trafficNumSessions" value="10"></parameter>
+    <parameter name="trafficNumSessions" value="100"></parameter>
     <parameter name="trafficInterval" value="20"></parameter>
     <!-- PA parameters -->
     <parameter name="inPort" value ="7"></parameter>

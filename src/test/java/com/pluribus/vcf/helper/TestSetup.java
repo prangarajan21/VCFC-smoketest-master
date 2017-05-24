@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.HashMap;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +27,7 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Optional;
 import static org.testng.Assert.assertTrue;
@@ -49,8 +49,28 @@ public class TestSetup {
    private ResourceBundle bundle;
    Local bsLocal = new Local();
    
-   @Parameters({"vcfIp","clean"})
+   @Parameters({"vcfIp","upgrade","git_revision","vcfc_version","build_number"})
    @BeforeSuite(alwaysRun = true)
+   public void upgradeVCFC(String vcfIp,@Optional("0")String upgrade, @Optional("")String git_revision, @Optional("")String vcfc_version,@Optional("")String build_number) throws IOException,InterruptedException {
+	   if(Integer.parseInt(upgrade) == 1) {
+		Shell sh1 = new Shell.Verbose(
+	            new SSHByPassword(
+	                vcfIp,
+	                22,
+	                "vcf",
+	                "changeme"
+	            )
+	        );
+		String out1;
+		String imageName = "vcf-"+vcfc_version+"-"+git_revision+".tgz";
+		String imageUrl = "http://sandy:8081/artifactory/Maestro/VCFC_Upgrade/"+build_number+"/"+imageName;
+		out1 = new Shell.Plain(sh1).exec("cd /srv/docker/offline_images;wget "+imageUrl);
+		out1 = new Shell.Plain(sh1).exec("/home/vcf/VCFC_setup.sh upgrade "+imageName);
+	   }
+   }
+   
+   @Parameters({"vcfIp","clean"})
+   @BeforeTest(alwaysRun = true)
    public void cleanLogs(String vcfIp,@Optional("1")String clean) throws IOException,InterruptedException {
 	   if(Integer.parseInt(clean) == 1) {
 		Shell sh1 = getVcfShell(vcfIp);
