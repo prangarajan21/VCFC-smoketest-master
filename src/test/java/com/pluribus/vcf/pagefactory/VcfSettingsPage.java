@@ -111,6 +111,9 @@ public class VcfSettingsPage extends PageInfra{
 	@FindBy(how = How.CSS, using = "div.stats.ng-scope")
 	WebElement switchStats;
 	
+	@FindBy(how = How.CSS, using = "div [ui-view]")
+	WebElement healthDetail;
+	
 	@FindBy(how = How.CSS, using = "div#tr_cert_0")
 	WebElement certsDetail;
 	
@@ -336,7 +339,8 @@ public class VcfSettingsPage extends PageInfra{
 	public void navigateToSystemhealthMenu () {
 		vcfSettingsIcon.click();
 		waitForElementVisibility(switchMenu,1000);
-		healthMenu.click();		
+		healthMenu.click();	
+		waitForElementVisibility(healthDetail,100);
 	}
 	
 	public void navigateToServerMenu() {

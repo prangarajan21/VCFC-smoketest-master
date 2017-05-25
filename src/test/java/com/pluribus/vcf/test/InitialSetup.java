@@ -60,8 +60,8 @@ public class InitialSetup extends TestSetup {
     		throw new Exception(" Seed Switch addition failed");
     	} else {
     		printLogs("info","addSeedSwitch", "Successfully added & verified seed switch"+switchName);
-    	}
-    }
+    	}  
+    }    
     
     @Test(groups = {"smoke","regression"}, dependsOnMethods = { "addSeedSwitch" }, description = "Authorize seed switches")
     public void authSeedSwitch() throws InterruptedException {
@@ -96,7 +96,7 @@ public class InitialSetup extends TestSetup {
     }
 
     
-    @Test(groups = {"smoke","regression"}, dependsOnMethods = { "loginAsTest123" },description = "Navigate all pages in VCF settings page")
+    @Test(groups = {"smoke","regression"}, dependsOnMethods = { "activateLicense" },description = "Navigate all pages in VCF settings page")
     public void vcfsettingsPagenavigations() {
     	settings.navigateToSwitchMenu();
     	settings.navigateToSystemhealthMenu();
