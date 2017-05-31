@@ -19,6 +19,9 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestContext;
@@ -64,8 +67,10 @@ public class TestSetup {
 		String out1;
 		String imageName = "vcf-"+vcfc_version+"-"+git_revision+".tgz";
 		String imageUrl = "http://sandy:8081/artifactory/Maestro/VCFC_Upgrade/"+build_number+"/"+imageName;
-		out1 = new Shell.Plain(sh1).exec("cd /srv/docker/offline_images;wget "+imageUrl);
+		int out2 = new Shell.Empty(sh1).exec("cd /srv/docker/offline_images;wget "+imageUrl);
+		//out1 = new Shell.Plain(sh1).exec("cd /srv/docker/offline_images;wget "+imageUrl);
 		out1 = new Shell.Plain(sh1).exec("/home/vcf/VCFC_setup.sh upgrade "+imageName);
+		Thread.sleep(30000); //Sleeping after upgrade
 	   }
    }
    
@@ -124,17 +129,52 @@ public class TestSetup {
 	   System.out.println(level+": "+ msg1 +" "+msg2);
    }
    
-   @Parameters({"vcfIp","browser","bsUserId","bsKey"}) 
+   @Parameters({"vcfIp","browser","local","bsUserId","bsKey"}) 
    @BeforeClass(alwaysRun = true)
-	public void startDriver(String vcfIp,String browser,@Optional("pratikdam1")String bsUserId, @Optional("uZCXEzKXwgzgzMr3G7R6") String bsKey) throws Exception {
+   public void initDriver(String vcfIp, String browser, @Optional("0")String local,@Optional("pratikdam1")String bsUserId, @Optional("uZCXEzKXwgzgzMr3G7R6") String bsKey) throws Exception{
+	   if(Integer.parseInt(local)==1) {
+		   startDriver(vcfIp,browser);
+	   }
+	   else {
+		   startDriver(vcfIp,browser,bsUserId,bsKey); //Call browserstack test session
+	   }
+   }
+   
+   public void startDriver(String vcfIp,String browserName) {
+	   if(browserName.equalsIgnoreCase("chrome")) {
+	   		System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver");
+	   		DesiredCapabilities handlSSLErr = DesiredCapabilities.chrome();     
+	   		handlSSLErr.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+	   		driver=new ChromeDriver(handlSSLErr);
+	   		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+			driver.manage().window().maximize();
+			driver.get("https:"+vcfIp);
+	   } else if (browserName.equalsIgnoreCase("firefox")) {
+		    System.setProperty("webdriver.gecko.driver","src/test/resources/geckodriver");
+	   		DesiredCapabilities caps = DesiredCapabilities.firefox();
+	   	    caps.setCapability("marionette", true);
+	   	    caps.setCapability("acceptInsecureCerts",true);
+	   	    //var capabilities = new FirefoxOptions().addTo(caps);
+	   	    System.out.println("Capabilities:"+caps.toString());
+		    driver = new FirefoxDriver(caps);
+	   		driver.get("https:"+vcfIp);
+	   		System.out.println("title"+driver.getTitle());
+	   }
+	   //TODO: ADD IE AND SAFARI TO THE LIST
+   }
+ 
+    public void startDriver(String vcfIp,String browser,String bsUserId, String bsKey) throws Exception {
 		HashMap<String,String> bsLocalArgs = new HashMap<String,String>();
+		String sessionId = null;
+		String command = null;
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddhhmmss");
 	    String dateAsString = simpleDateFormat.format(new Date());
-	    String localId = "VCFCTest"+dateAsString;
-	    bsLocalArgs.put("localIdentifier",localId);
+	    String localId = "convergenceTest"+dateAsString;
+		bsLocalArgs.put("localIdentifier",localId);
 		bsLocalArgs.put("key",bsKey); //BrowserStack Key
 		bsLocal.start(bsLocalArgs);
-	    DesiredCapabilities caps = new DesiredCapabilities();
+	    
+		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setCapability("browser",browser);
 		caps.setCapability("build", "VCFC SmokeTest Cases");
 		caps.setCapability("acceptSslCerts","true");
@@ -152,7 +192,7 @@ public class TestSetup {
 		driver.manage().deleteAllCookies();
         // Get a handle to the driver. This will throw an exception if a matching driver cannot be located
 	    driver.get("https://"+ vcfIp);
-	    printLogs("info","Browserstack logs:",getBSLogs(bsUserId,bsKey));
+	    com.jcabi.log.Logger.info("Logfile",getBSLogs(bsUserId,bsKey));
    }
    
    public String getBSLogs(String bsUserId,String bsKey) {
