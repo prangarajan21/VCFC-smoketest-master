@@ -1,0 +1,9 @@
+#!/usr/bin/expect
+set vcfIp [lindex $argv 0]
+set timeout 60
+spawn ssh -l vcf $vcfIp 
+expect "password:"
+send "changeme\r"
+expect "vcf@vcf-center:~"
+send "docker exec -it vcf-elastic  curl localhost:9200/_cat/indices?v\r"
+expect "vcf@vcf-center:~"
