@@ -152,7 +152,8 @@ public class VcfSettingsPage extends PageInfra{
 		setValue(mgmtIp,mgmtip);
 		setValue(username,usrname);
 		setValue(password,pwd);
-		okButton.click();
+		retryingFindClick(okButton);
+		//okButton.click();
 		Thread.sleep(5000);
 		waitForElementVisibility(switchList,1000);
 	}
