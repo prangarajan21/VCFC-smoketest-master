@@ -173,8 +173,6 @@ public class TestSetup {
 	    String logFileName = "BSlogs"+dateAsString+".txt";
 		bsLocalArgs.put("localIdentifier",localId); //environment variable
 		bsLocalArgs.put("key",bsKey); //BrowserStack Key
-		bsLocalArgs.put("v", "true"); 
-		bsLocalArgs.put("logfile", "/home/jenkins/tmp/browserstack/"+logFileName);
 		bsLocal.start(bsLocalArgs); //comment this out if using plugin. Comment out stop also if using plugin
 	    
 		DesiredCapabilities caps = new DesiredCapabilities();
