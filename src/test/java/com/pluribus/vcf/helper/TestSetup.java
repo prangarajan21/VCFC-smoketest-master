@@ -170,9 +170,12 @@ public class TestSetup {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddhhmmss");
 	    String dateAsString = simpleDateFormat.format(new Date());
 	    String localId = "convergenceTest"+dateAsString;
-		bsLocalArgs.put("localIdentifier",localId);
+	    String logFileName = "BSlogs"+dateAsString+".txt";
+		bsLocalArgs.put("localIdentifier",localId); //environment variable
 		bsLocalArgs.put("key",bsKey); //BrowserStack Key
-		bsLocal.start(bsLocalArgs);
+		bsLocalArgs.put("v", "true"); 
+		bsLocalArgs.put("logfile", "/home/jenkins/tmp/browserstack/"+logFileName);
+		bsLocal.start(bsLocalArgs); //comment this out if using plugin. Comment out stop also if using plugin
 	    
 		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setCapability("browser",browser);
@@ -221,7 +224,7 @@ public class TestSetup {
     public void setupAfterSuite() {
 	    try {
 	    	driver.quit();
-	    	bsLocal.stop();
+	    	bsLocal.stop(); //comment
 	    } catch (Exception e) {
 	    	printLogs("info","setupAfterSuite","driver already closed");
 	    }
