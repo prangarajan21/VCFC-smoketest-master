@@ -44,7 +44,7 @@ public class InitialSetup extends TestSetup {
     }
     
     @Parameters({"password"})  
-    @Test(groups = {"smoke","regression"},description = "Login to VCF as test123 After Password Change")
+    @Test(groups = {"smoke","regression"},dependsOnMethods = {"loginAsAdmin"}, description = "Login to VCF as test123 After Password Change")
     public void loginAsTest123(@Optional("test123")String password) {
         login.login(vcfUserName, password);
         login.waitForLogoutButton();
@@ -83,7 +83,7 @@ public class InitialSetup extends TestSetup {
     	    }
     	}
     }
-    /*
+    
     @Test(groups = {"smoke","regression"}, dependsOnMethods = { "loginAsTest123" },description = "Activate License")
     public void activateLicense() throws Exception{
     	if(!settings.activateLicense(pncuName, pncPwd, LicenseTypes.VCFC_SSC_3YR_100M)) {
@@ -94,7 +94,7 @@ public class InitialSetup extends TestSetup {
     		printLogs("info","activateLicense","License activation was successful");
     	}
     }
-   */
+   
     
     @Test(groups = {"smoke","regression"}, dependsOnMethods = {"loginAsTest123"},description = "Navigate all pages in VCF settings page")
     public void vcfsettingsPagenavigations() {
@@ -105,7 +105,7 @@ public class InitialSetup extends TestSetup {
     	settings.navigateToadminMenu();
     	settings.navigateToAppMenu();
     }
-    /*
+   
     @Parameters({"password"})
     @Test(groups = {"smoke","regression"}, description = "Login to VCF as admin  and Change Password")
     public void loginAsAdmin(@Optional("test123")String password) {
@@ -113,7 +113,7 @@ public class InitialSetup extends TestSetup {
         login.waitForLogoutButton();
         login.logout();
     }
-    */
+   
     @Test(groups={"smoke","regression"}, dependsOnMethods = {"addDataNode"}, description = "Logout of VCFC")
     public void logout() {
         login.logout();
