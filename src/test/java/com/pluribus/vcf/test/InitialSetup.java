@@ -86,7 +86,7 @@ public class InitialSetup extends TestSetup {
     
     @Test(groups = {"smoke","regression"}, dependsOnMethods = { "loginAsTest123" },description = "Activate License")
     public void activateLicense() throws Exception{
-    	if(!settings.activateLicense(pncuName, pncPwd, LicenseTypes.VCFC_SSC_3YR_100M)) {
+    	if(!settings.activateLicense(pncuName, pncPwd, LicenseTypes.VCFC_SSC_1YR_10B)) {
     		printLogs("error","activateLicense","License activation failed");
     		throw new Exception("Activate License failed");
     	}
