@@ -163,52 +163,15 @@ public class TestSetup {
 	   }
 	   //Firefox local doesn't work due to a bug. TODO: ADD IE AND SAFARI TO THE LIST
    }
-   /*
-   @Parameters({"jenkins","bsKey"})
-   @BeforeSuite(alwaysRun = true)
-    public void startBSLocal(@Optional("0") String jenkins, @Optional("uZCXEzKXwgzgzMr3G7R6") String bsKey) throws Exception{
-    	String logFileName = null;
-    	if(Integer.parseInt(jenkins) == 1) {
-			logFileName = "/home/jenkins/tmp/browserstack/BSlogs.txt";	
-		} else {
-			HashMap<String,String> bsLocalArgs = new HashMap<String,String>();
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddhhmmss");
-			String dateAsString = simpleDateFormat.format(new Date());
-			localId = "convergenceTest"+dateAsString;
-			logFileName = "src/test/resources/BSlogs.txt";
-			bsLocalArgs.put("-log-file", logFileName);
-			bsLocalArgs.put("localIdentifier",localId); //environment variable
-			bsLocalArgs.put("key",bsKey); //BrowserStack Key
-			bsLocalArgs.put("v", "true"); 
-			bsLocal.start(bsLocalArgs); 
-		}
-    }
    
-   @Parameters({"jenkins"})
-   @AfterSuite(alwaysRun=true) 
-   public void stopBSLocal(@Optional("0") String jenkins) throws Exception{
-	   if(Integer.parseInt(jenkins) == 0) {
-   			bsLocal.stop();
-   	   }
-   }
-   */
     public void startDriver(String vcfIp,String browser,String bsUserId, String bsKey,int jenkins) throws Exception {
 		String sessionId = null;
 		String command = null;
-		String logFileName = null;
-		
-		if(jenkins == 1) {
-			logFileName = "/home/jenkins/tmp/browserstack/";
-			
-		} else {
-			logFileName = "src/test/resources/";
-		}
-		
+		String logFileName = "/tmp/browserstack/BSlogs.txt";		
 		HashMap<String,String> bsLocalArgs = new HashMap<String,String>();
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddhhmmss");
 		String dateAsString = simpleDateFormat.format(new Date());
 		String localId = "convergenceTest"+dateAsString;
-		logFileName += "BSlogs.txt";
 		if(jenkins == 0) {
 			bsLocalArgs.put("-log-file", logFileName);
 			bsLocalArgs.put("localIdentifier",localId); //environment variable

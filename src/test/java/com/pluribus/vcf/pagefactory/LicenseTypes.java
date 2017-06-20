@@ -22,5 +22,4 @@ public enum LicenseTypes {
 	VCFC_SSC_3YR_10B{public String toString(){return "VCFC-SSC-3YR-10B";}},
 	VCFC_SSC_3YR_10M{public String toString(){return "VCFC-SSC-3YR-10M";}},
 	VCFC_SSC_3YR_100M{public String toString(){return "VCFC-SSC-3YR-100M";}},
-	
 }
