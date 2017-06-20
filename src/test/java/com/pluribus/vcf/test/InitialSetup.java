@@ -62,13 +62,13 @@ public class InitialSetup extends TestSetup {
     		printLogs("info","addSeedSwitch", "Successfully added & verified seed switch"+switchName);
     	}  
     }    
-    
+    /*
     @Test(groups = {"smoke","regression"}, dependsOnMethods = { "addSeedSwitch" }, description = "Authorize seed switches")
     public void authSeedSwitch() throws InterruptedException {
     	settings.authSeedSwitches(switchUserName,switchPassword);
     	Thread.sleep(1000); //Waiting for success message to go away
     }
-	
+	*/
     @Parameters({"dataNodeHost"}) 
     @Test(groups = {"smoke","regression"}, dependsOnMethods = { "addSeedSwitch" },description = "Add data node & verify")
     public void addDataNode(@Optional("") String dataNodeHost) throws Exception{
