@@ -163,6 +163,7 @@ public class TestSetup {
 	   }
 	   //Firefox local doesn't work due to a bug. TODO: ADD IE AND SAFARI TO THE LIST
    }
+   /*
    @Parameters({"jenkins","bsKey"})
    @BeforeSuite(alwaysRun = true)
     public void startBSLocal(@Optional("0") String jenkins, @Optional("uZCXEzKXwgzgzMr3G7R6") String bsKey) throws Exception{
@@ -190,12 +191,12 @@ public class TestSetup {
    			bsLocal.stop();
    	   }
    }
-   
+   */
     public void startDriver(String vcfIp,String browser,String bsUserId, String bsKey,int jenkins) throws Exception {
 		String sessionId = null;
 		String command = null;
 		String logFileName = null;
-		/*
+		
 		if(jenkins == 1) {
 			logFileName = "/home/jenkins/tmp/browserstack/";
 			
@@ -215,7 +216,7 @@ public class TestSetup {
 			bsLocalArgs.put("v", "true"); 
 			bsLocal.start(bsLocalArgs); 
 		}
-		*/ 
+		 
 		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setCapability("browser",browser);
 		caps.setCapability("build", "VCFC SmokeTest Cases");
@@ -271,11 +272,9 @@ public class TestSetup {
     public void setupAfterSuite(@Optional("0")String jenkins) {
 	    try {
 	    	driver.quit();
-	    	/*
 	    	if(Integer.parseInt(jenkins) == 0) {
 	    		bsLocal.stop();
 	    	}
-	    	*/
 	    } catch (Exception e) {
 	    	printLogs("info","setupAfterSuite","driver already closed");
 	    }
