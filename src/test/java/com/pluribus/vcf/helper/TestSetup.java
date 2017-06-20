@@ -51,6 +51,7 @@ public class TestSetup {
    private RemoteWebDriver driver;
    private ResourceBundle bundle;
    Local bsLocal = new Local();
+   private String localId;
    
    @Parameters({"vcfIp","upgrade","git_revision","vcfc_version","buildNum"})
    @BeforeSuite(alwaysRun = true)
@@ -160,9 +161,36 @@ public class TestSetup {
 	   		driver.get("https:"+vcfIp);
 	   		System.out.println("title"+driver.getTitle());
 	   }
-	   //TODO: ADD IE AND SAFARI TO THE LIST
+	   //Firefox local doesn't work due to a bug. TODO: ADD IE AND SAFARI TO THE LIST
    }
- 
+   @Parameters({"jenkins","bsKey"})
+   @BeforeSuite(alwaysRun = true)
+    public void startBSLocal(@Optional("0") String jenkins, @Optional("uZCXEzKXwgzgzMr3G7R6") String bsKey) throws Exception{
+    	String logFileName = null;
+    	if(Integer.parseInt(jenkins) == 1) {
+			logFileName = "/home/jenkins/tmp/browserstack/BSlogs.txt";	
+		} else {
+			HashMap<String,String> bsLocalArgs = new HashMap<String,String>();
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddhhmmss");
+			String dateAsString = simpleDateFormat.format(new Date());
+			localId = "convergenceTest"+dateAsString;
+			logFileName = "src/test/resources/BSlogs.txt";
+			bsLocalArgs.put("-log-file", logFileName);
+			bsLocalArgs.put("localIdentifier",localId); //environment variable
+			bsLocalArgs.put("key",bsKey); //BrowserStack Key
+			bsLocalArgs.put("v", "true"); 
+			bsLocal.start(bsLocalArgs); 
+		}
+    }
+   
+   @Parameters({"jenkins"})
+   @AfterSuite(alwaysRun=true) 
+   public void stopBSLocal(@Optional("0") String jenkins) throws Exception{
+	   if(Integer.parseInt(jenkins) == 0) {
+   			bsLocal.stop();
+   	   }
+   }
+   
     public void startDriver(String vcfIp,String browser,String bsUserId, String bsKey,int jenkins) throws Exception {
 		String sessionId = null;
 		String command = null;
@@ -174,7 +202,6 @@ public class TestSetup {
 		} else {
 			logFileName = "src/test/resources/";
 		}
-		*/
 		
 		HashMap<String,String> bsLocalArgs = new HashMap<String,String>();
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddhhmmss");
@@ -182,12 +209,13 @@ public class TestSetup {
 		String localId = "convergenceTest"+dateAsString;
 		logFileName += "BSlogs.txt";
 		if(jenkins == 0) {
+			bsLocalArgs.put("-log-file", logFileName);
 			bsLocalArgs.put("localIdentifier",localId); //environment variable
 			bsLocalArgs.put("key",bsKey); //BrowserStack Key
-			//bsLocalArgs.put("v", "true"); 
-			//bsLocalArgs.put("logfile", logFileName);
+			bsLocalArgs.put("v", "true"); 
 			bsLocal.start(bsLocalArgs); 
-		} 
+		}
+		*/ 
 		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setCapability("browser",browser);
 		caps.setCapability("build", "VCFC SmokeTest Cases");
@@ -243,9 +271,11 @@ public class TestSetup {
     public void setupAfterSuite(@Optional("0")String jenkins) {
 	    try {
 	    	driver.quit();
+	    	/*
 	    	if(Integer.parseInt(jenkins) == 0) {
 	    		bsLocal.stop();
 	    	}
+	    	*/
 	    } catch (Exception e) {
 	    	printLogs("info","setupAfterSuite","driver already closed");
 	    }

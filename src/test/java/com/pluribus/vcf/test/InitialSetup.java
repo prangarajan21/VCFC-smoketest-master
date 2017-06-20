@@ -52,7 +52,7 @@ public class InitialSetup extends TestSetup {
     }
     
     @Parameters({"switchName","mgmtIp"})  
-    @Test(groups = {"smoke","regression"}, dependsOnMethods = { "vcfsettingsPagenavigations" },description = "Add Seed Switch & verify")
+    @Test(groups = {"smoke","regression"}, dependsOnMethods = { "activateLicense" },description = "Add Seed Switch & verify")
     public void addSeedSwitch(String switchName,String mgmtIp) throws Exception{
     	settings.addSeedSwitch(switchName, switchUserName, mgmtIp, switchPassword);
     	if(!settings.verifySeedSwitch(switchName, switchUserName, mgmtIp, switchPassword)) {
@@ -95,7 +95,7 @@ public class InitialSetup extends TestSetup {
     	}
     }
    
-    
+    /*
     @Test(groups = {"smoke","regression"}, dependsOnMethods = {"loginAsTest123"},description = "Navigate all pages in VCF settings page")
     public void vcfsettingsPagenavigations() {
     	settings.navigateToSwitchMenu();
@@ -105,7 +105,7 @@ public class InitialSetup extends TestSetup {
     	settings.navigateToadminMenu();
     	settings.navigateToAppMenu();
     }
-   
+   */
     @Parameters({"password"})
     @Test(groups = {"smoke","regression"}, description = "Login to VCF as admin  and Change Password")
     public void loginAsAdmin(@Optional("test123")String password) {

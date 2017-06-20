@@ -154,7 +154,7 @@ public class VcfSettingsPage extends PageInfra{
 		setValue(password,pwd);
 		retryingFindClick(okButton);
 		//okButton.click();
-		Thread.sleep(5000);
+		Thread.sleep(1000);
 		waitForElementVisibility(switchList,1000);
 	}
 	
@@ -279,6 +279,7 @@ public class VcfSettingsPage extends PageInfra{
 	            	com.jcabi.log.Logger.info("activateLicense", "License to be selected:"+type.toString());
 	                retryingFindClick(rows.get(i),By.cssSelector("button.btn.btn-xs.btn-primary"));
 	                status = true;
+	                Thread.sleep(2000); 
 	                break;
 	            }
 	     }
