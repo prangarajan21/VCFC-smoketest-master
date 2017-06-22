@@ -75,30 +75,42 @@ public class TestSetup {
 	   }
    }
    
-   @Parameters({"vcfIp","clean"})
+   @Parameters({"vcfIp","clean","imageType"})
    @BeforeTest(alwaysRun = true)
-   public void cleanLogs(String vcfIp,@Optional("1")String clean) throws IOException,InterruptedException {
+   public void cleanLogs(String vcfIp,@Optional("1")String clean,@Optional("test")String imageType) throws IOException,InterruptedException {
 	   if(Integer.parseInt(clean) == 1) {
 		Shell sh1 = getVcfShell(vcfIp);
 		String out1;
-		out1 = new Shell.Plain(sh1).exec("rm  /home/vcf/srv/vcf/config/flowfilters.json");	
-		out1 = new Shell.Plain(sh1).exec("rm  /home/vcf/srv/vcf/config/pcap-agent.properties");	
-		out1 = new Shell.Plain(sh1).exec("rm  /home/vcf/srv/vcf/config/pcap-engine.json");
-		out1 = new Shell.Plain(sh1).exec("rm  /home/vcf/srv/vcf/config/vcf-center.properties");
-		out1 = new Shell.Plain(sh1).exec("rm  /home/vcf/srv/vcf/config/pcap_agents.properties");
-		out1 = new Shell.Plain(sh1).exec("rm  /home/vcf/srv/vcf/config/pcap-file.json");
-		out1 = new Shell.Plain(sh1).exec("rm  /home/vcf/srv/vcf/config/switch-details.json");
-		out1 = new Shell.Plain(sh1).exec("rm  /home/vcf/srv/vcf/config/vcf-license.json");
-		out1 = new Shell.Plain(sh1).exec("rm  /home/vcf/srv/vcf/config/vcf-user.properties");
-		out1 = new Shell.Plain(sh1).exec("rm  /home/vcf/srv/vcf/config/vcf-maestro.properties");	
-		out1 = new Shell.Plain(sh1).exec("rm  /home/vcf/srv/vcf/config/es_nodes.properties");	
-		out1 = new Shell.Plain(sh1).exec("rm  /home/vcf/srv/vcf/config/es_node.json");	
-		out1 = new Shell.Plain(sh1).exec("rm  /home/vcf/srv/vcf/config/vcf-collector.json");
-		out1 = new Shell.Plain(sh1).exec("rm -r /home/vcf/var/vcf/data/vcf-es-cluster1");
-		out1 = new Shell.Plain(sh1).exec("/home/vcf/srv/vcf/bin/stop-vcfc.sh");
-		Thread.sleep(10000);
-		out1 = new Shell.Plain(sh1).exec("/home/vcf/srv/vcf/bin/start-vcfc.sh");
-		Thread.sleep(30000);
+		String path = "/home/vcf/srv/vcf/config/";
+		String[] restartCommands = new String[2];
+		if(imageType.equalsIgnoreCase("test")) {
+			restartCommands[0] = "/home/vcf/srv/vcf/bin/stop-vcfc.sh";
+			restartCommands[1] = "/home/vcf/srv/vcf/bin/start-vcfc.sh";
+		}
+		if(imageType.equalsIgnoreCase("dev")) {
+			path = "/srv/vcf/config/";
+			restartCommands[0] = "docker stop vcf-center vcf-collector vcf-mgr vcf-elastic skedler";
+			restartCommands[1] = "docker start vcf-center vcf-collector vcf-mgr vcf-elastic skedler";
+		}
+		out1 = new Shell.Plain(sh1).exec("rm "+path+"flowfilters.json");	
+		out1 = new Shell.Plain(sh1).exec("rm "+path+"pcap-agent.properties");	
+		out1 = new Shell.Plain(sh1).exec("rm "+path+"pcap-engine.json");
+		out1 = new Shell.Plain(sh1).exec("rm "+path+"vcf-center.properties");
+		out1 = new Shell.Plain(sh1).exec("rm "+path+"pcap_agents.properties");
+		out1 = new Shell.Plain(sh1).exec("rm "+path+"pcap-file.json");
+		out1 = new Shell.Plain(sh1).exec("rm "+path+"switch-details.json");
+		out1 = new Shell.Plain(sh1).exec("rm "+path+"vcf-license.json");
+		out1 = new Shell.Plain(sh1).exec("rm "+path+"vcf-user.properties");
+		out1 = new Shell.Plain(sh1).exec("rm "+path+"vcf-maestro.properties");	
+		out1 = new Shell.Plain(sh1).exec("rm "+path+"es_nodes.properties");	
+		out1 = new Shell.Plain(sh1).exec("rm "+path+"es_node.json");	
+		out1 = new Shell.Plain(sh1).exec("rm "+path+"vcf-collector.json");
+		
+		//out1 = new Shell.Plain(sh1).exec("rm "+$path+"vcf-es-cluster1");
+		//Restart VCFC
+		for (String s:restartCommands) {
+			out1 = new Shell.Plain(sh1).exec(s);
+		}
 	}
    }
    
