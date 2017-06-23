@@ -149,13 +149,17 @@ public class VcfSettingsPage extends PageInfra{
 		WebDriverWait myWaitVar = new WebDriverWait(driver,100);
 		myWaitVar.until(ExpectedConditions.elementToBeClickable (By.cssSelector(addButtonCss)));
 		addButton.click();
+		Thread.sleep(2000);
 		setValue(mgmtIp,mgmtip);
+		Thread.sleep(2000);
 		setValue(username,usrname);
+		Thread.sleep(2000);
 		setValue(password,pwd);
+		Thread.sleep(2000);
 		retryingFindClick(okButton);
 		//okButton.click();
-		Thread.sleep(1000);
-		waitForElementVisibility(switchList,1000);
+		Thread.sleep(5000);
+		//waitForElementVisibility(switchList,1000);
 	}
 	
 	public void authSeedSwitches(String usrname, String pwd) throws InterruptedException {
@@ -247,7 +251,7 @@ public class VcfSettingsPage extends PageInfra{
 		return status;
 	}
 	
-	public void logintoPnc(String usrname, String pwd) {
+	public void logintoPnc(String usrname, String pwd) throws Exception {
 		vcfSettingsIcon.click();
 		waitForElementVisibility(licenseTab,1000);
 		licenseTab.click();
@@ -258,9 +262,13 @@ public class VcfSettingsPage extends PageInfra{
 			e.printStackTrace();
 		}
 		pncCloudbutton.click();
+		Thread.sleep(2000);
 		setValue(username,usrname);
+		Thread.sleep(2000);
 		setValue(password,pwd);
+		Thread.sleep(2000);
 		okButton.click();
+		Thread.sleep(2000);
 		waitForElementVisibility(driver.findElement(By.tagName(licenseList)),100);
 		waitForElementToClick(By.tagName(licenseList),100);
 	}
