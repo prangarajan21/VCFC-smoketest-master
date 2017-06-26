@@ -83,10 +83,19 @@ public class InitialSetup extends TestSetup {
     	    }
     	}
     }
-    
+    @Parameters({"licenseKey"})
     @Test(groups = {"smoke","regression"}, dependsOnMethods = { "loginAsTest123" },description = "Activate License")
-    public void activateLicense() throws Exception{
+    public void activateLicense(String licenseKey) throws Exception{
+    	/*
     	if(!settings.activateLicense(pncuName, pncPwd, LicenseTypes.VCFC_SSC_1YR_10B)) {
+    		printLogs("error","activateLicense","License activation failed");
+    		throw new Exception("Activate License failed");
+    	}
+    	else {
+    		printLogs("info","activateLicense","License activation was successful");
+    	}
+    	*/
+    	if(!settings.installLicenseKey(licenseKey)) {
     		printLogs("error","activateLicense","License activation failed");
     		throw new Exception("Activate License failed");
     	}

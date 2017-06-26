@@ -134,7 +134,10 @@ public class VcfSettingsPage extends PageInfra{
 	String msgPopup = "button.close";
 	String addButtonCss = "button.btn.btn-sm.btn-primary";
 	String switchListId = "div.td";
-
+	String instLicKey = "button.btn-sm.btn-primary";
+	String keyTextBox = "key";
+	
+	
 	public VcfSettingsPage(WebDriver driver) {
 		super(driver);
 	}
@@ -249,6 +252,18 @@ public class VcfSettingsPage extends PageInfra{
 	            }
 	        }
 		return status;
+	}
+	
+	public boolean installLicenseKey(String licenseKey) throws Exception{
+		vcfSettingsIcon.click();
+		waitForElementVisibility(licenseTab,1000);
+		licenseTab.click();
+		driver.findElement(By.cssSelector(instLicKey)).click();
+		waitForElementVisibility(driver.findElement(By.name("form")),100);
+		setValue(driver.findElement(By.id("key")),licenseKey);
+		okButton.click();
+		Thread.sleep(10000);
+		return true;
 	}
 	
 	public void logintoPnc(String usrname, String pwd) throws Exception {
