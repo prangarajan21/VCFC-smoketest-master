@@ -52,10 +52,11 @@ public class TestSetup {
    private ResourceBundle bundle;
    Local bsLocal = new Local();
    private String localId;
+   private String imageName;
    
-   @Parameters({"vcfIp","upgrade","git_revision","vcfc_version","buildNum"})
+   @Parameters({"vcfIp","upgrade","git_revision","vcfc_version","buildNum","folder_name"})
    @BeforeSuite(alwaysRun = true)
-   public void upgradeVCFC(String vcfIp,@Optional("0")String upgrade, @Optional("")String git_revision, @Optional("")String vcfc_version,@Optional("")String build_number) throws IOException,InterruptedException {
+   public void upgradeVCFC(String vcfIp,@Optional("0")String upgrade, @Optional("")String git_revision, @Optional("")String vcfc_version,@Optional("")String build_number,@Optional("")String folder_name) throws IOException,InterruptedException {
 	   if(Integer.parseInt(upgrade) == 1) {
 		Shell sh1 = new Shell.Verbose(
 	            new SSHByPassword(
@@ -66,8 +67,8 @@ public class TestSetup {
 	            )
 	        );
 		String out1;
-		String imageName = "vcf-"+vcfc_version+"-"+git_revision+".tgz";
-		String imageUrl = "http://sandy:8081/artifactory/Maestro/VCFC_Upgrade/"+build_number+"/"+imageName;
+		imageName = "vcf-"+vcfc_version+"-"+git_revision+".tgz";
+		String imageUrl = "http://sandy:8081/artifactory/Maestro/"+folder_name+"/"+build_number+"/"+imageName;
 		int out2 = new Shell.Empty(sh1).exec("cd /srv/docker/offline_images;wget "+imageUrl);
 		//out1 = new Shell.Plain(sh1).exec("cd /srv/docker/offline_images;wget "+imageUrl);
 		out1 = new Shell.Plain(sh1).exec("/home/vcf/VCFC_setup.sh upgrade "+imageName);
@@ -241,11 +242,36 @@ public class TestSetup {
        String publicUrl = bsLogs.get("public_url").toString();
        return publicUrl;
   }
-   
+   /*
+   public String getLicenseKey(String machineId) {
+	    String sessId = driver.getSessionId().toString();
+	    //System.out.println("sessionId:"+sessId);
+	    String[] command = {"curl", "-H", "Accept:application/json", "-u", username+":"+password , url,"-"};
+	    String url = "https://cloud-web.pluribusnetworks.com/api/login";
+	    //System.out.println("url:"+url.toString());
+	    String authUser = bsUserId+":"+bsKey;
+	    String encoding = Base64.encodeBase64String(authUser.getBytes());
+	    Client restClient = Client.create();
+       WebResource webResource = restClient.resource(url);
+       ClientResponse resp = webResource.accept("application/json")
+                                       .header("Authorization", "Basic " + encoding)
+                                       .get(ClientResponse.class);
+      if(resp.getStatus() != 200){
+   	   printLogs("error","getBSLogs","Unable to connect to the server");
+      }
+      String output = resp.getEntity(String.class);
+      JSONObject obj = new JSONObject(output);
+      JSONObject bsLogs = (JSONObject) obj.get("automation_session");
+      String publicUrl = bsLogs.get("public_url").toString();
+      return publicUrl;
+ }
+ */
    @Parameters({"jenkins"})
    @AfterClass(alwaysRun = true)
     public void setupAfterSuite(@Optional("0")String jenkins) {
 	    try {
+	    	Shell sh1 = getVcfShell(vcfIp);
+	    	String out1 = new Shell.Plain(sh1).exec("cd /srv/docker/offline_images;rm "+imageName);
 	    	driver.quit();
 	    	if(Integer.parseInt(jenkins) == 0) {
 	    		bsLocal.stop();
