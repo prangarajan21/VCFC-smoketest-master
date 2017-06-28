@@ -266,9 +266,9 @@ public class TestSetup {
       return publicUrl;
  }
  */
-   @Parameters({"jenkins"})
+   @Parameters({"jenkins","vcfIp"})
    @AfterClass(alwaysRun = true)
-    public void setupAfterSuite(@Optional("0")String jenkins) {
+    public void setupAfterSuite(@Optional("0")String jenkins, String vcfIp) {
 	    try {
 	    	Shell sh1 = getVcfShell(vcfIp);
 	    	String out1 = new Shell.Plain(sh1).exec("cd /srv/docker/offline_images;rm "+imageName);
