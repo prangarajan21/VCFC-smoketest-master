@@ -43,12 +43,20 @@ public class InitialSetup extends TestSetup {
        settings = new VcfSettingsPage(getDriver());
     }
     
+    @Parameters({"password"})
+    @Test(groups = {"smoke","regression"}, description = "Login to VCF as admin  and Change Password")
+    public void loginAsAdmin(@Optional("test123")String password) {
+        login.firstlogin(vcfUserName,password);
+        login.waitForLogoutButton();
+        login.logout();
+    }
+   
     @Parameters({"password"})  
     @Test(groups = {"smoke","regression"},dependsOnMethods = {"loginAsAdmin"}, description = "Login to VCF as test123 After Password Change")
     public void loginAsTest123(@Optional("test123")String password) {
         login.login(vcfUserName, password);
         login.waitForLogoutButton();
-        assertEquals(getTitle(), "Pluribus Networks VCFcenter");
+        assertEquals(getTitle(), "Pluribus Networks UNUM");
     }
     
     @Parameters({"switchName","mgmtIp"})  
@@ -86,7 +94,7 @@ public class InitialSetup extends TestSetup {
     @Parameters({"licenseKey"})
     @Test(groups = {"smoke","regression"}, dependsOnMethods = { "loginAsTest123" },description = "Activate License")
     public void activateLicense(String licenseKey) throws Exception{
-    	/*
+    	
     	if(!settings.activateLicense(pncuName, pncPwd, LicenseTypes.VCFC_SSC_1YR_10B)) {
     		printLogs("error","activateLicense","License activation failed");
     		throw new Exception("Activate License failed");
@@ -94,7 +102,7 @@ public class InitialSetup extends TestSetup {
     	else {
     		printLogs("info","activateLicense","License activation was successful");
     	}
-    	*/
+    	/*
     	if(!settings.installLicenseKey(licenseKey)) {
     		printLogs("error","activateLicense","License activation failed");
     		throw new Exception("Activate License failed");
@@ -102,6 +110,7 @@ public class InitialSetup extends TestSetup {
     	else {
     		printLogs("info","activateLicense","License activation was successful");
     	}
+    	*/
     }
    
     /*
@@ -115,15 +124,43 @@ public class InitialSetup extends TestSetup {
     	settings.navigateToAppMenu();
     }
    */
-    @Parameters({"password"})
-    @Test(groups = {"smoke","regression"}, description = "Login to VCF as admin  and Change Password")
-    public void loginAsAdmin(@Optional("test123")String password) {
-        login.firstlogin(vcfUserName,password);
-        login.waitForLogoutButton();
-        login.logout();
-    }
-   
-    @Test(groups={"smoke","regression"}, dependsOnMethods = {"addDataNode"}, description = "Logout of VCFC")
+    
+    @Parameters({"collectorName","switchName"})
+	@Test(groups={"smoke","regression"},dependsOnMethods={"addSeedSwitch"},description="Edit collector and update switch information")
+	public void editCollectorTest(@Optional("default-netvisor-collector") String collectorName, String switchName) throws Exception{
+		if(!settings.editCollector(collectorName, switchName)) {
+			printLogs ("error","editCollector","Editing collector config failed");
+			throw new Exception("Collector edit failed");
+		} else {
+			printLogs("info","editCollector","Collector edit was successful");
+		}
+	}
+	
+	@Parameters({"collectorName"}) 
+	@Test(groups={"smoke","regression"},dependsOnMethods={"editCollectorTest"},description="Activate collector Test")
+	public void activateNvosCollectorTest(@Optional("default-netvisor-collector") String collectorName) throws Exception{
+		//iaIndex.gotoIAConfig();
+		if(!settings.toggleCollState(collectorName,true)) {
+			printLogs ("error","activateCollector","Collector activation failed");
+			throw new Exception("Collector activation failed");
+		} else {
+			printLogs("info","addCollector","Collector activation was successful");
+		}
+	}
+	
+	/* Adding additional collector (if required)
+	@Parameters({"switchName","collectorName"}) 
+	@Test(groups={"smoke","regression"},dependsOnMethods={"logintoIA"},description="Add collector in IA Page")
+	public void addCollectorTest(String switchName,@Optional("coll1") String collectorName) throws Exception{
+		if(!iaIndex.addCollector(collectorName,switchName,user,passwd)) {
+			printLogs ("error","addCollector","Collector addition failed");
+			throw new Exception("Collector addition failed");
+		} else {
+			printLogs("info","addCollector","Collector addition was successful");
+		}
+	}
+	*/
+    @Test(groups={"smoke","regression"}, dependsOnMethods = {"activateNvosCollectorTest"}, description = "Logout of VCFC")
     public void logout() {
         login.logout();
     }

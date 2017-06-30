@@ -179,14 +179,12 @@ public class TestSetup {
    
     public void startDriver(String vcfIp,String browser,String bsUserId, String bsKey,int jenkins) throws Exception {
 		String sessionId = null;
-		String command = null;
-		String logFileName = "/tmp/browserstack/BSlogs.txt";		
+		String command = null;		
 		HashMap<String,String> bsLocalArgs = new HashMap<String,String>();
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddhhmmss");
 		String dateAsString = simpleDateFormat.format(new Date());
 		String localId = "convergenceTest"+dateAsString;
 		if(jenkins == 0) {
-			bsLocalArgs.put("-log-file", logFileName);
 			bsLocalArgs.put("localIdentifier",localId); //environment variable
 			bsLocalArgs.put("key",bsKey); //BrowserStack Key
 			bsLocalArgs.put("v", "true"); 
@@ -266,16 +264,18 @@ public class TestSetup {
       return publicUrl;
  }
  */
-   @Parameters({"jenkins","vcfIp"})
+   @Parameters({"jenkins","upgrade","vcfIp"})
    @AfterClass(alwaysRun = true)
-    public void setupAfterSuite(@Optional("0")String jenkins, String vcfIp) {
+    public void setupAfterSuite(@Optional("0")String jenkins,@Optional("0")String upgrade,String vcfIp) {
 	    try {
-	    	Shell sh1 = getVcfShell(vcfIp);
-	    	String out1 = new Shell.Plain(sh1).exec("cd /srv/docker/offline_images;rm "+imageName);
-	    	driver.quit();
-	    	if(Integer.parseInt(jenkins) == 0) {
-	    		bsLocal.stop();
-	    	}
+	    		if(Integer.parseInt(upgrade)==1) {
+	    			Shell sh1 = getVcfShell(vcfIp);
+	    			String out1 = new Shell.Plain(sh1).exec("cd /srv/docker/offline_images;rm "+imageName);
+	    		}
+	    		driver.quit();
+	    		if(Integer.parseInt(jenkins) == 0) {
+	    			bsLocal.stop();
+	    		}
 	    } catch (Exception e) {
 	    	printLogs("info","setupAfterSuite","driver already closed");
 	    }

@@ -44,17 +44,11 @@ public class VCFIaIndexPage extends PageInfra {
 	@FindBy(how= How.CSS, using = "button.btn.btn-sm.btn-primary")
 	WebElement addButton;
 	
-	@FindBy(how= How.CSS, using = "button.btn.btn-default.btn-sm")
-	WebElement switchDropDown;
-    
 	@FindBy(how= How.CSS, using = "a#taggingOptions.btn.btn-default.dropdown-toggle")
 	WebElement tagOptions;
 	
 	@FindBy(how = How.NAME, using = "username")
 	WebElement userName;
-	
-	@FindBy(how = How.NAME, using = "name")
-	WebElement name;
 	
 	@FindBy(how = How.NAME, using = "password")
 	WebElement password;
@@ -71,8 +65,6 @@ public class VCFIaIndexPage extends PageInfra {
 	@FindBy(how= How.CSS, using = "button.btn.btn-primary")
 	WebElement confirmOkButton;
 	
-	@FindBy(how= How.CSS, using = "div.panel-heading.mirror-head")
-	WebElement collectorList;
 	
 	@FindBy(how= How.CSS, using = "span.switch")
 	WebElement spanSwitch;
@@ -82,27 +74,15 @@ public class VCFIaIndexPage extends PageInfra {
 	String switchListName = "ul.dropdown-menu li";
 	String insightCountWidget =  "div.metric-value.ng-binding";
 	String inputTagName = "input";
-	String srchString = "a[title=";
-	String collectorListId = "div.panel-heading.mirror-head";
-	String collectorAddButtons = "button.btn.btn-sm.btn-primary";
+	String srchString = "a[title=";	
 	String uploadTagStr = "Upload Tags";
 	String clearTagStr = "Clear Tags";
 	String fileUpload = "div.holder"; 
 	String countIconsId = "div.metric-value.ng-binding";
-	String toggleSwitch = "span.switch";
-	String switchOnState = "span.toggle-bg.on";
-	String switchOffState = "span.toggle-bg.off";
-	String editIcon = "span.icon-img-link.fa.fa-pencil";
-	String collButtonString = "Add Netvisor Collector";
+	
 	
 	public VCFIaIndexPage(WebDriver driver) {
 		super(driver);
-	}
-	
-	public List getSwitchList() {
-		List<WebElement> rows = new ArrayList();
-		rows = driver.findElements(By.cssSelector(switchListName));
-		return rows;
 	}
 	
 	public void applySearchFilter(String searchString) {
@@ -164,138 +144,12 @@ public class VCFIaIndexPage extends PageInfra {
 		return connCount;
 	}
 	
-    public boolean checkCollectorState(WebElement collector) {
-    	driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
-		boolean existsOn = false;
-		existsOn = (collector.findElements(By.cssSelector(switchOnState)).size() != 0);
-		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-		return existsOn;	
-    }
-    
-    public boolean toggleCollState(String collName, boolean expState) throws Exception{
-    	boolean status = false;
-		boolean currentState = false;
-		driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
-		boolean exists = (driver.findElements(By.cssSelector(collectorListId)).size() != 0);
-		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-		if(exists) {
-			List <WebElement> collList = driver.findElements(By.cssSelector(collectorListId));
-			for (WebElement coll: collList) {
-				if(coll.getText().contains(collName)) {
-					currentState = checkCollectorState(coll); //findCurrentState of the switch
-					if(currentState != expState) {
-						coll.findElement(By.cssSelector(toggleSwitch)).click();
-						waitForElementVisibility(confirmOkButton,100);
-						confirmOkButton.click();
-						Thread.sleep(5000); //waiting for the toggle to go through
-						waitForElementVisibility(collectorList,100);
-						waitForElementToClick(By.cssSelector(collectorListId),100);
-					}
-					if(expState == checkCollectorState(coll)) status = true;
-				}
-				break;
-			}
-		} else {
-			com.jcabi.log.Logger.error("toggleCollectorState","No collector configured!");
-		}
-		return status;
-    }
-	
-    public boolean isCollectorConfigured(String collName) {
-		boolean isColl = false;
-		driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
-		boolean exists = (driver.findElements(By.cssSelector(collectorListId)).size() != 0);
-		//List<WebElement> collCount = driver.findElements(By.cssSelector(collectorListId));
-		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-		if(exists) {
-			    List <WebElement> collector = driver.findElements(By.cssSelector(collectorListId));
-			    for (WebElement row:collector) {
-			    	if(row.getText().contains(collName)) {
-			    		isColl = true;
-			    		com.jcabi.log.Logger.info("collectorConfigured","Collector List:"+row.getText());
-			    	}
-			    }	    
-		}
-		return isColl;
-	}
-	public boolean editCollector(String collName, String switchName) throws Exception{
-		boolean status = false;
-		status = isCollectorConfigured(collName);
-		if(status) {
-			List <WebElement> collList = driver.findElements(By.cssSelector(collectorListId));
-			for (WebElement coll: collList) {
-				if(coll.getText().contains(collName)) {
-					boolean currentState = checkCollectorState(coll);
-					if(currentState == false) {
-						coll.findElement(By.cssSelector(editIcon)).click();
-						switchDropDown.click();
-						List <WebElement> rows = getSwitchList();
-						for (WebElement row : rows) {
-							if(row.getText().contains(switchName)) {
-									row.click();
-								break;
-							}
-						}
-						okButton.click();
-						Thread.sleep(5000);
-						waitForElementVisibility(driver.findElement(By.cssSelector(toggleSwitch)),100);
-						status = true;
-						break;
-					} else {
-						return true; //No need to edit since the collector is already in running state. Edit will fail at this point.
-					}
-				}
-			}
-		} 
-		return status;
-	}
-	
-	/*Might need this when we add multiple collectors feature
-	public boolean addCollector(String collName, String switchName, String user, String pwd) {
-		boolean status = false;
-		status = isCollectorConfigured(collName);
-		if(status==false) {	
-			try {
-			Thread.sleep(5000);
-			}catch(Exception e){
-				System.out.println(e.toString());			
-			}
-			int i = 0;
-			List<WebElement> rows = driver.findElements(By.cssSelector(collectorAddButtons));
-			for (WebElement row: rows) {
-				if(rows.get(i).getText().contains(collButtonString)) {
-					retryingFindClick(rows.get(i));
-				}
-				i++;
-			} 
-			setValue(name,collName);
-			waitForElementVisibility(switchDropDown,1000);
-			switchDropDown.click();
-			rows = getSwitchList();
-				for (WebElement row : rows) {
-					if(row.getText().contains(switchName)) {
-						row.click();
-						break;
-					}
-				}
-				okButton.click();
-				waitForElementVisibility(spanSwitch,100);
-				waitForElementToClick(By.cssSelector(toggleSwitch),100);
-				status = isCollectorConfigured(collName);
-		}
-		return status;
-	}
-	*/
 	
 	public void gotoIADashboard() {
 		dashboardIcon.click();
 		waitForElementVisibility(driver.findElement(By.tagName(iframeTag)),1000);
 	}
-	public void gotoIAConfig() {
-		configIcon.click();
-		waitForElementVisibility(collectorList,100);
-	}
-	
+		
 	public static void setClipboardData(String string) {
 		//StringSelection is a class that can be used for copy and paste operations.
 		StringSelection stringSelection = new StringSelection(string);

@@ -48,44 +48,9 @@ public class IATest extends TestSetup {
 		login.login("admin", password);
 		home1.gotoIA();
 	}
-	/* In 2.2 they added default NVOS and SFLOW collector. So adding collector isn't required anymore
-	@Parameters({"switchName","collectorName"}) 
-	@Test(groups={"smoke","regression"},dependsOnMethods={"logintoIA"},description="Add collector in IA Page")
-	public void addCollectorTest(String switchName,@Optional("coll1") String collectorName) throws Exception{
-		if(!iaIndex.addCollector(collectorName,switchName,user,passwd)) {
-			printLogs ("error","addCollector","Collector addition failed");
-			throw new Exception("Collector addition failed");
-		} else {
-			printLogs("info","addCollector","Collector addition was successful");
-		}
-	}
-	*/
-	@Parameters({"collectorName","switchName"})
-	@Test(groups={"smoke","regression"},dependsOnMethods={"logintoIA"},description="Edit collector and update switch information")
-	public void editCollectorTest(@Optional("default-netvisor-collector") String collectorName, String switchName) throws Exception{
-		iaIndex.gotoIAConfig();
-		if(!iaIndex.editCollector(collectorName, switchName)) {
-			printLogs ("error","editCollector","Editing collector config failed");
-			throw new Exception("Collector edit failed");
-		} else {
-			printLogs("info","editCollector","Collector edit was successful");
-		}
-	}
-	
-	@Parameters({"collectorName"}) 
-	@Test(groups={"smoke","regression"},dependsOnMethods={"editCollectorTest"},description="Activate collector Test")
-	public void activateNvosCollectorTest(@Optional("default-netvisor-collector") String collectorName) throws Exception{
-		//iaIndex.gotoIAConfig();
-		if(!iaIndex.toggleCollState(collectorName,true)) {
-			printLogs ("error","activateCollector","Collector activation failed");
-			throw new Exception("Collector activation failed");
-		} else {
-			printLogs("info","addCollector","Collector activation was successful");
-		}
-	}
 	
 	@Parameters({"vcfIp","switchName","trafficDestIp","trafficSrcIp","trafficNumSessions","trafficInterval"}) 
-	@Test(groups={"smoke","regression"},dependsOnMethods={"activateNvosCollectorTest"},description="Send traffic and verify stats")
+	@Test(groups={"smoke","regression"},dependsOnMethods={"logintoIA"},description="Send traffic and verify stats")
 	public void simpleTrafficTest(String vcfIp, String switchName, String trafficDestIp, String trafficSrcIp, int trafficNumSessions, int trafficInterval) throws Exception{
 		// Clearing switch before test
 		cli.clearSessions();
