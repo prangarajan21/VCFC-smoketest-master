@@ -144,7 +144,7 @@ public class VcfSettingsPage extends PageInfra{
 	@FindBy(how= How.CSS, using = "button.btn.btn-primary")
 	WebElement confirmOkButton;
 	
-	@FindBy(how= How.CSS, using = "div [class='col-sm-10']")
+	@FindBy(how= How.CSS, using = "table-pane")
 	WebElement defaultCollectorList;
 	
 	/*Widget names for findElement(s) calls */
@@ -229,8 +229,7 @@ public class VcfSettingsPage extends PageInfra{
 		vcfSettingsIcon.click();
 		waitForElementVisibility(collectorMgmtTab,100);
 		collectorMgmtTab.click();
-		waitForElementVisibility(defaultCollectorList,100);
-		
+		waitForElementVisibility(collectorList,100);
 		boolean status = false;
 		status = isCollectorConfigured(collName);
 		if(status) {
