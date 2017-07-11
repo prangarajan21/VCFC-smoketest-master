@@ -155,8 +155,22 @@ public class TestSetup {
    }
    
    public void startDriver(String vcfIp,String browserName) {
+	   String platform = null;
+	   try {
+		   Runtime r = Runtime.getRuntime();
+		   Process p = r.exec("uname -a");
+		   p.waitFor();
+		   BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		   platform = b.readLine();
+		   b.close();
+	   } catch(Exception e) {}
+	   String chrDriver = "src/test/resources/chromedriver";
+	   if(platform.contains("Linux")) {
+		   chrDriver = "src/test/resources/chromedriver_linux64";
+	   }
+	   
 	   if(browserName.equalsIgnoreCase("chrome")) {
-	   		System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver");
+	   		System.setProperty("webdriver.chrome.driver", chrDriver);
 	   		DesiredCapabilities handlSSLErr = DesiredCapabilities.chrome();     
 	   		handlSSLErr.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 	   		driver=new ChromeDriver(handlSSLErr);
@@ -194,7 +208,7 @@ public class TestSetup {
 		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setCapability("browser",browser);
 		caps.setCapability("build", "VCFC SmokeTest Cases");
-		caps.setCapability("acceptSslCerts","true");
+		caps.setCapability("acceptInsecureCerts","true");
 		caps.setCapability("browserstack.debug","true");
 		caps.setCapability("browserstack.idleTimeout","150");
 		caps.setCapability("platform","ANY");
