@@ -21,6 +21,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -82,32 +83,30 @@ public class TestSetup {
 	   if(Integer.parseInt(clean) == 1) {
 		Shell sh1 = getVcfShell(vcfIp);
 		String out1;
-		String path = "/home/vcf/srv/vcf/config/";
+		String path = "rm /home/vcf/srv/vcf/config/";
 		String[] restartCommands = new String[2];
 		if(imageType.equalsIgnoreCase("test")) {
 			restartCommands[0] = "/home/vcf/srv/vcf/bin/stop-vcfc.sh";
 			restartCommands[1] = "/home/vcf/srv/vcf/bin/start-vcfc.sh";
 		}
 		if(imageType.equalsIgnoreCase("dev")) {
-			path = "/srv/vcf/config/";
+			path = "docker exec -i vcf-center rm /srv/vcf/config/";
 			restartCommands[0] = "docker stop vcf-center vcf-collector vcf-mgr vcf-elastic skedler";
 			restartCommands[1] = "docker start vcf-center vcf-collector vcf-mgr vcf-elastic skedler";
 		}
-		out1 = new Shell.Plain(sh1).exec("rm "+path+"flowfilters.json");	
-		out1 = new Shell.Plain(sh1).exec("rm "+path+"pcap-agent.properties");	
-		out1 = new Shell.Plain(sh1).exec("rm "+path+"pcap-engine.json");
-		out1 = new Shell.Plain(sh1).exec("rm "+path+"vcf-center.properties");
-		out1 = new Shell.Plain(sh1).exec("rm "+path+"pcap_agents.properties");
-		out1 = new Shell.Plain(sh1).exec("rm "+path+"pcap-file.json");
-		out1 = new Shell.Plain(sh1).exec("rm "+path+"switch-details.json");
-		out1 = new Shell.Plain(sh1).exec("rm "+path+"vcf-license.json");
-		out1 = new Shell.Plain(sh1).exec("rm "+path+"vcf-user.properties");
-		out1 = new Shell.Plain(sh1).exec("rm "+path+"vcf-maestro.properties");	
-		out1 = new Shell.Plain(sh1).exec("rm "+path+"es_nodes.properties");	
-		out1 = new Shell.Plain(sh1).exec("rm "+path+"es_node.json");	
-		out1 = new Shell.Plain(sh1).exec("rm "+path+"vcf-collector.json");
+		out1 = new Shell.Plain(sh1).exec(path+"flowfilters.json");	
+		out1 = new Shell.Plain(sh1).exec(path+"pcap-agent.properties");	
+		out1 = new Shell.Plain(sh1).exec(path+"pcap-engine.json");
+		out1 = new Shell.Plain(sh1).exec(path+"vcf-center.properties");
+		out1 = new Shell.Plain(sh1).exec(path+"pcap_agents.properties");
+		out1 = new Shell.Plain(sh1).exec(path+"switch-details.json");
+		out1 = new Shell.Plain(sh1).exec(path+"vcf-license.json");
+		out1 = new Shell.Plain(sh1).exec(path+"vcf-user.properties");
+		out1 = new Shell.Plain(sh1).exec(path+"vcf-maestro.properties");	
+		out1 = new Shell.Plain(sh1).exec(path+"es_nodes.properties");	
+		out1 = new Shell.Plain(sh1).exec(path+"es_node.json");	
+		out1 = new Shell.Plain(sh1).exec(path+"vcf-collector.json");
 		
-		//out1 = new Shell.Plain(sh1).exec("rm "+$path+"vcf-es-cluster1");
 		//Restart VCFC
 		for (String s:restartCommands) {
 			out1 = new Shell.Plain(sh1).exec(s);
@@ -204,14 +203,25 @@ public class TestSetup {
 			bsLocalArgs.put("v", "true"); 
 			bsLocal.start(bsLocalArgs); 
 		}
-		 
+    	
+        FirefoxProfile firefoxProfile = new FirefoxProfile(); 
+		firefoxProfile.setPreference("security.tls.insecure_fallback_hosts",false);	
+        firefoxProfile.setAcceptUntrustedCertificates(true);
 		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setCapability("browser",browser);
 		caps.setCapability("build", "VCFC SmokeTest Cases");
-		caps.setCapability("acceptInsecureCerts","true");
-		caps.setCapability("browserstack.debug","true");
+		caps.setCapability("acceptSslCerts", "true");
+		caps.setCapability("acceptInsecureCerts",true);
+		caps.setCapability("browserstack.debug","true");	
 		caps.setCapability("browserstack.idleTimeout","150");
 		caps.setCapability("platform","ANY");
+		caps.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
+		caps.setCapability("os","OS X");
+		caps.setCapability("os_version","Sierra");
+		caps.setCapability("browser_version","54");
+		
+        //caps.setCapability("browserName", browser); -- For local selenium issues
+		
 		if(jenkins ==0) {
 			caps.setCapability("browserstack.local", "true");	
 			caps.setCapability("browserstack.localIdentifier",localId);
@@ -220,8 +230,9 @@ public class TestSetup {
 			String browserstackLocalIdentifier = System.getenv("BROWSERSTACK_LOCAL_IDENTIFIER");
 			caps.setCapability("browserstack.local", browserstackLocal);
 			caps.setCapability("browserstack.localIdentifier", browserstackLocalIdentifier);
-		}
+		} 
 		driver = new RemoteWebDriver(
+			      //new URL("http://127.0.0.1:4444/wd/hub"),
 			      new URL("https://"+bsUserId+":"+bsKey+"@hub-cloud.browserstack.com/wd/hub"),
 			      caps
 			    );
@@ -229,8 +240,14 @@ public class TestSetup {
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
         // Get a handle to the driver. This will throw an exception if a matching driver cannot be located
-	    driver.get("https://"+ vcfIp);
-	    com.jcabi.log.Logger.info("Logfile",getBSLogs(bsUserId,bsKey));
+		
+		try {
+			driver.get("https://"+ vcfIp);
+			//Thread.sleep(600000);
+		} catch (Exception e) {
+			//Thread.sleep(600000);
+		}
+	   // com.jcabi.log.Logger.info("Logfile",getBSLogs(bsUserId,bsKey));
    }
    
    public String getBSLogs(String bsUserId,String bsKey) {
