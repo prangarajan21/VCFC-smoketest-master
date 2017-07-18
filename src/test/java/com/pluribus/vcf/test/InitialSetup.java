@@ -45,18 +45,20 @@ public class InitialSetup extends TestSetup {
     
     @Parameters({"password"})
     @Test(groups = {"smoke","regression"}, description = "Login to VCF as admin  and Change Password")
-    public void loginAsAdmin(@Optional("test123")String password) {
+    public void loginAsAdmin(@Optional("test123")String password) throws Exception {
         login.firstlogin(vcfUserName,password);
         login.waitForLogoutButton();
         login.logout();
+        Thread.sleep(60000);
     }
    
     @Parameters({"password"})  
-    @Test(groups = {"smoke","regression"},dependsOnMethods = {"loginAsAdmin"}, description = "Login to VCF as test123 After Password Change")
-    public void loginAsTest123(@Optional("test123")String password) {
+    @Test(groups = {"smoke","regression"},description = "Login to VCF as test123 After Password Change")
+    public void loginAsTest123(@Optional("test123")String password) throws Exception{
         login.login(vcfUserName, password);
         login.waitForLogoutButton();
         assertEquals(getTitle(), "Pluribus Networks UNUM");
+        Thread.sleep(60000);
     }
     
     @Parameters({"switchName","mgmtIp"})  

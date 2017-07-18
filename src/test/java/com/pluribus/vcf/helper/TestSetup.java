@@ -204,9 +204,6 @@ public class TestSetup {
 			bsLocal.start(bsLocalArgs); 
 		}
     	
-        FirefoxProfile firefoxProfile = new FirefoxProfile(); 
-		firefoxProfile.setPreference("security.tls.insecure_fallback_hosts",false);	
-        firefoxProfile.setAcceptUntrustedCertificates(true);
 		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setCapability("browser",browser);
 		caps.setCapability("build", "VCFC SmokeTest Cases");
@@ -215,12 +212,17 @@ public class TestSetup {
 		caps.setCapability("browserstack.debug","true");	
 		caps.setCapability("browserstack.idleTimeout","150");
 		caps.setCapability("platform","ANY");
-		caps.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
 		caps.setCapability("os","OS X");
 		caps.setCapability("os_version","Sierra");
-		caps.setCapability("browser_version","54");
-		
-        //caps.setCapability("browserName", browser); -- For local selenium issues
+		caps.setCapability("browserstack.console","verbose");
+		if(browser.equalsIgnoreCase("firefox")) {
+			FirefoxProfile firefoxProfile = new FirefoxProfile(); 
+			firefoxProfile.setPreference("security.tls.insecure_fallback_hosts",false);	
+	        firefoxProfile.setAcceptUntrustedCertificates(true);
+			caps.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
+			caps.setCapability("browser_version","54");
+		}
+        //caps.setCapability("browserName", browser); -- For local selenium runs
 		
 		if(jenkins ==0) {
 			caps.setCapability("browserstack.local", "true");	
