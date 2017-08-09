@@ -18,13 +18,13 @@ public class VCFHomePage extends PageInfra{
     @FindBy(how = How.CSS, using = "a.fa.fa-home")
     WebElement vcfHomeIcon;
 
-	@FindBy(how = How.CSS, using = "div#pie-vcf-ia span")
+    @FindBy(how = How.CSS, using = "div.homelogo.vcf-ia span")
 	WebElement vcfIAIcon;
 	
-	@FindBy(how = How.CSS, using = "div#pie-vcf-pa span")
+	@FindBy(how = How.CSS, using = "div.homelogo.vcf-pa span")
 	WebElement vcfPAIcon;
 	
-	@FindBy(how = How.CSS, using = "div#pie-vcf-mgr span")
+	@FindBy(how = How.CSS, using = "div.homelogo.vcf-mgr span")
 	WebElement vcfMgrIcon;
 	
 	@FindBy(how = How.CSS, using = "a.inner-center div") 
