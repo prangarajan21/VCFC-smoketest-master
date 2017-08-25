@@ -247,8 +247,8 @@ public class VcfSettingsPage extends PageInfra{
 								break;
 							}
 						}
-						okButton.click();
-						Thread.sleep(5000);
+						retryingFindClick(okButton);
+						Thread.sleep(10000);
 						waitForElementVisibility(driver.findElement(By.cssSelector(toggleSwitch)),100);
 						status = true;
 						break;
