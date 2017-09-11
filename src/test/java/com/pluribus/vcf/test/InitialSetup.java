@@ -57,7 +57,6 @@ public class InitialSetup extends TestSetup {
     public void loginAsTest123(@Optional("test123")String password) throws Exception{
         login.login(vcfUserName, password);
         login.waitForLogoutButton();
-        assertEquals(getTitle(), "Pluribus Networks UNUM");
         Thread.sleep(60000);
     }
     
@@ -72,13 +71,7 @@ public class InitialSetup extends TestSetup {
     		printLogs("info","addSeedSwitch", "Successfully added & verified seed switch"+switchName);
     	}  
     }    
-    /*
-    @Test(groups = {"smoke","regression"}, dependsOnMethods = { "addSeedSwitch" }, description = "Authorize seed switches")
-    public void authSeedSwitch() throws InterruptedException {
-    	settings.authSeedSwitches(switchUserName,switchPassword);
-    	Thread.sleep(1000); //Waiting for success message to go away
-    }
-	*/
+
     @Parameters({"dataNodeHost"}) 
     @Test(groups = {"smoke","regression"}, dependsOnMethods = { "addSeedSwitch" },description = "Add data node & verify")
     public void addDataNode(@Optional("") String dataNodeHost) throws Exception{
@@ -93,6 +86,7 @@ public class InitialSetup extends TestSetup {
     	    }
     	}
     }
+    
     @Parameters({"licenseKey"})
     @Test(groups = {"smoke","regression"}, dependsOnMethods = { "loginAsTest123" },description = "Activate License")
     public void activateLicense(String licenseKey) throws Exception{
@@ -104,28 +98,7 @@ public class InitialSetup extends TestSetup {
     	else {
     		printLogs("info","activateLicense","License activation was successful");
     	}
-    	/*
-    	if(!settings.installLicenseKey(licenseKey)) {
-    		printLogs("error","activateLicense","License activation failed");
-    		throw new Exception("Activate License failed");
-    	}
-    	else {
-    		printLogs("info","activateLicense","License activation was successful");
-    	}
-    	*/
     }
-   
-    /*
-    @Test(groups = {"smoke","regression"}, dependsOnMethods = {"loginAsTest123"},description = "Navigate all pages in VCF settings page")
-    public void vcfsettingsPagenavigations() {
-    	settings.navigateToSwitchMenu();
-    	settings.navigateToSystemhealthMenu();
-    	settings.navigateToServerMenu();
-    	settings.navigateTocertsMenu();
-    	settings.navigateToadminMenu();
-    	settings.navigateToAppMenu();
-    }
-   */
     
     @Parameters({"collectorName","switchName"})
 	@Test(groups={"smoke","regression"},dependsOnMethods={"addSeedSwitch"},description="Edit collector and update switch information")
@@ -141,7 +114,6 @@ public class InitialSetup extends TestSetup {
 	@Parameters({"collectorName"}) 
 	@Test(groups={"smoke","regression"},dependsOnMethods={"editCollectorTest"},description="Activate collector Test")
 	public void activateNvosCollectorTest(@Optional("default-netvisor-collector") String collectorName) throws Exception{
-		//iaIndex.gotoIAConfig();
 		if(!settings.toggleCollState(collectorName,true)) {
 			printLogs ("error","activateCollector","Collector activation failed");
 			throw new Exception("Collector activation failed");
@@ -162,7 +134,8 @@ public class InitialSetup extends TestSetup {
 		}
 	}
 	*/
-    @Test(groups={"smoke","regression"}, dependsOnMethods = {"activateNvosCollectorTest"}, description = "Logout of VCFC")
+
+	@Test(groups={"smoke","regression"}, dependsOnMethods = {"activateNvosCollectorTest"}, description = "Logout of VCFC")
     public void logout() {
         login.logout();
     }

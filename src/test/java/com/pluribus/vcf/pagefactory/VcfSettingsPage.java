@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -165,7 +166,9 @@ public class VcfSettingsPage extends PageInfra{
 	String editIcon = "span.icon-img-link.fa.fa-pencil";
 	String collButtonString = "Add Netvisor Collector";
 	String switchListName = "ul.dropdown-menu li";
-
+	String licenseActivateButton = "button.btn.btn-xs.btn-primary";
+	String seedSwitchAddMsgBox = "div.modal-dialog";
+	
 	public VcfSettingsPage(WebDriver driver) {
 		super(driver);
 	}
@@ -177,20 +180,25 @@ public class VcfSettingsPage extends PageInfra{
 	public void addSeedSwitch(String name , String usrname, String mgmtip, String pwd) throws Exception{
 		vcfSettingsIcon.click();
 		waitForElementVisibility(addButton,1000);
-		WebDriverWait myWaitVar = new WebDriverWait(driver,100);
-		myWaitVar.until(ExpectedConditions.elementToBeClickable (By.cssSelector(addButtonCss)));
-		addButton.click();
-		Thread.sleep(2000);
+		waitForElementToClick(By.cssSelector(addButtonCss),100);
+		Actions actions = new Actions(driver);
+    	actions.moveToElement(addButton).perform();
+    	//
+    	//addButton.click();
+		retryingFindClick(addButton);
+		waitForElementVisibility(driver.findElement(By.cssSelector(seedSwitchAddMsgBox)),100);
+		//Thread.sleep(2000);
 		setValue(mgmtIp,mgmtip);
 		Thread.sleep(2000);
 		setValue(username,usrname);
 		Thread.sleep(2000);
 		setValue(password,pwd);
 		Thread.sleep(2000);
+		waitForElementVisibility(okButton,100);
 		retryingFindClick(okButton);
 		//okButton.click();
 		Thread.sleep(5000);
-		//waitForElementVisibility(switchList,1000);
+		waitForElementVisibility(switchList,1000);
 	}
 
 	public List getSwitchList() {
@@ -356,7 +364,7 @@ public class VcfSettingsPage extends PageInfra{
 		String rowTable = null;
 	       for (WebElement row : rows) {
 	    	   if (row.getText().contains(name)) {
-		    	   com.jcabi.log.Logger.info("verifySeedSwitch", "Seed switch found:"+name);
+		    	    com.jcabi.log.Logger.info("verifySeedSwitch", "Seed switch found:"+name);
 	                rowTable = row.getText();
 	                status = true;
 	                break;
@@ -460,9 +468,11 @@ public class VcfSettingsPage extends PageInfra{
 		    rows = driver.findElements(By.cssSelector("ng-transclude div.panel.panel-default"));
 	            if (rows.get(i).getText().contains(type.toString())) {
 	            	com.jcabi.log.Logger.info("activateLicense", "License to be selected:"+type.toString());
-	                retryingFindClick(rows.get(i),By.cssSelector("button.btn.btn-xs.btn-primary"));
+	            	Actions actions = new Actions(driver);
+	            	actions.moveToElement(rows.get(i)).perform();
+	            	retryingFindClick(rows.get(i),By.cssSelector(licenseActivateButton));
 	                status = true;
-	                Thread.sleep(2000); 
+	                Thread.sleep(5000); 
 	                break;
 	            }
 	     }

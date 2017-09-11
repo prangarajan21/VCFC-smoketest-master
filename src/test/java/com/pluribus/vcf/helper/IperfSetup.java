@@ -70,7 +70,7 @@ public class IperfSetup {
 		            )
 		        );
 
-		    String command = "iperf -c " + destIp + " -P " + numSessions + " -t " +timeVal;
+		    String command = "sudo iperf -c " + destIp + " -P " + numSessions + " -t " +timeVal;
 			String out1 = new Shell.Plain(clientSession).exec(command);
 			com.jcabi.log.Logger.info("sendTraffic","Traffic sent from iperf client: number of sessions"+numSessions+"for "+timeVal+" seconds");
 			Thread.sleep(1000); //Sleeping after traffic run so that stats can be updated

@@ -46,7 +46,7 @@ import com.jcabi.ssh.SSHByPassword;
 
 /**
  *
- * @author Haritha
+ * @author Haritha, Poornima
  */
 public class TestSetup {
    private RemoteWebDriver driver;
@@ -71,7 +71,6 @@ public class TestSetup {
 		imageName = "vcf-"+vcfc_version+"-"+git_revision+".tgz";
 		String imageUrl = "http://sandy:8081/artifactory/Maestro/"+folder_name+"/"+build_number+"/"+imageName;
 		int out2 = new Shell.Empty(sh1).exec("cd /srv/docker/offline_images;wget "+imageUrl);
-		//out1 = new Shell.Plain(sh1).exec("cd /srv/docker/offline_images;wget "+imageUrl);
 		out1 = new Shell.Plain(sh1).exec("/home/vcf/VCFC_setup.sh upgrade "+imageName);
 		Thread.sleep(30000); //Sleeping after upgrade
 	   }
@@ -155,16 +154,14 @@ public class TestSetup {
    
    public void startDriver(String vcfIp,String browserName) {
 	   String platform = null;
-	   try {
-		   Runtime r = Runtime.getRuntime();
-		   Process p = r.exec("uname -a");
-		   p.waitFor();
-		   BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		   platform = b.readLine();
-		   b.close();
-	   } catch(Exception e) {}
-	   String chrDriver = "src/test/resources/chromedriver";
-	   if(platform.contains("Linux")) {
+	   String os = System.getProperty("os.name").toLowerCase();
+	   String chrDriver = null;
+	   
+	   if(os.contains("win")) {
+		   chrDriver = "src/test/resources/chromedriver_win";
+	   } else if(os.contains("mac")) {
+		   chrDriver = "src/test/resources/chromedriver_mac";
+	   } else if(os.contains("linux")) {
 		   chrDriver = "src/test/resources/chromedriver_linux64";
 	   }
 	   
@@ -187,7 +184,7 @@ public class TestSetup {
 	   		driver.get("https:"+vcfIp);
 	   		System.out.println("title"+driver.getTitle());
 	   }
-	   //Firefox local doesn't work due to a bug. TODO: ADD IE AND SAFARI TO THE LIST
+	   //TODO: ADD Firefox, IE AND SAFARI TO THE LIST
    }
    
     public void startDriver(String vcfIp,String browser,String bsUserId, String bsKey,int jenkins) throws Exception {
@@ -222,7 +219,6 @@ public class TestSetup {
 			caps.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
 			caps.setCapability("browser_version","54");
 		}
-        //caps.setCapability("browserName", browser); -- For local selenium runs
 		
 		if(jenkins ==0) {
 			caps.setCapability("browserstack.local", "true");	
@@ -234,7 +230,6 @@ public class TestSetup {
 			caps.setCapability("browserstack.localIdentifier", browserstackLocalIdentifier);
 		} 
 		driver = new RemoteWebDriver(
-			      //new URL("http://127.0.0.1:4444/wd/hub"),
 			      new URL("https://"+bsUserId+":"+bsKey+"@hub-cloud.browserstack.com/wd/hub"),
 			      caps
 			    );
@@ -245,18 +240,14 @@ public class TestSetup {
 		
 		try {
 			driver.get("https://"+ vcfIp);
-			//Thread.sleep(600000);
 		} catch (Exception e) {
-			//Thread.sleep(600000);
+			printLogs("error","getDriver","Unable to open connection to "+vcfIp);
 		}
-	   // com.jcabi.log.Logger.info("Logfile",getBSLogs(bsUserId,bsKey));
    }
    
    public String getBSLogs(String bsUserId,String bsKey) {
 	    String sessId = driver.getSessionId().toString();
-	    //System.out.println("sessionId:"+sessId);
 	    String url = "https://browserstack.com/automate/sessions/"+sessId+".json";
-	    //System.out.println("url:"+url.toString());
 	    String authUser = bsUserId+":"+bsKey;
 	    String encoding = Base64.encodeBase64String(authUser.getBytes());
 	    Client restClient = Client.create();
@@ -273,30 +264,7 @@ public class TestSetup {
        String publicUrl = bsLogs.get("public_url").toString();
        return publicUrl;
   }
-   /*
-   public String getLicenseKey(String machineId) {
-	    String sessId = driver.getSessionId().toString();
-	    //System.out.println("sessionId:"+sessId);
-	    String[] command = {"curl", "-H", "Accept:application/json", "-u", username+":"+password , url,"-"};
-	    String url = "https://cloud-web.pluribusnetworks.com/api/login";
-	    //System.out.println("url:"+url.toString());
-	    String authUser = bsUserId+":"+bsKey;
-	    String encoding = Base64.encodeBase64String(authUser.getBytes());
-	    Client restClient = Client.create();
-       WebResource webResource = restClient.resource(url);
-       ClientResponse resp = webResource.accept("application/json")
-                                       .header("Authorization", "Basic " + encoding)
-                                       .get(ClientResponse.class);
-      if(resp.getStatus() != 200){
-   	   printLogs("error","getBSLogs","Unable to connect to the server");
-      }
-      String output = resp.getEntity(String.class);
-      JSONObject obj = new JSONObject(output);
-      JSONObject bsLogs = (JSONObject) obj.get("automation_session");
-      String publicUrl = bsLogs.get("public_url").toString();
-      return publicUrl;
- }
- */
+  
    @Parameters({"jenkins","upgrade","vcfIp"})
    @AfterClass(alwaysRun = true)
     public void setupAfterSuite(@Optional("0")String jenkins,@Optional("0")String upgrade,String vcfIp) {
@@ -352,4 +320,3 @@ public class TestSetup {
         return isrequired;
     }
 }
-

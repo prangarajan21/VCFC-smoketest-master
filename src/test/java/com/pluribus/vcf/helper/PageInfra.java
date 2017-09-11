@@ -25,7 +25,6 @@ public class PageInfra {
         this.driver = driver;
     }
 
-
     public void setValue(WebElement field, String strUserName) {
         field.clear();
         field.sendKeys(strUserName);
@@ -61,27 +60,6 @@ public class PageInfra {
         WebElement el
                 = (new WebDriverWait(driver, 10))
                 .until(ExpectedConditions.presenceOfElementLocated(locator));
-
-        // This waits up to 10 seconds before throwing a TimeoutException or 
-        // if it finds the element will return it in 0 - 10 seconds. 
-        // WebDriverWait by default calls the ExpectedCondition every 500 milliseconds 
-        // until it returns successfully. 
-        // A successful return is for ExpectedCondition type is Boolean 
-        // return true or not null return value for all other ExpectedCondition types.
-
-        /* for (int i = 0; i < 60; i++) {
-         if (isElementPresent(locator)) {
-         break;
-         } else {
-         try {
-         synchronized (driver) {
-         driver.wait(1000);
-         }
-         } catch (InterruptedException e) {
-         e.printStackTrace();
-         }
-         }
-         } */
     }
 
     public Boolean waitForElementStaleUp(WebElement el, int time) {
@@ -164,13 +142,7 @@ public class PageInfra {
         };
     }
 
-    /*
-     WebElement element = driver.findElement(By.id("foo"));
-     String name = (String) ((JavascriptExecutor) driver).executeScript(
-     "return arguments[0].tagName", element);
-     */
     public ResourceBundle getBundle() {
         return rb;
     }
-
 }
