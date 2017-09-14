@@ -152,6 +152,7 @@ public class VcfSettingsPage extends PageInfra{
 	String authSeedIcon = "span.icon-img-link.fa.fa-pencil";
 	String seedList = "div[name=form]";
 	String licenseList = "ng-transclude";
+	String licenseName = "ng-transclude div.panel.panel-default";
 	String deleteIcon = "span.icon-img-link.fa fa-trash-o.ng-scope";
 	String msgPopup = "button.close";
 	String addButtonCss = "button.btn.btn-sm.btn-primary";
@@ -183,11 +184,8 @@ public class VcfSettingsPage extends PageInfra{
 		waitForElementToClick(By.cssSelector(addButtonCss),100);
 		Actions actions = new Actions(driver);
     	actions.moveToElement(addButton).perform();
-    	//
-    	//addButton.click();
 		retryingFindClick(addButton);
 		waitForElementVisibility(driver.findElement(By.cssSelector(seedSwitchAddMsgBox)),100);
-		//Thread.sleep(2000);
 		setValue(mgmtIp,mgmtip);
 		Thread.sleep(2000);
 		setValue(username,usrname);
@@ -196,7 +194,6 @@ public class VcfSettingsPage extends PageInfra{
 		Thread.sleep(2000);
 		waitForElementVisibility(okButton,100);
 		retryingFindClick(okButton);
-		//okButton.click();
 		Thread.sleep(5000);
 		waitForElementVisibility(switchList,1000);
 	}
@@ -351,9 +348,7 @@ public class VcfSettingsPage extends PageInfra{
 			okButton.click();
 			Thread.sleep(5000); //sleeping for authorization to take place
 			waitForElementToClick(By.cssSelector(switchListId),100);
-			//retryingFindClick(By.cssSelector(switchListId));
 		}
-		//closePopUp();
 	}	
      
 	public boolean verifySeedSwitch(String name , String usrname, String mgmtip, String pwd) {
@@ -463,9 +458,9 @@ public class VcfSettingsPage extends PageInfra{
 	    //driver.navigate().refresh();
 	    waitForElementVisibility(listLicense,100);
 	    List<WebElement> rows = new ArrayList();
-	     rows = driver.findElements(By.cssSelector("ng-transclude div.panel.panel-default"));
+	     rows = driver.findElements(By.cssSelector(licenseName));
 	     for (int i=0; i < rows.size(); i++) {
-		    rows = driver.findElements(By.cssSelector("ng-transclude div.panel.panel-default"));
+		    rows = driver.findElements(By.cssSelector(licenseName));
 	            if (rows.get(i).getText().contains(type.toString())) {
 	            	com.jcabi.log.Logger.info("activateLicense", "License to be selected:"+type.toString());
 	            	Actions actions = new Actions(driver);
@@ -490,26 +485,6 @@ public class VcfSettingsPage extends PageInfra{
 			driver.findElement(By.cssSelector(msgPopup)).click();
 		}
 	}
-	
-	public void removeLicense(LicenseTypes type) {
-		vcfSettingsIcon.click();
-		waitForElementVisibility(licenseTab,1000);
-		licenseTab.click();
-		waitForElementVisibility(driver.findElement(By.tagName(licenseList)),1000);
-	    List<WebElement> rows = new ArrayList();
-	     rows = driver.findElement(By.tagName(licenseList)).findElements(By.tagName("div"));
-	        String rowTable = null;
-	        for (WebElement row : rows) {
-	            if (row.getText().contains(type.toString())) {
-	                rowTable = row.getText();
-	                row.findElement(By.cssSelector(deleteIcon)).click();
-	                break;
-	            }
-	        }
-	        waitForElementToClick(By.cssSelector(msgPopup),100);
-	        closePopUp();
-	}
-	
 	
 	public void addAuthServer( String pwd, String basedn, String ldapmgmtdn, String ldapuserdnPatterns, String ldapuserSearchFilter, String ldapmanagerPass) {
 		vcfSettingsIcon.click();

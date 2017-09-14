@@ -45,8 +45,10 @@ public class VCFLoginPage extends PageInfra{
 	public VCFLoginPage(WebDriver driver){
 		 super(driver);
 	}
+	
 	//Set user name in textbox
 	public void setUserName(String strUserName){
+		waitForElementVisibility(userNameVCF,100);
 		setValue(userNameVCF,strUserName);
 	}
 	public void logout(){
@@ -61,7 +63,7 @@ public class VCFLoginPage extends PageInfra{
 	public void waitForLogoutButton() {
 		waitForElementVisibility(vcfLogout,100);
 	}
-	//Set password in password textbox
+	
 	public void setPassword(String strPassword){
 		setValue(passwordVCF,strPassword);
 	}
@@ -80,28 +82,21 @@ public class VCFLoginPage extends PageInfra{
 	
 	//Click on login button
 	public void clickLogin(){
-			loginBtn.click();
+		    waitForElementVisibility(loginBtn);
+			retryingFindClick(loginBtn);
 	}
 	
 	public void firstlogin(String strUserName,String newPassword){
-		//Fill user name
 		    login(strUserName,strUserName);
-			//Fill Old Password 
 			this.setOldPassword(strUserName);
-			//Fill New Password 
 			this.setNewPassword(newPassword);
-			//Fill Confirm Password 
 			this.setConfirmPassword(newPassword);
-			//Click Login button
 			this.clickLogin();			
 	}
 	
 	public void login(String strUserName,String strPasword ){
-		//Fill user name
 		this.setUserName(strUserName);
-		//Fill password
 		this.setPassword(strPasword);
-		//Click Login button
 		this.clickLogin();	
 	}
 }

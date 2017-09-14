@@ -27,9 +27,6 @@ public class VCFHomePage extends PageInfra{
 	@FindBy(how = How.CSS, using = "div.homelogo.vcf-mgr span")
 	WebElement vcfMgrIcon;
 	
-	@FindBy(how = How.CSS, using = "a.inner-center div") 
-	WebElement vcfCenterIcon;
-
 	@FindBy(css = "a.fa.fa-sign-out")
 	WebElement vcfLogout;
 	
@@ -51,5 +48,4 @@ public class VCFHomePage extends PageInfra{
 		waitForElementVisibility(vcfMgrIcon,1000);
 		vcfMgrIcon.click();
 	}
-	
 }

@@ -49,7 +49,7 @@ public class InitialSetup extends TestSetup {
         login.firstlogin(vcfUserName,password);
         login.waitForLogoutButton();
         login.logout();
-        Thread.sleep(60000);
+        Thread.sleep(30000);
     }
    
     @Parameters({"password"})  
@@ -57,7 +57,7 @@ public class InitialSetup extends TestSetup {
     public void loginAsTest123(@Optional("test123")String password) throws Exception{
         login.login(vcfUserName, password);
         login.waitForLogoutButton();
-        Thread.sleep(60000);
+        Thread.sleep(30000);
     }
     
     @Parameters({"switchName","mgmtIp"})  

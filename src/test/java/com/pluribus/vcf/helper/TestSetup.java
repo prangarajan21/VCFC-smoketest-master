@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +23,7 @@ import org.openqa.selenium.Platform;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.CapabilityType;
@@ -55,6 +59,9 @@ public class TestSetup {
    private String localId;
    private String imageName;
    
+   /* 
+    * This method will be invoked if VCFC upgrade is desired before test run.
+    */
    @Parameters({"vcfIp","upgrade","git_revision","vcfc_version","buildNum","folder_name"})
    @BeforeSuite(alwaysRun = true)
    public void upgradeVCFC(String vcfIp,@Optional("0")String upgrade, @Optional("")String git_revision, @Optional("")String vcfc_version,@Optional("")String build_number,@Optional("")String folder_name) throws IOException,InterruptedException {
@@ -72,10 +79,16 @@ public class TestSetup {
 		String imageUrl = "http://sandy:8081/artifactory/Maestro/"+folder_name+"/"+build_number+"/"+imageName;
 		int out2 = new Shell.Empty(sh1).exec("cd /srv/docker/offline_images;wget "+imageUrl);
 		out1 = new Shell.Plain(sh1).exec("/home/vcf/VCFC_setup.sh upgrade "+imageName);
-		Thread.sleep(30000); //Sleeping after upgrade
+		Thread.sleep(30000); 
 	   }
    }
    
+   /*
+    * This method is usually invoked unless user overrides it with clean=0 in arguments with mvn clean test
+    * It deletes config files such as pcap-agent, pcap-engine, vcf-center properties, seed switch, username, license etc.
+    * This is run so that the user starts with a clean VM. If this isn't desired, then test class should be modified to use admin/new Password for login
+    * instead of admin/admin. 
+    */
    @Parameters({"vcfIp","clean","imageType"})
    @BeforeTest(alwaysRun = true)
    public void cleanLogs(String vcfIp,@Optional("1")String clean,@Optional("test")String imageType) throws IOException,InterruptedException {
@@ -130,17 +143,27 @@ public class TestSetup {
 	   return sh1;
    }
    
-   /*Routine for logging. So any changes to this routine will be a single point of edit for all log messages */
-   public void printLogs (String level, String msg1, String msg2) {
+   /*
+    * Routine for logging. So any changes to this routine will be a single point of edit for all log messages 
+    * All logging should use printLogs method
+    * Mandatory arguments: Level, method which is logging the message and actual message 
+    */
+   public void printLogs (String level, String methodName, String msg) {
 	   if(level.equalsIgnoreCase("error")) {
-		   com.jcabi.log.Logger.error(msg1,msg2);
+		   com.jcabi.log.Logger.error(methodName,msg);
 	   } 
 	   if(level.equalsIgnoreCase("info")) {
-		   com.jcabi.log.Logger.info(msg1, msg2);
+		   com.jcabi.log.Logger.info(methodName,msg);
 	   }
-	   System.out.println(level+": "+ msg1 +" "+msg2);
+	   System.out.println(level+": "+ methodName +" "+msg);
    }
    
+   /*
+    * This is the method that starts the WebDriver either with browserstack or local based on the "local" argument value
+    * Mandatory argument: vcfIp, browser (Name of browser: "chrome", "firefox") etc. For local runs only chrome is supported now.  
+    * Optional arguments: local, bsUserId, bsKey, jenkins  
+    * Note: if jenkins plugin is used, handling is a little different from the other runs. jenkins = 1 is set by all jobs that run scripts from jenkins. End of Note.
+    */
    @Parameters({"vcfIp","browser","local","bsUserId","bsKey","jenkins"}) 
    @BeforeClass(alwaysRun = true)
    public void initDriver(String vcfIp, String browser, @Optional("0")String local,@Optional("pratikdam1")String bsUserId, @Optional("uZCXEzKXwgzgzMr3G7R6") String bsKey,@Optional("0")String jenkins) throws Exception{
@@ -164,12 +187,14 @@ public class TestSetup {
 	   } else if(os.contains("linux")) {
 		   chrDriver = "src/test/resources/chromedriver_linux64";
 	   }
-	   
+	  
 	   if(browserName.equalsIgnoreCase("chrome")) {
 	   		System.setProperty("webdriver.chrome.driver", chrDriver);
-	   		DesiredCapabilities handlSSLErr = DesiredCapabilities.chrome();     
-	   		handlSSLErr.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-	   		driver=new ChromeDriver(handlSSLErr);
+	   		DesiredCapabilities chromeCaps = DesiredCapabilities.chrome();  
+	   		chromeCaps.setCapability("chrome.switches", Arrays.asList("--ignore-certificate-errors"));
+	   		chromeCaps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+	   	    System.out.println("HANDLESSLERR"+chromeCaps.toString());
+	   		driver=new ChromeDriver(chromeCaps);
 	   		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
 			driver.manage().window().maximize();
 			driver.get("https:"+vcfIp);
@@ -219,7 +244,9 @@ public class TestSetup {
 			caps.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
 			caps.setCapability("browser_version","54");
 		}
-		
+		if(browser.equalsIgnoreCase("chrome")) {
+			caps.setCapability("chrome.switches", Arrays.asList("--ignore-certificate-errors"));
+		}
 		if(jenkins ==0) {
 			caps.setCapability("browserstack.local", "true");	
 			caps.setCapability("browserstack.localIdentifier",localId);
@@ -244,7 +271,11 @@ public class TestSetup {
 			printLogs("error","getDriver","Unable to open connection to "+vcfIp);
 		}
    }
-   
+    
+   /* 
+    * This method is invoked when a browserstack session is created to retrieve and print out link to the logs in the console output. 
+    * 
+    */
    public String getBSLogs(String bsUserId,String bsKey) {
 	    String sessId = driver.getSessionId().toString();
 	    String url = "https://browserstack.com/automate/sessions/"+sessId+".json";
