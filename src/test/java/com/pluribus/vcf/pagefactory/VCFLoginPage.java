@@ -65,18 +65,22 @@ public class VCFLoginPage extends PageInfra{
 	}
 	
 	public void setPassword(String strPassword){
+		waitForElementVisibility(passwordVCF,100);
 		setValue(passwordVCF,strPassword);
 	}
 	
 	public void setOldPassword(String strPassword){	
+		waitForElementVisibility(oldPassword,100);
 		setValue(oldPassword,strPassword);
 	}
 	
 	public void setNewPassword(String strPassword){
+		waitForElementVisibility(newPassword,100);
 		setValue(newPassword,strPassword);
 	}
 	
 	public void setConfirmPassword(String strPassword){
+		waitForElementVisibility(confirmNewPassword,100);
 		setValue(confirmNewPassword,strPassword);
 	}
 	

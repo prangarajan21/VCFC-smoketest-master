@@ -28,7 +28,6 @@ public class InitialSetup extends TestSetup {
     private String pncPwd = "test123";
     private String pncuName= "pn-vcf";
     private String vcfUserName = "admin";
-    private String firstPassword = "admin";
     private String switchUserName = "network-admin";
     private String switchPassword = "test123";
     private SwitchMethods cli;
@@ -50,18 +49,18 @@ public class InitialSetup extends TestSetup {
         Thread.sleep(15000);
         login.waitForLogoutButton();
         login.logout();
-        Thread.sleep(15000);
+        Thread.sleep(30000);
     }
    
     @Parameters({"password"})  
     @Test(groups = {"smoke","regression"},description = "Login to VCF as test123 After Password Change")
     public void loginAsTest123(@Optional("test123")String password) throws Exception{
         login.login(vcfUserName, password);
-        Thread.sleep(15000);
-        login.waitForLogoutButton();
-        Thread.sleep(15000);
+        Thread.sleep(30000);
+        home.waitForHomeLogo();
+        Thread.sleep(30000);
     }
-    
+   
     @Parameters({"switchName","mgmtIp"})  
     @Test(groups = {"smoke","regression"}, dependsOnMethods = { "activateLicense" },description = "Add Seed Switch & verify")
     public void addSeedSwitch(String switchName,String mgmtIp) throws Exception{

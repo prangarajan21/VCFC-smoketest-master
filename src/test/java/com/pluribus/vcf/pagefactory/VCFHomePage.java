@@ -33,19 +33,21 @@ public class VCFHomePage extends PageInfra{
 	public VCFHomePage(WebDriver driver) {
          	super(driver);
 	}
-	
+	public void waitForHomeLogo() {
+		waitForElementVisibility(vcfIAIcon,100);
+	}
 	public void gotoIA() {
-		waitForElementVisibility(vcfIAIcon,1000);
+		waitForElementVisibility(vcfIAIcon,100);
 		vcfIAIcon.click();
 	}	
 		
 	public void gotoPA() {
-		waitForElementVisibility(vcfPAIcon,1000);
+		waitForElementVisibility(vcfPAIcon,100);
 		vcfPAIcon.click();
 	}
 	
 	public void gotoVCFMgr() {	
-		waitForElementVisibility(vcfMgrIcon,1000);
+		waitForElementVisibility(vcfMgrIcon,100);
 		vcfMgrIcon.click();
 	}
 }
