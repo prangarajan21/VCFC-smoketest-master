@@ -47,17 +47,19 @@ public class InitialSetup extends TestSetup {
     @Test(groups = {"smoke","regression"}, description = "Login to VCF as admin  and Change Password")
     public void loginAsAdmin(@Optional("test123")String password) throws Exception {
         login.firstlogin(vcfUserName,password);
-        Thread.sleep(30000);
+        Thread.sleep(15000);
         login.waitForLogoutButton();
         login.logout();
+        Thread.sleep(15000);
     }
    
     @Parameters({"password"})  
     @Test(groups = {"smoke","regression"},description = "Login to VCF as test123 After Password Change")
     public void loginAsTest123(@Optional("test123")String password) throws Exception{
         login.login(vcfUserName, password);
-        Thread.sleep(30000);
+        Thread.sleep(15000);
         login.waitForLogoutButton();
+        Thread.sleep(15000);
     }
     
     @Parameters({"switchName","mgmtIp"})  

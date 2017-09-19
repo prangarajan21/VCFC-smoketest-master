@@ -54,13 +54,12 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.18.1</version>
 				<configuration>
-					<systemPropertyVariables>
+					<!-- systemPropertyVariables>
 						<my.environment>${vcfIp}</my.environment>
 						<my.browser>${browser}</my.browser>
-					</systemPropertyVariables>
+					</systemPropertyVariables> -->
 					<suiteXmlFiles>
-						<!-- TestNG suite XML files -->
-						<suiteXmlFile>testng.xml</suiteXmlFile>
+						<suiteXmlFile>vcfcSmokeTest.xml</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
 			</plugin>
