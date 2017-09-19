@@ -123,6 +123,7 @@ public class TestSetup {
 		for (String s:restartCommands) {
 			out1 = new Shell.Plain(sh1).exec(s);
 		}
+		Thread.sleep(120000);//Sleeping after clean logs
 	}
    }
    
@@ -193,7 +194,6 @@ public class TestSetup {
 	   		DesiredCapabilities chromeCaps = DesiredCapabilities.chrome();  
 	   		chromeCaps.setCapability("chrome.switches", Arrays.asList("--ignore-certificate-errors"));
 	   		chromeCaps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-	   	    System.out.println("HANDLESSLERR"+chromeCaps.toString());
 	   		driver=new ChromeDriver(chromeCaps);
 	   		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
 			driver.manage().window().maximize();
@@ -234,8 +234,7 @@ public class TestSetup {
 		caps.setCapability("browserstack.debug","true");	
 		caps.setCapability("browserstack.idleTimeout","150");
 		caps.setCapability("platform","ANY");
-		caps.setCapability("os","OS X");
-		caps.setCapability("os_version","Sierra");
+		
 		caps.setCapability("browserstack.console","verbose");
 		if(browser.equalsIgnoreCase("firefox")) {
 			FirefoxProfile firefoxProfile = new FirefoxProfile(); 
