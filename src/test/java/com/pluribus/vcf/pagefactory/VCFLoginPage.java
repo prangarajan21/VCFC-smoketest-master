@@ -83,7 +83,7 @@ public class VCFLoginPage extends PageInfra{
 	//Click on login button
 	public void clickLogin(){
 		    waitForElementVisibility(loginBtn);
-			retryingFindClick(loginBtn);
+			retryingFindClick(loginBtn);		
 	}
 	
 	public void firstlogin(String strUserName,String newPassword){
@@ -91,7 +91,7 @@ public class VCFLoginPage extends PageInfra{
 			this.setOldPassword(strUserName);
 			this.setNewPassword(newPassword);
 			this.setConfirmPassword(newPassword);
-			this.clickLogin();			
+			this.clickLogin();
 	}
 	
 	public void login(String strUserName,String strPasword ){
