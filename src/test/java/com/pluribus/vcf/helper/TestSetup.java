@@ -123,7 +123,7 @@ public class TestSetup {
 		for (String s:restartCommands) {
 			out1 = new Shell.Plain(sh1).exec(s);
 		}
-		Thread.sleep(120000);//Sleeping after clean logs
+		Thread.sleep(180000);//Sleeping after clean logs
 	}
    }
    
